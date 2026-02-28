@@ -10,8 +10,9 @@ import Image from "next/image";
 
 type Params = Promise<{ slug: string }>;
 
-/** 
+/**
  * SSG (Static Site Generation)
+ * This pre-builds every post at compile time so they load instantly.
  */
 export async function generateStaticParams() {
   const posts = await getPosts();
@@ -22,6 +23,7 @@ export async function generateStaticParams() {
 
 /**
  * Dynamic Metadata
+ * Optimized for SEO and social sharing.
  */
 export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
@@ -29,6 +31,7 @@ export async function generateMetadata({ params }: { params: Params }) {
 
   if (!post) return { title: "Post Not Found | MyUVCE" };
 
+  // Clean description: Remove HTML tags and limit to 160 chars
   const description = post.content
     .replace(/<[^>]*>/g, "")
     .substring(0, 160)
@@ -57,7 +60,8 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   const authorId = authorMatch ? authorMatch[1].toLowerCase() : null;
   const author = authorId ? AUTHORS[authorId] : null;
 
-  // 2. DOM PURIFICATION: Erase the legacy author boxes
+  // 2. DOM PURIFICATION: Erase the legacy author box to prevent React hydration crashes
+  // This regex targets any div containing "uvce-author-box" and removes it entirely.
   const cleanHtml = post.content.replace(
     /<div[^>]*uvce-author-box[^>]*>[\s\S]*?<\/div>/gi,
     ''
