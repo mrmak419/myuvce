@@ -10,7 +10,7 @@ export default function ThemeToggle() {
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    setMounted(true);
+    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
   }, []);
 
   if (!mounted) {

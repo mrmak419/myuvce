@@ -26,8 +26,8 @@ export async function getPosts(): Promise<Post[]> {
 
   // next: { revalidate: 3600 } tells Next.js to cache this data for 1 hour.
   // This makes your site load instantly and protects your API limits.
-  const res = await fetch(url, { 
-    next: { revalidate: 3600 } 
+  const res = await fetch(url, {
+    next: { revalidate: 3600 }
   });
 
   if (!res.ok) {
@@ -38,10 +38,10 @@ export async function getPosts(): Promise<Post[]> {
 
   if (!data.items) return [];
 
-  return data.items.map((post: any) => ({
+  return data.items.map((post: { id: string; title: string; content?: string; url: string; published: string; labels?: string[]; author: any }) => ({
     id: post.id,
     title: post.title,
-    content: post.content || "", 
+    content: post.content || "",
     // Dynamically extract the clean slug from the legacy .html URL
     slug: post.url.split('/').pop().replace('.html', ''),
     published: post.published,
@@ -58,17 +58,17 @@ export async function getPostById(postId: string): Promise<Post> {
   checkEnvVars();
 
   const url = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts/${postId}?key=${API_KEY}`;
-  
-  const res = await fetch(url, { 
-    next: { revalidate: 3600 } 
+
+  const res = await fetch(url, {
+    next: { revalidate: 3600 }
   });
-  
+
   if (!res.ok) {
     throw new Error(`Blogger API Single Post Error for ID ${postId}: ${res.statusText}`);
   }
-  
+
   const post = await res.json();
-  
+
   return {
     id: post.id,
     title: post.title,
@@ -86,11 +86,11 @@ export async function getPostById(postId: string): Promise<Post> {
  */
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   // 1. Get the lightweight list to find the ID mapping
-  const posts = await getPosts(); 
-  
+  const posts = await getPosts();
+
   // 2. Find the specific post data
   const matchedPost = posts.find((p) => p.slug === slug);
-  
+
   if (!matchedPost) {
     return null;
   }

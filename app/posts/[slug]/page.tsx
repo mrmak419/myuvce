@@ -3,10 +3,9 @@ export const revalidate = 3600; // Revalidate every hour
 import { getPostBySlug, getPosts } from "@/lib/blogger";
 import { notFound } from "next/navigation";
 import BloggerRenderer from "@/components/BloggerRenderer";
-import { Calendar, ChevronLeft, Linkedin } from "lucide-react";
-import Link from "next/link";
 import { AUTHORS } from "@/lib/authors";
 import Image from "next/image";
+import { Calendar, User, Linkedin } from "lucide-react";
 
 type Params = Promise<{ slug: string }>;
 
@@ -68,55 +67,68 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   );
 
   return (
-    <main className="max-w-4xl mx-auto py-16 px-6">
-      <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-500 hover:text-orange-600 transition-colors mb-12 group">
-        <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-        Back to Feed
-      </Link>
-      <article className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-        <header className="mb-12">
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-neutral-900 dark:text-white mb-8 leading-tight">
+    <main className="max-w-4xl mx-auto py-12 px-6">
+      <article className="animate-in fade-in duration-700">
+        <header className="mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-8">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white mb-4">
             {post.title}
           </h1>
-          <div className="flex items-center gap-4 text-sm font-medium text-neutral-500 dark:text-neutral-400">
-            <div className="flex items-center gap-2 bg-orange-50 dark:bg-orange-950/20 text-orange-700 dark:text-orange-400 px-4 py-2 rounded-full border border-orange-100 dark:border-orange-800/50">
-              <Calendar className="w-4 h-4" />
-              <span suppressHydrationWarning>{new Date(post.published).toLocaleDateString('en-IN', { dateStyle: 'long' })}</span>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4 text-orange-600" />
+              <span suppressHydrationWarning>
+                {new Date(post.published).toLocaleDateString('en-IN', { dateStyle: 'long' })}
+              </span>
             </div>
+
+            <div className="flex items-center gap-1.5">
+              <User className="w-4 h-4 text-orange-600" />
+              <span>{author ? author.name : "Team MyUVCE"}</span>
+            </div>
+
+            {post.labels.length > 0 && (
+              <div className="flex gap-2">
+                {post.labels.map(label => (
+                  <span key={label} className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
+                    #{label}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </header>
 
-        <section className="prose-config selection:bg-orange-100 dark:selection:bg-orange-900/40">
+        <section className="prose-config">
+          {/* Inject the cleaned HTML, completely free of legacy author scripts */}
           <BloggerRenderer html={cleanHtml} />
         </section>
 
-        {/* 3. NATIVE COMPONENT: Re-introducing Author Box with matching Orange Theme */}
+        {/* 3. NATIVE COMPONENT: Render the Author Box using React and Tailwind */}
         {author && (
-          <div className="mt-16 p-8 bg-orange-50/30 dark:bg-orange-950/10 rounded-3xl border border-orange-100 dark:border-orange-900/30 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-600 dark:text-orange-400 mb-8">Article Contributor</p>
-            <div className="flex flex-col sm:flex-row items-start gap-8 relative z-10">
-              <div className="relative w-24 h-24 flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
+          <div className="mt-16 p-8 bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+            <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-6">About the Author</p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <div className="relative w-24 h-24 flex-shrink-0">
                 <Image
                   src={author.img}
                   alt={author.name}
                   fill
-                  className="rounded-2xl object-cover border-4 border-white dark:border-neutral-900 shadow-xl shadow-orange-500/10"
+                  className="rounded-full object-cover border-4 border-white dark:border-neutral-800 shadow-sm"
                 />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-black text-neutral-900 dark:text-white leading-tight">{author.name}</h3>
-                <span className="inline-block mt-1 text-sm font-bold text-orange-600 dark:text-orange-400">
+                <h3 className="text-2xl font-bold text-neutral-900 dark:text-white">{author.name}</h3>
+                <span className="inline-block mt-1 text-sm font-medium text-orange-600 dark:text-orange-400">
                   {author.role}
                 </span>
-                <p className="mt-4 text-neutral-600 dark:text-neutral-400 leading-relaxed font-medium">
+                <p className="mt-3 text-neutral-600 dark:text-neutral-300 leading-relaxed">
                   {author.bio}
                 </p>
                 <a
                   href={author.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-orange-600/20 active:scale-95 transition-all"
+                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-colors"
                 >
                   <Linkedin className="w-4 h-4" />
                   Connect
@@ -125,6 +137,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             </div>
           </div>
         )}
+
       </article>
     </main>
   );
