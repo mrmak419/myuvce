@@ -1,6 +1,8 @@
+export const runtime = "edge"; 
+
 import { getPostBySlug } from "@/lib/blogger";
 import { notFound } from "next/navigation";
-import BloggerRenderer from "@/components/BloggerRenderer"; // <-- Import it here
+import BloggerRenderer from "@/components/BloggerRenderer"; 
 
 // Next.js 15 requires params to be treated as a Promise
 type Params = Promise<{ slug: string }>;
