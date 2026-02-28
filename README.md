@@ -2,7 +2,7 @@
 
 The next generation of [myuvce.in](https://www.myuvce.in), rebuilt from the ground up using **Next.js 15**, **Tailwind CSS**, and the **Blogger API v3**.
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 * **Framework:** Next.js 15 (App Router)
 * **Styling:** Tailwind CSS v3
@@ -11,7 +11,7 @@ The next generation of [myuvce.in](https://www.myuvce.in), rebuilt from the grou
 * **Data Fetching:** Incremental Static Regeneration (ISR)
 * **Source Data:** Blogger API v3
 
-## 🛠️ Getting Started
+##  Getting Started
 
 1. **Clone the repo:**
 ```bash
@@ -45,14 +45,14 @@ npm run dev
 
 
 
-## 📂 Project Structure
+##  Project Structure
 
 * `/app`: App router pages, layouts, and metadata logic.
 * `/components`: Reusable UI components and the `BloggerRenderer`.
 * `/lib`: Blogger API fetching logic and core utilities.
 * `/types`: TypeScript interfaces for global data safety.
 
-## 🤝 Contribution Guidelines
+##  Contribution Guidelines
 
 * **UI Consistency:** Use **Lucide React** icons for all interactive elements. **Strictly no emojis** in the UI.
 * **Styling:** Follow existing Tailwind patterns. Use the `prose` class for all Blogger content rendering.
