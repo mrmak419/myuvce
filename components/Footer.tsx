@@ -30,7 +30,7 @@ export default function Footer() {
                             <a href="https://x.com/myuvce" className="p-2 rounded-full text-neutral-500 hover:text-orange-600 dark:hover:text-orange-400 bg-neutral-100 dark:bg-neutral-900 transition-colors" aria-label="Twitter">
                                 <Twitter className="w-4 h-4" />
                             </a>
-                            <a href="https://linkedin.com/company/myuvce" className="p-2 rounded-full text-neutral-500 hover:text-orange-800 dark:hover:text-orange-400 bg-neutral-100 dark:bg-neutral-900 transition-colors" aria-label="LinkedIn">
+                            <a href="https://linkedin.com/company/myuvce" className="p-2 rounded-full text-neutral-500 hover:text-orange-600 dark:hover:text-orange-400 bg-neutral-100 dark:bg-neutral-900 transition-colors" aria-label="LinkedIn">
                                 <Linkedin className="w-4 h-4" />
                             </a>
                             <a href="https://github.com/mrmak419" className="p-2 rounded-full text-neutral-500 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 dark:bg-neutral-900 transition-colors" aria-label="GitHub">

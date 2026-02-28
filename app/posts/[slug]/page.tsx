@@ -1,3 +1,7 @@
+export const revalidate = 3600; // Revalidate every hour
+
+import { getPostBySlug, getPosts } from "@/lib/blogger";
+import { notFound } from "next/navigation";
 import BloggerRenderer from "@/components/BloggerRenderer";
 import { Calendar, ChevronLeft, Linkedin } from "lucide-react";
 import Link from "next/link";
