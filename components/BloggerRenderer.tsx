@@ -26,6 +26,8 @@ export default function BloggerRenderer({ html }: { html: string }) {
   return (
     <div 
       ref={containerRef}
+      // Suppress hydration errors caused by Blogger's invalid HTML structures (like <style> tags in the body)
+      suppressHydrationWarning 
       // The prose class handles typography, but allows your custom inline CSS to override
       className="prose prose-slate dark:prose-invert max-w-none prose-img:mx-auto prose-img:rounded-xl"
       dangerouslySetInnerHTML={{ __html: html }} 
