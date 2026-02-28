@@ -1,4 +1,5 @@
-export const runtime = "edge"; 
+export const revalidate = 3600; // Revalidate every hour
+
 
 import { getPostBySlug, getPosts } from "@/lib/blogger";
 import { notFound } from "next/navigation";
