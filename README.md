@@ -13,33 +13,25 @@ The next generation of [myuvce.in](https://www.myuvce.in), rebuilt from the grou
 ## 🛠️ Getting Started
 
 1. **Clone the repo:**
-   ```bash
    git clone [https://github.com/mrmak419/myuvce.git](https://github.com/mrmak419/myuvce.git)
    cd myuvce
 
-```
 
 2. **Install dependencies:**
-```bash
 npm install
 
-```
 
 
 3. **Environment Variables:**
 Create a `.env.local` file in the root directory. Ask @mrmak419 for the API keys.
-```env
 BLOGGER_BLOG_ID=your_id
 BLOGGER_API_KEY=your_key
 
-```
 
 
 4. **Run Development Server:**
-```bash
 npm run dev
 
-```
 
 
 
