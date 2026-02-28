@@ -29,7 +29,7 @@ export default function ThemeToggle() {
       className="p-2 sm:p-2.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 shadow-sm backdrop-blur-sm 
                  hover:scale-105 hover:bg-neutral-50 dark:hover:bg-neutral-800 
                  transition-all duration-300 ease-in-out
-                 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:focus:ring-blue-400/50 group"
+                 focus:outline-none focus:ring-2 focus:ring-orange-500/50 dark:focus:ring-orange-400/50 group"
       aria-label="Toggle Dark Mode"
     >
       {currentTheme === "dark" ? (

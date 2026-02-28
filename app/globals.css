@@ -8,10 +8,10 @@
     @apply prose max-w-none text-neutral-800 dark:text-neutral-200;
     @apply prose-headings:font-bold prose-headings:text-neutral-900 dark:prose-headings:text-white;
     @apply prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl;
-    @apply prose-a:text-blue-600 prose-a:no-underline hover:prose-a:text-blue-700 hover:prose-a:underline dark:prose-a:text-blue-400 dark:hover:prose-a:text-blue-300;
-    @apply prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50/50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:not-italic prose-blockquote:text-neutral-700 dark:prose-blockquote:text-neutral-300 prose-blockquote:rounded-r-lg;
+    @apply prose-a:text-orange-600 prose-a:no-underline hover:prose-a:text-orange-700 hover:prose-a:underline dark:prose-a:text-orange-400 dark:hover:prose-a:text-orange-300;
+    @apply prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:bg-orange-50/50 dark:prose-blockquote:bg-orange-900/20 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:not-italic prose-blockquote:text-neutral-700 dark:prose-blockquote:text-neutral-300 prose-blockquote:rounded-r-lg;
     @apply prose-img:rounded-2xl prose-img:shadow-md prose-img:border prose-img:border-neutral-200 dark:prose-img:border-neutral-800;
-    @apply prose-ol:list-decimal prose-ul:list-disc prose-li:marker:text-blue-500 dark:prose-li:marker:text-blue-400;
+    @apply prose-ol:list-decimal prose-ul:list-disc prose-li:marker:text-orange-500 dark:prose-li:marker:text-orange-400;
     @apply prose-strong:text-neutral-900 dark:prose-strong:text-white prose-strong:font-bold;
     @apply prose-code:bg-neutral-100 dark:prose-code:bg-neutral-800 prose-code:text-rose-600 dark:prose-code:text-rose-400 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none;
     @apply prose-pre:bg-neutral-900 dark:prose-pre:bg-black prose-pre:border prose-pre:border-neutral-800 prose-pre:shadow-lg dark:prose-pre:shadow-none;

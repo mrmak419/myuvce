@@ -10,25 +10,25 @@ export default function BloggerRenderer({ html }: { html: string }) {
 
     // React strips scripts on injection. This finds them and forces them to run.
     const scripts = containerRef.current.querySelectorAll('script');
-    
+
     scripts.forEach((oldScript) => {
       const newScript = document.createElement('script');
-      
+
       Array.from(oldScript.attributes).forEach((attr) => {
         newScript.setAttribute(attr.name, attr.value);
       });
       newScript.innerHTML = oldScript.innerHTML;
-      
+
       oldScript.parentNode?.replaceChild(newScript, oldScript);
     });
   }, [html]);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       // The prose class handles typography, but allows your custom inline CSS to override
-      className="prose prose-slate dark:prose-invert max-w-none prose-img:mx-auto prose-img:rounded-xl"
-      dangerouslySetInnerHTML={{ __html: html }} 
+      className="prose-config max-w-none prose-img:mx-auto prose-img:rounded-xl"
+      dangerouslySetInnerHTML={{ __html: html }}
     />
   );
 }

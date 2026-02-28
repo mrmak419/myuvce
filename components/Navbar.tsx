@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, GraduationCap, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronRight } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
@@ -15,12 +15,34 @@ const navLinks = [
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
     const pathname = usePathname();
 
     const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
+    useEffect(() => {
+        const controlNavbar = () => {
+            if (typeof window !== 'undefined' && !isMobileMenuOpen) {
+                if (window.scrollY > lastScrollY && window.scrollY > 100) { // scrolling down
+                    setIsVisible(false);
+                } else { // scrolling up
+                    setIsVisible(true);
+                }
+                setLastScrollY(window.scrollY);
+            }
+        };
+
+        window.addEventListener('scroll', controlNavbar);
+
+        // cleanup function
+        return () => {
+            window.removeEventListener('scroll', controlNavbar);
+        };
+    }, [lastScrollY, isMobileMenuOpen]);
+
     return (
-        <header className="sticky top-0 z-50 w-full backdrop-blur-lg bg-white/70 dark:bg-neutral-950/70 border-b border-neutral-200/50 dark:border-neutral-800/50 supports-[backdrop-filter]:bg-white/60 transition-colors duration-300">
+        <header className={`sticky top-0 z-50 w-full backdrop-blur-lg bg-white/70 dark:bg-neutral-950/70 border-b border-neutral-200/50 dark:border-neutral-800/50 supports-[backdrop-filter]:bg-white/60 transition-all duration-500 transform ${isVisible ? 'translate-y-0 opacity-100 scale-100' : '-translate-y-full opacity-0 scale-95 pointer-events-none'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16 sm:h-20 items-center">
 
@@ -31,10 +53,14 @@ export default function Navbar() {
                             className="flex items-center gap-3 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 text-white shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 group-hover:scale-105 transition-all duration-300">
-                                <GraduationCap className="w-6 h-6" />
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-lg group-hover:shadow-orange-500/20 group-hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmz1bkkO3JPLMjpXjV7tEKKJytWXsxlyDRQJWz-h7BOZmQkz5_TYGzPLU9MhLReghjouHQ87Yobsa_0EApCbTwZW9uRP2FdYw9xtZ0DVr98eWmJBfcOppkFuak-xaX-wO2s8NVdexzxf3s_z-5jvUbE39MxiGciboANAd7e07qZKipszYlx0FfTnYmI0og/s1600/IMG-20251206-WA0057.jpg"
+                                    alt="MyUVCE Logo"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
-                            <span className="font-bold text-xl sm:text-2xl tracking-tight text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            <span className="font-bold text-xl sm:text-2xl tracking-tight text-neutral-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                                 myuvce.in
                             </span>
                         </Link>
@@ -49,13 +75,13 @@ export default function Navbar() {
                                     key={link.name}
                                     href={link.href}
                                     className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-800/50 ${isActive
-                                            ? "text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20"
-                                            : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"
+                                        ? "text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20"
+                                        : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"
                                         }`}
                                 >
                                     {link.name}
                                     {isActive && (
-                                        <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-t-full rounded-b-full shadow-[0_0_8px_rgba(37,99,235,0.8)]" />
+                                        <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-orange-600 dark:bg-orange-400 rounded-t-full rounded-b-full shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
                                     )}
                                 </Link>
                             );
@@ -71,7 +97,7 @@ export default function Navbar() {
                         <ThemeToggle />
                         <button
                             onClick={toggleMobileMenu}
-                            className="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 border border-transparent dark:border-neutral-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                            className="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 border border-transparent dark:border-neutral-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                             aria-label="Toggle mobile menu"
                             aria-expanded={isMobileMenuOpen}
                         >
@@ -99,8 +125,8 @@ export default function Navbar() {
                                 href={link.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`flex items-center justify-between px-4 py-3.5 rounded-2xl text-base font-semibold transition-colors ${isActive
-                                        ? "text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30"
-                                        : "text-neutral-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-neutral-100/80 dark:hover:bg-neutral-900/80"
+                                    ? "text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-900/30"
+                                    : "text-neutral-700 dark:text-neutral-200 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-neutral-100/80 dark:hover:bg-neutral-900/80"
                                     }`}
                             >
                                 <span>{link.name}</span>
