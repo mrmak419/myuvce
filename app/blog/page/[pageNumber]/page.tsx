@@ -1,5 +1,3 @@
-export const revalidate = 3600;
-
 import { getPosts } from "@/lib/blogger";
 import BlogFeed from "@/components/BlogFeed";
 import { notFound } from "next/navigation";
@@ -32,7 +30,7 @@ export default async function PaginatedBlogPage({ params }: { params: Params }) 
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
   const initialPosts = posts.slice(startIndex, startIndex + POSTS_PER_PAGE);
   
-  // Strip heavy HTML content again for this page's payload
+  // Strip heavy HTML content again for this page's payload to keep the site blazing fast
   const allPostsIndex = posts.map(({ content, ...rest }) => rest);
 
   return (

@@ -20,7 +20,7 @@ const CAMPUS_TOOLS = [
     name: "Campus Map",
     description: "Navigate UVCE classrooms and labs instantly.",
     icon: Map,
-    href: "/map", // Update with your actual map route
+    href: "/map",
     status: "Live",
   },
   {
@@ -40,7 +40,6 @@ const CAMPUS_TOOLS = [
 ];
 
 export default async function Home() {
-  // Notice: No searchParams. This page is now 100% static HTML at build time.
   const posts = await getPosts();
   const recentPosts = posts.slice(0, RECENT_POSTS_COUNT);
 

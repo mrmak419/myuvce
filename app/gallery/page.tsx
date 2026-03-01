@@ -1,5 +1,4 @@
-export const runtime = 'edge';
-export const revalidate = 3600; // Refetch the Google Sheet every hour
+
 
 import Image from "next/image";
 import { Instagram, MapPin, Zap, ExternalLink } from "lucide-react";

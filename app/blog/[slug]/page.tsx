@@ -1,5 +1,3 @@
-export const revalidate = 3600; // Revalidate every hour on the Edge
-
 import { getPostBySlug, getPosts } from "@/lib/blogger";
 import { notFound } from "next/navigation";
 import BloggerRenderer from "@/components/BloggerRenderer";
@@ -9,6 +7,7 @@ import { Calendar, User, ExternalLink } from "lucide-react";
 
 type Params = Promise<{ slug: string }>;
 
+// Tells Next.js which URLs to generate at build time
 export async function generateStaticParams() {
   const posts = await getPosts();
   return posts.map((post) => ({
@@ -16,6 +15,7 @@ export async function generateStaticParams() {
   }));
 }
 
+// Generates static SEO metadata for each post
 export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -103,6 +103,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                   alt={author.name}
                   fill
                   className="rounded-full object-cover border-4 border-white dark:border-neutral-800 shadow-sm"
+                  unoptimized={author.img.includes('googleusercontent')}
                 />
               </div>
               <div className="flex-1">
