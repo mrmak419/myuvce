@@ -66,8 +66,8 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
   return (
     <div className="w-full">
 
-      {/* Sticky Top Bar (Search + Filters) */}
-      <div className="sticky top-20 z-40 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 shadow-sm mb-8">
+      {/* Top Bar (Search + Filters) */}
+      <div className="bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 shadow-sm mb-8">
 
         {/* Search Input */}
         <div className="relative mb-4">
@@ -90,8 +90,8 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold border transition-all ${activeFilter === filter.id
-                  ? 'bg-neutral-900 border-neutral-900 text-white dark:bg-white dark:border-white dark:text-neutral-900 shadow-md'
-                  : 'bg-white border-neutral-200 text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-800'
+                ? 'bg-neutral-900 border-neutral-900 text-white dark:bg-white dark:border-white dark:text-neutral-900 shadow-md'
+                : 'bg-white border-neutral-200 text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-800'
                 }`}
             >
               {filter.label}
