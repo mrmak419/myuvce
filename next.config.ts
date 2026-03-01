@@ -66,6 +66,21 @@ const nextConfig: NextConfig = {
         source: '/p/classroom-directory.html',
         destination: '/map',
         permanent: true
+      },
+      {
+        source: '/2025/12/uvce-notes.html',
+        destination: '/uvce-notes',
+        permanent: true,
+      },
+      {
+        source :'/resource',
+        destination: '/uvce-notes',
+        permanent: true,
+      },
+      {
+        source:'/blog/uvce-notes',
+        destination: '/uvce-notes',
+        permanent: true,
       }
     ];
   },

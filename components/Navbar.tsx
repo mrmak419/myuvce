@@ -18,7 +18,7 @@ const desktopLinks = [
 const mobileLinks = [
     { name: "Home", icon: Home, href: "/" },
     { name: "Blog", icon: FileText, href: "/blog" },
-    { name: "Study", icon: BookOpen, href: "/resources" }, // Adjust href if your study material is elsewhere
+    { name: "Study", icon: BookOpen, href: "/uvce-notes" },
     { name: "Map", icon: MapIcon, href: "/map" },
 ];
 
