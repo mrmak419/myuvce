@@ -112,7 +112,7 @@ export default function Footer() {
                         &copy; {currentYear} MyUVCE. An unofficial student initiative.
                     </p>
                     <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 text-center md:text-right">
-                        Built by{' '}
+                        By{' '}
                         <a href="https://www.linkedin.com/in/mrmak" target="_blank" rel="noopener noreferrer" className="text-neutral-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-700 transition-colors">Ayaan</a>
                         {' '}&{' '}
                         <a href="https://www.linkedin.com/in/gourav-pd-631526385" target="_blank" rel="noopener noreferrer" className="text-neutral-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-700 transition-colors">Gourav</a>.
