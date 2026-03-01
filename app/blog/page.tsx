@@ -3,7 +3,7 @@
 import { getPosts } from "@/lib/blogger";
 import BlogFeed from "@/components/BlogFeed";
 
-const POSTS_PER_PAGE = 9;
+const POSTS_PER_PAGE = 30;
 
 export const metadata = {
   title: "Campus Updates | MyUVCE",

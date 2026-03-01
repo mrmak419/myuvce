@@ -13,7 +13,7 @@ export const AUTHORS: Record<string, Author> = {
   ayaan: {
     id: "ayaan",
     name: "Mohammad Ayaan Khan",
-    role: "CSE '29 • Lead-Dev & Maintainer",
+    role: "CSE '29 • Maintainer",
     img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWqww6gBq6LDkcyWWVG2X5_kdocx4iJMv5xHaw19IVQYG_8D8KDPEn1iUzesdlLRkhlA6qJ25iSdI1lEQGbPtfYmmA9_EZgG1mURzP5CwlIe7abEz05Z_zoTFAeP9T318htde3bJnpb-I3tNb2dd2qYoCOCi8ZGQKc9ighQCBQuIhV7ah76Q7bnmKw2QOM/s320-rw/ayaan.png",
     bio: "Leads the technical development of the platform. He combines code with design to turn campus data into interactive and engaging stories.",
     link: "https://www.linkedin.com/in/mrmak/"
