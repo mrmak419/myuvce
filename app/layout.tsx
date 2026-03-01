@@ -18,10 +18,10 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "MyUVCE - The Student Community Portal",
+    default: "MyUVCE - Student Resource Hub",
     template: "%s | MyUVCE"
   },
-  description: "The ultimate student community portal for the University Visvesvaraya College of Engineering. Access notes, news, and campus updates.",
+  description: "An unofficial student-run resource hub for the University Visvesvaraya College of Engineering (UVCE). Access notes, PYQs, exam alerts, and campus updates.",
   icons: {
     icon: "/logo.jpg",
   }
@@ -39,8 +39,8 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"    
+          enableSystem={false}     
           disableTransitionOnChange
         >
           <Navbar />

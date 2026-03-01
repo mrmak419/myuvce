@@ -50,7 +50,7 @@ export default function BlogFeed({
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayPosts.length > 0 ? (
-          displayPosts.map((post) => <PostCard key={post.id} post={post} />)
+          displayPosts.map((post) => <PostCard key={post.slug} post={post} />)
         ) : (
           <div className="col-span-full py-12 text-center border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
             <p className="text-lg font-medium text-neutral-600 dark:text-neutral-400">
@@ -60,30 +60,42 @@ export default function BlogFeed({
         )}
       </div>
 
-      {/* Pagination (Only visible when NOT searching) */}
+    {/* Pagination (Only visible when NOT searching) */}
       {!isSearching && totalPages > 1 && (
-        <div className="mt-12 flex items-center justify-center gap-4">
-          {currentPage > 1 && (
+        <div className="mt-12 flex items-center justify-between sm:justify-center gap-2 sm:gap-4 w-full max-w-md mx-auto px-2">
+          
+          {currentPage > 1 ? (
             <Link
               href={currentPage === 2 ? "/blog" : `/blog/page/${currentPage - 1}`}
-              className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-all shadow-sm hover:shadow-md"
+              className="flex flex-1 sm:flex-none justify-center items-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-all shadow-sm hover:shadow-md active:scale-95 touch-manipulation"
             >
-              <ArrowLeft className="w-4 h-4" /> Previous
+              <ArrowLeft className="w-4 h-4 flex-shrink-0" />
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden text-sm">Prev</span>
             </Link>
+          ) : (
+            /* Invisible spacer to keep the page indicator centered on mobile when on Page 1 */
+            <div className="flex-1 sm:hidden"></div>
           )}
 
-          <div className="flex items-center gap-2 px-4 py-2 bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-400 rounded-lg text-sm font-bold border border-orange-100 dark:border-orange-900/50">
+          <div className="flex flex-shrink-0 items-center gap-2 px-3 sm:px-4 py-2.5 bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-400 rounded-lg text-xs sm:text-sm font-bold border border-orange-100 dark:border-orange-900/50 whitespace-nowrap">
             Page {currentPage} of {totalPages}
           </div>
 
-          {currentPage < totalPages && (
+          {currentPage < totalPages ? (
             <Link
               href={`/blog/page/${currentPage + 1}`}
-              className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-all shadow-sm hover:shadow-md"
+              className="flex flex-1 sm:flex-none justify-center items-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-all shadow-sm hover:shadow-md active:scale-95 touch-manipulation"
             >
-              Next <ArrowRight className="w-4 h-4" />
+              <span className="hidden sm:inline">Next</span>
+              <span className="sm:hidden text-sm">Next</span>
+              <ArrowRight className="w-4 h-4 flex-shrink-0" />
             </Link>
+          ) : (
+            /* Invisible spacer to keep the page indicator centered on mobile when on the last page */
+            <div className="flex-1 sm:hidden"></div>
           )}
+          
         </div>
       )}
     </div>

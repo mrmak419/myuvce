@@ -1,15 +1,15 @@
-import { getPostBySlug, getPosts } from "@/lib/blogger";
+import { getPostBySlug, getAllPosts } from "@/lib/mdx";
 import { notFound } from "next/navigation";
-import BloggerRenderer from "@/components/BloggerRenderer";
 import { AUTHORS } from "@/lib/authors";
 import Image from "next/image";
-import { Calendar, User, ExternalLink } from "lucide-react"; 
+import { Calendar, ExternalLink } from "lucide-react"; // Removed 'User' from imports
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 type Params = Promise<{ slug: string }>;
 
 // Tells Next.js which URLs to generate at build time
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const posts = getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -18,69 +18,64 @@ export async function generateStaticParams() {
 // Generates static SEO metadata for each post
 export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = getPostBySlug(slug);
 
   if (!post) return { title: "Post Not Found | MyUVCE" };
 
+  // Strip markdown formatting for the meta description
   const description = post.content
-    .replace(/<[^>]*>/g, "")
+    .replace(/[#*`>]/g, "")
     .substring(0, 160)
     .trim();
 
   return {
-    title: `${post.title} | MyUVCE`,
+    title: `${post.meta.title} | MyUVCE`,
     description: description,
     openGraph: {
-      title: post.title,
+      title: post.meta.title,
       description: description,
       type: "article",
-      publishedTime: post.published,
+      publishedTime: post.meta.date,
     },
   };
 }
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = getPostBySlug(slug);
 
   if (!post) notFound();
 
-  // 1. DATA EXTRACTION
-  const authorMatch = post.content.match(/data-author=["']([^"']+)["']/i);
-  const authorId = authorMatch ? authorMatch[1].toLowerCase() : null;
-  const author = authorId ? AUTHORS[authorId] : null;
-
-  // 2. DOM PURIFICATION
-  const cleanHtml = post.content.replace(
-    /<div[^>]*uvce-author-box[^>]*>[\s\S]*?<\/div>/gi,
-    ''
-  );
+  // 1. DATA EXTRACTION: Match YAML author string to your AUTHORS dictionary keys
+  const authorKey = Object.keys(AUTHORS).find(
+    key => AUTHORS[key].name === post.meta.author
+  ) || post.meta.author.toLowerCase().split(" ")[0]; 
+  
+  const author = AUTHORS[authorKey] || null;
 
   return (
     <main className="max-w-4xl mx-auto py-12 px-6">
       <article className="animate-in fade-in duration-700">
         <header className="mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-8">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white mb-4">
-            {post.title}
+            {post.meta.title}
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
+            
+            {/* Date */}
             <div className="flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-orange-600 dark:text-orange-400" />
               <span suppressHydrationWarning>
-                {new Date(post.published).toLocaleDateString('en-IN', { dateStyle: 'long' })}
+                {new Date(post.meta.date).toLocaleDateString('en-IN', { dateStyle: 'long' })}
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <User className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-              <span>{author ? author.name : "Team MyUVCE"}</span>
-            </div>
-
-            {post.labels.length > 0 && (
+            {/* Tags */}
+            {post.meta.tags.length > 0 && (
               <div className="flex gap-2">
-                {post.labels.map(label => (
-                  <span key={label} className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
-                    #{label}
+                {post.meta.tags.map(tag => (
+                  <span key={tag} className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
+                    #{tag}
                   </span>
                 ))}
               </div>
@@ -88,8 +83,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           </div>
         </header>
 
-        <section className="prose-config">
-          <BloggerRenderer html={cleanHtml} />
+        {/* 2. MDX RENDERING */}
+        <section className="prose-config prose dark:prose-invert max-w-none prose-img:mx-auto prose-img:rounded-xl">
+          <MDXRemote source={post.content} />
         </section>
 
         {/* 3. NATIVE AUTHOR BOX */}

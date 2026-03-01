@@ -1,13 +1,13 @@
-import { getPosts } from "@/lib/blogger";
+import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
 import { notFound } from "next/navigation";
 
-const POSTS_PER_PAGE = 9;
+const POSTS_PER_PAGE = 15;
 
 type Params = Promise<{ pageNumber: string }>;
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const posts = getAllPosts();
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
   const paths = [];
@@ -20,18 +20,25 @@ export async function generateStaticParams() {
 export default async function PaginatedBlogPage({ params }: { params: Params }) {
   const { pageNumber } = await params;
   const currentPage = parseInt(pageNumber);
-  const posts = await getPosts();
+  
+  const posts = getAllPosts();
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
+  // If the user types /blog/page/99 but there are only 2 pages, throw a 404
   if (isNaN(currentPage) || currentPage < 2 || currentPage > totalPages) {
     notFound();
   }
 
+  // Map MDX metadata keys to match <BlogFeed>
+  const formattedPosts = posts.map(meta => ({
+    slug: meta.slug,
+    title: meta.title,
+    published: meta.date,
+    labels: meta.tags,
+  }));
+
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const initialPosts = posts.slice(startIndex, startIndex + POSTS_PER_PAGE);
-  
-  // Strip heavy HTML content again for this page's payload to keep the site blazing fast
-  const allPostsIndex = posts.map(({ content, ...rest }) => rest);
+  const initialPosts = formattedPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16">
@@ -43,7 +50,7 @@ export default async function PaginatedBlogPage({ params }: { params: Params }) 
 
       <BlogFeed 
         initialPosts={initialPosts} 
-        allPostsIndex={allPostsIndex} 
+        allPostsIndex={formattedPosts} 
         currentPage={currentPage} 
         totalPages={totalPages} 
       />

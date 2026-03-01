@@ -1,22 +1,25 @@
-
-
-import { getPosts } from "@/lib/blogger";
+import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
 
-const POSTS_PER_PAGE = 30;
+const POSTS_PER_PAGE = 15;
 
 export const metadata = {
   title: "Campus Updates | MyUVCE",
 };
 
-export default async function BlogIndex() {
-  const posts = await getPosts();
+export default function BlogIndex() {
+  const posts = getAllPosts();
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-  const initialPosts = posts.slice(0, POSTS_PER_PAGE);
+  
+  // Map MDX metadata keys to match what <BlogFeed> currently expects
+  const formattedPosts = posts.map(meta => ({
+    slug: meta.slug,
+    title: meta.title,
+    published: meta.date,
+    labels: meta.tags,
+  }));
 
-  // CRITICAL PERFORMANCE STEP: Strip out the heavy HTML 'content' field 
-  // before sending the full array to the client-side search engine.
-  const allPostsIndex = posts.map(({ content, ...rest }) => rest);
+  const initialPosts = formattedPosts.slice(0, POSTS_PER_PAGE);
 
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16">
@@ -28,7 +31,7 @@ export default async function BlogIndex() {
 
       <BlogFeed 
         initialPosts={initialPosts} 
-        allPostsIndex={allPostsIndex} 
+        allPostsIndex={formattedPosts} 
         currentPage={1} 
         totalPages={totalPages} 
       />
