@@ -3,11 +3,8 @@ import Link from "next/link";
 
 export default function QuickLinks() {
     const links = [
-        { name: "UVCE Notes & PYQs", icon: BookOpen, href: "/resources", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-500/10" },
-        { name: "Syllabus Copy", icon: GraduationCap, href: "/syllabus", color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-500/10" },
+        { name: "UVCE Notes & PYQs", icon: BookOpen, href: "/blog/uvce-notes", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-500/10" },
         { name: "Digital Campus Map", icon: Map, href: "/map", color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-500/10" },
-        { name: "Student Clubs", icon: Users, href: "/clubs", color: "text-orange-500", bg: "bg-orange-50 dark:bg-orange-500/10" },
-        { name: "Placement Stats", icon: Star, href: "/placements", color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-500/10" },
     ];
 
     return (
