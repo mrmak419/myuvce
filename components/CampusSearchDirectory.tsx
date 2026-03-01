@@ -39,9 +39,9 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
 
       // 2. Text Search Logic
       const q = searchQuery.toLowerCase();
-      const textMatch = 
-        room.name.toLowerCase().includes(q) || 
-        room.loc.toLowerCase().includes(q) || 
+      const textMatch =
+        room.name.toLowerCase().includes(q) ||
+        room.loc.toLowerCase().includes(q) ||
         room.type.toLowerCase().includes(q);
 
       return categoryMatch && textMatch;
@@ -65,10 +65,10 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
 
   return (
     <div className="w-full">
-      
+
       {/* Sticky Top Bar (Search + Filters) */}
       <div className="sticky top-20 z-40 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 shadow-sm mb-8">
-        
+
         {/* Search Input */}
         <div className="relative mb-4">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -76,7 +76,7 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
           </div>
           <input
             type="text"
-            className="block w-full pl-12 pr-4 py-3 bg-neutral-100 dark:bg-neutral-900 border-transparent focus:border-orange-500 focus:bg-white dark:focus:bg-neutral-950 focus:ring-0 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-500 transition-all text-base"
+            className="block w-full pl-12 pr-4 py-3 bg-neutral-100 dark:bg-neutral-900 border border-transparent focus:border-orange-500 focus:bg-white dark:focus:bg-neutral-950 focus:ring-2 focus:ring-orange-500/20 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-500 transition-all text-base focus:outline-none"
             placeholder="Search 120+ rooms, labs, or staff..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -89,11 +89,10 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
             <button
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold border transition-all ${
-                activeFilter === filter.id 
-                  ? 'bg-neutral-900 border-neutral-900 text-white dark:bg-white dark:border-white dark:text-neutral-900 shadow-md' 
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold border transition-all ${activeFilter === filter.id
+                  ? 'bg-neutral-900 border-neutral-900 text-white dark:bg-white dark:border-white dark:text-neutral-900 shadow-md'
                   : 'bg-white border-neutral-200 text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-800'
-              }`}
+                }`}
             >
               {filter.label}
             </button>
@@ -112,18 +111,18 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
         {filteredRooms.length > 0 ? (
           filteredRooms.map((room, idx) => (
             <div key={idx} className="flex flex-col justify-between p-6 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
-              
+
               <div>
                 <div className="flex justify-between items-start mb-3">
                   <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md ${getBadgeStyles(room.type)}`}>
                     {room.type}
                   </span>
                 </div>
-                
+
                 <h3 className="text-lg font-bold text-neutral-900 dark:text-white leading-snug mb-4">
                   {room.name}
                 </h3>
-                
+
                 <div className="bg-neutral-50 dark:bg-neutral-950 p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 mb-6">
                   <span className="text-sm text-neutral-600 dark:text-neutral-400 block mb-2">
                     📍 {room.loc}
@@ -134,8 +133,8 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
                 </div>
               </div>
 
-              <a 
-                href={`https://maps.google.com/?q=${room.lat},${room.lng}`} 
+              <a
+                href={`https://maps.google.com/?q=${room.lat},${room.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 font-bold rounded-xl transition-colors text-sm"
@@ -143,7 +142,7 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
                 <Navigation className="w-4 h-4" />
                 Navigate
               </a>
-              
+
             </div>
           ))
         ) : (
@@ -151,7 +150,7 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
             <span className="text-4xl block mb-4 opacity-50">😕</span>
             <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">No locations found</h3>
             <p className="text-neutral-500">Try adjusting your search or clearing the filter.</p>
-            <button 
+            <button
               onClick={() => { setSearchQuery(''); setActiveFilter('all'); }}
               className="mt-6 text-orange-600 font-bold hover:underline"
             >

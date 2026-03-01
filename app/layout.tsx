@@ -39,9 +39,10 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"    
-          enableSystem={false}     
+          defaultTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
+          storageKey="uvce-theme-v2"
         >
           <Navbar />
           <main className="flex-1 flex flex-col">{children}</main>

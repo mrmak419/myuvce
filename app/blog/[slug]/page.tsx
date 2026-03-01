@@ -49,19 +49,19 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   // 1. DATA EXTRACTION: Match YAML author string to your AUTHORS dictionary keys
   const authorKey = Object.keys(AUTHORS).find(
     key => AUTHORS[key].name === post.meta.author
-  ) || post.meta.author.toLowerCase().split(" ")[0]; 
-  
+  ) || post.meta.author.toLowerCase().split(" ")[0];
+
   const author = AUTHORS[authorKey] || null;
 
   return (
-    <main className="max-w-4xl mx-auto py-12 px-6">
-      <article className="animate-in fade-in duration-700">
-        <header className="mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-8">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white mb-4">
+    <main className="max-w-4xl mx-auto py-8 md:py-12 px-4 sm:px-6 w-full overflow-hidden">
+      <article className="animate-in fade-in duration-700 break-words">
+        <header className="mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-8 break-words">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white mb-4">
             {post.meta.title}
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
-            
+
             {/* Date */}
             <div className="flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-orange-600 dark:text-orange-400" />
