@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 export const revalidate = 3600;
 
 import { getPosts } from "@/lib/blogger";
