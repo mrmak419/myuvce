@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getPosts } from '@/lib/blogger';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.myuvce.in';
+  const baseUrl = 'https://future.myuvce.in';
 
   // 1. Define all hardcoded native routes
   const staticRoutes = [
