@@ -50,7 +50,7 @@ export default async function Home() {
       {/* Layer 1: The Command Center Hero */}
       <div className="mb-16 text-center lg:text-left">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-loose">
-          The Engineering Engine of <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-rose-600 dark:from-orange-400 dark:to-rose-400 drop-shadow-sm">UVCE</span>
+          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-rose-600 dark:from-orange-400 dark:to-rose-400 drop-shadow-sm">MyUVCE</span>
         </h1>
         <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto lg:mx-0">
           The digital infrastructure for the campus. Access student-built utilities, explore the campus map, and read the latest placement updates.

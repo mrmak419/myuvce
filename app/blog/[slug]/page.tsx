@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 export const revalidate = 3600; // Revalidate every hour on the Edge
 
 import { getPostBySlug, getPosts } from "@/lib/blogger";
@@ -6,7 +5,7 @@ import { notFound } from "next/navigation";
 import BloggerRenderer from "@/components/BloggerRenderer";
 import { AUTHORS } from "@/lib/authors";
 import Image from "next/image";
-import { Calendar, User, ExternalLink } from "lucide-react"; // Swapped out Linkedin
+import { Calendar, User, ExternalLink } from "lucide-react"; 
 
 type Params = Promise<{ slug: string }>;
 
