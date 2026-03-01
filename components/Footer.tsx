@@ -14,7 +14,7 @@ export default function Footer() {
                         <Link href="/" className="flex items-center gap-3 group inline-flex">
                             <div className="w-10 h-10 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-white flex-shrink-0">
                                 <img
-                                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmz1bkkO3JPLMjpXjV7tEKKJytWXsxlyDRQJWz-h7BOZmQkz5_TYGzPLU9MhLReghjouHQ87Yobsa_0EApCbTwZW9uRP2FdYw9xtZ0DVr98eWmJBfcOppkFuak-xaX-wO2s8NVdexzxf3s_z-5jvUbE39MxiGciboANAd7e07qZKipszYlx0FfTnYmI0og/s1600/IMG-20251206-WA0057.jpg"
+                                    src="/logo.jpg"
                                     alt="MyUVCE Logo"
                                     className="w-full h-full object-cover"
                                 />

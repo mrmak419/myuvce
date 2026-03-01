@@ -60,7 +60,7 @@ export default function Navbar() {
                             <Link href="/" className="flex items-center gap-3 group">
                                 <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden bg-white border border-neutral-200 dark:border-neutral-800 shadow-sm group-hover:shadow-orange-500/20 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
                                     <img
-                                        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmz1bkkO3JPLMjpXjV7tEKKJytWXsxlyDRQJWz-h7BOZmQkz5_TYGzPLU9MhLReghjouHQ87Yobsa_0EApCbTwZW9uRP2FdYw9xtZ0DVr98eWmJBfcOppkFuak-xaX-wO2s8NVdexzxf3s_z-5jvUbE39MxiGciboANAd7e07qZKipszYlx0FfTnYmI0og/s1600/IMG-20251206-WA0057.jpg"
+                                        src="/logo.jpg"
                                         alt="MyUVCE Logo"
                                         className="w-full h-full object-cover"
                                     />

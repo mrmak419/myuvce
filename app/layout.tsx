@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   description: "The ultimate student community portal for the University Visvesvaraya College of Engineering. Access notes, news, and campus updates.",
   icons: {
-    icon: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmz1bkkO3JPLMjpXjV7tEKKJytWXsxlyDRQJWz-h7BOZmQkz5_TYGzPLU9MhLReghjouHQ87Yobsa_0EApCbTwZW9uRP2FdYw9xtZ0DVr98eWmJBfcOppkFuak-xaX-wO2s8NVdexzxf3s_z-5jvUbE39MxiGciboANAd7e07qZKipszYlx0FfTnYmI0og/s1600/IMG-20251206-WA0057.jpg",
+    icon: "/logo.jpg",
   }
 };
 
