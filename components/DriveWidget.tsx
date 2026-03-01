@@ -53,7 +53,7 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
   useEffect(() => {
     if (previewFile) {
       document.body.style.overflow = "hidden";
-      setIframeLoading(true); // Reset iframe loader
+      setIframeLoading(true);
     } else {
       document.body.style.overflow = "unset";
     }
@@ -74,7 +74,6 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
     }
   };
 
-  // Hover & Touch Intent Prefetching for zero-latency loads
   const handlePrefetch = (item: DriveItem) => {
     if (item.type === "file") {
       fetch(`${WORKER_URL}?action=view&id=${item.id}`, { 
@@ -84,14 +83,11 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
     }
   };
 
-  const isImage = (filename: string) => {
-    return /\.(jpg|jpeg|png|gif|webp)$/i.test(filename);
-  };
+  const isImage = (filename: string) => /\.(jpg|jpeg|png|gif|webp)$/i.test(filename);
 
   return (
     <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm flex flex-col h-[60vh] min-h-[400px] md:h-[500px]">
       
-      {/* Header & Breadcrumbs */}
       <div className="bg-neutral-50 dark:bg-neutral-950 px-4 py-3 md:py-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-2 text-sm md:text-base font-bold text-neutral-600 dark:text-neutral-400">
           <Folder className="w-5 h-5 text-orange-500" />
@@ -109,7 +105,6 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
         )}
       </div>
 
-      {/* Directory List */}
       <div className="flex-1 overflow-y-auto p-2 relative">
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 dark:bg-neutral-900/60 backdrop-blur-sm z-10">
@@ -131,8 +126,8 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
               <li key={item.id}>
                 <button
                   onClick={() => handleItemClick(item)}
-                  onMouseEnter={() => handlePrefetch(item)} // Desktop prefetch
-                  onTouchStart={() => handlePrefetch(item)} // Mobile prefetch
+                  onMouseEnter={() => handlePrefetch(item)}
+                  onTouchStart={() => handlePrefetch(item)}
                   className="w-full flex items-center gap-4 px-3 py-3.5 md:px-4 md:py-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 text-left transition-colors group active:bg-neutral-200 dark:active:bg-neutral-700 touch-manipulation"
                 >
                   {item.type === "folder" ? (
@@ -152,7 +147,6 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
         )}
       </div>
 
-      {/* Full-Screen Preview Modal */}
       {previewFile && (
         <div className="fixed inset-0 z-[99999] bg-neutral-950 flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] animate-in fade-in slide-in-from-bottom-4 duration-300">
           
@@ -162,7 +156,6 @@ export default function DriveWidget({ rootId }: { rootId: string }) {
             </h3>
             
             <div className="flex items-center gap-3">
-              {/* Fallback button to open natively */}
               <a 
                 href={`https://drive.google.com/file/d/${previewFile.id}/view`} 
                 target="_blank" 
