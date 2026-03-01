@@ -43,11 +43,29 @@ export async function getPosts(): Promise<Post[]> {
     title: post.title,
     content: post.content || "",
     // Dynamically extract the clean slug from the legacy .html URL
-    slug: post.url.split('/').pop().replace('.html', ''),
+    slug: extractSlug(post.url) || post.id,
     published: post.published,
     labels: post.labels || [],
-    author: post.author
+    author: {
+      displayName: post.author.displayName,
+      image: post.author.image
+    }
   }));
+}
+
+/**
+ * Helper to extract slug from a Blogger URL safely.
+ * Handles the case where the URL might have query parameters or be malformed.
+ */
+function extractSlug(url: string): string {
+  try {
+    const pathname = new URL(url).pathname;
+    const parts = pathname.split('/');
+    const lastPart = parts[parts.length - 1] || parts[parts.length - 2];
+    return lastPart.replace('.html', '');
+  } catch (e) {
+    return "";
+  }
 }
 
 /**
@@ -72,11 +90,14 @@ export async function getPostById(postId: string): Promise<Post> {
   return {
     id: post.id,
     title: post.title,
-    content: post.content, // Guaranteed complete HTML payload
-    slug: post.url.split('/').pop().replace('.html', ''),
+    content: post.content || "", // Guaranteed complete HTML payload
+    slug: extractSlug(post.url) || post.id,
     published: post.published,
     labels: post.labels || [],
-    author: post.author
+    author: {
+      displayName: post.author.displayName,
+      image: post.author.image
+    }
   };
 }
 

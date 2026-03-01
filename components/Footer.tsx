@@ -47,9 +47,6 @@ export default function Footer() {
                                 <Link href="/about" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">About Us</Link>
                             </li>
                             <li>
-                                <Link href="/notices" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Notice Board</Link>
-                            </li>
-                            <li>
                                 <Link href="/gallery" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Gallery</Link>
                             </li>
                             <li>

@@ -1,6 +1,5 @@
 import { getPosts } from "@/lib/blogger";
 import PostCard from "@/components/PostCard";
-import NoticeBoard from "@/components/NoticeBoard";
 import QuickLinks from "@/components/QuickLinks";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -85,7 +84,6 @@ export default async function Home({
 
         {/* Sidebar Widgets */}
         <aside className="lg:col-span-1 space-y-8 sticky top-28">
-          <NoticeBoard />
           <QuickLinks />
         </aside>
 
