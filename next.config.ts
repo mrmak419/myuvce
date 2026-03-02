@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
       },
       // 3. Legacy Static Pages Migration
       {
-        source: '/p/about.html',
+        source: '/p/about-us.html',
         destination: '/about',
         permanent: true,
       },
@@ -145,6 +145,16 @@ const nextConfig: NextConfig = {
         destination: '/blog/uvce-campus-map-find-classrooms-labs-departments',
          permanent: true 
         },
+{ source: '/clubs', destination: '/2025/12/uvce-student-clubs-culture-guide.html', permanent: true },
+{ source: '/uvce-notes', destination: '/2025/12/uvce-notes.html', permanent: true },
+{ source: '/2025/12/first-year-pyqs.html', destination: '/2025/12/uvce-notes.html', permanent: true },
+{ source: '/2025/12/first-year-p-c-cycle.html', destination: '/2025/12/uvce-notes.html', permanent: true },
+{ source: '/uvce-pyqs', destination: '/2025/12/uvce-notes.html#pyq-section', permanent: true },
+{ source: '/notes', destination: '/2025/12/uvce-notes.html#notes-section', permanent: true },
+{ source: '/pyq', destination: '/2025/12/uvce-notes.html#pyq-section', permanent: true },
+{ source: '/manuals', destination: '/2025/12/uvce-notes.html#manuals-section', permanent: true },
+{ source: '/timetables', destination: '/2025/12/uvce-notes.html#timetable-section', permanent: true },
+{ source: '/news', destination: '/2025/12/uvce-notes.html#announcement-section', permanent: true },
     ];
   },
 };
