@@ -1,13 +1,11 @@
-import { getPosts } from "@/lib/blogger";
+import { getAllPosts } from "@/lib/mdx";
 import PostCard from "@/components/PostCard";
 import QuickLinks from "@/components/QuickLinks";
 import Link from "next/link";
 import { ArrowRight, Calculator, Gamepad2, Map, LayoutDashboard } from "lucide-react";
 
-// The Homepage only needs a teaser of the latest articles now
 const RECENT_POSTS_COUNT = 3;
 
-// Define your platform ecosystem here
 const CAMPUS_TOOLS = [
   {
     name: "MyUVCE Hub",
@@ -15,6 +13,7 @@ const CAMPUS_TOOLS = [
     icon: LayoutDashboard,
     href: "https://hub.myuvce.in",
     status: "Live",
+    isExternal: true, // 🔴 Explicitly opens in a new tab
   },
   {
     name: "Campus Map",
@@ -39,8 +38,8 @@ const CAMPUS_TOOLS = [
   },
 ];
 
-export default async function Home() {
-  const posts = await getPosts();
+export default function Home() {
+  const posts = getAllPosts(); 
   const recentPosts = posts.slice(0, RECENT_POSTS_COUNT);
 
   return (
@@ -71,12 +70,15 @@ export default async function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {CAMPUS_TOOLS.map((tool) => {
                 const isUnderRebuild = tool.status === "Under Rebuild";
+                const externalLink = tool.isExternal || tool.href.startsWith("http"); 
                 const Icon = tool.icon;
                 
                 return (
                   <Link 
                     key={tool.name} 
                     href={isUnderRebuild ? "#" : tool.href}
+                    target={externalLink && !isUnderRebuild ? "_blank" : undefined}
+                    rel={externalLink && !isUnderRebuild ? "noopener noreferrer" : undefined}
                     className={`group relative flex flex-col p-6 rounded-2xl border transition-all duration-200 ${
                       isUnderRebuild 
                       ? "bg-neutral-50 border-neutral-200 dark:bg-neutral-900/50 dark:border-neutral-800 cursor-not-allowed opacity-80" 
@@ -104,17 +106,19 @@ export default async function Home() {
           {/* Layer 3: The Legacy Content Teaser */}
           <section>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-neutral-900 dark:text-white border-l-4 border-orange-600 dark:border-orange-500 pl-4 py-1 leading-none drop-shadow-sm">
-                Latest Updates
-              </h2>
-              <Link href="/blog" className="hidden sm:flex items-center gap-1 text-sm font-bold text-orange-600 dark:text-orange-400 hover:underline">
-                View all <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex items-center justify-between w-full">
+                <h2 className="text-2xl font-bold text-neutral-900 dark:text-white border-l-4 border-orange-600 dark:border-orange-500 pl-4 py-1 leading-none drop-shadow-sm">
+                  Latest Updates
+                </h2>
+                <Link href="/blog" className="hidden sm:flex items-center gap-1 text-sm font-bold text-orange-600 dark:text-orange-400 hover:underline">
+                  View all <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recentPosts.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.slug} post={post} /> 
               ))}
             </div>
             

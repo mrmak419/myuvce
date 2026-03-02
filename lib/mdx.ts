@@ -17,46 +17,58 @@ export interface BlogPost {
   content: string;
 }
 
-// 1. Get a specific post by its filename (slug)
+/**
+ * Normalizes frontmatter data into a strict BlogPostMeta object.
+ * This prevents the "missing properties" error by providing fallbacks.
+ */
+function mapToMeta(slug: string, data: { [key: string]: any }): BlogPostMeta {
+  return {
+    slug,
+    title: data.title ?? 'Untitled Post',
+    // Ensure date is always a valid ISO string
+    date: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
+    author: data.author ?? 'MyUVCE Team',
+    // Force tags to be an array even if missing or malformed in MDX
+    tags: Array.isArray(data.tags) ? data.tags : [],
+  };
+}
+
 export function getPostBySlug(slug: string): BlogPost | null {
   try {
     const realSlug = slug.replace(/\.mdx$/, '');
     const fullPath = path.join(postsDirectory, `${realSlug}.mdx`);
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    
+    if (!fs.existsSync(fullPath)) return null;
 
-    // gray-matter separates the YAML frontmatter from the markdown body
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
     return {
-      meta: {
-        slug: realSlug,
-        title: data.title || 'Untitled',
-        date: data.date || new Date().toISOString(),
-        author: data.author || 'MyUVCE Team',
-        tags: data.tags || [],
-      },
+      meta: mapToMeta(realSlug, data),
       content,
     };
   } catch (error) {
+    console.error(`[Error] Failed to fetch post: ${slug}`, error);
     return null;
   }
 }
 
-// 2. Get all posts for the blog index page, sorted by newest first
 export function getAllPosts(): BlogPostMeta[] {
   if (!fs.existsSync(postsDirectory)) return [];
 
   const files = fs.readdirSync(postsDirectory);
-  const posts = files
+
+  return files
     .filter((fileName) => fileName.endsWith('.mdx'))
     .map((fileName) => {
       const slug = fileName.replace(/\.mdx$/, '');
-      const post = getPostBySlug(slug);
-      return post ? post.meta : null;
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      
+      // We only extract 'data' (frontmatter) here for performance
+      const { data } = matter(fileContents);
+      return mapToMeta(slug, data);
     })
-    .filter((meta): meta is BlogPostMeta => meta !== null)
-    // Sort posts by date descending
-    .sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
-
-  return posts;
+    // Sort by date: Newest first
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
