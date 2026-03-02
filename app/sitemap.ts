@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
-import { getPosts } from '@/lib/blogger';
+import { getAllPosts } from '@/lib/mdx';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://future.myuvce.in';
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://www.myuvce.in';
 
   // 1. Static Routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -20,17 +20,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 2. Dynamic Routes with Filtering
   let dynamicRoutes: MetadataRoute.Sitemap = [];
   try {
-    const posts = await getPosts();
+    const posts = getAllPosts(); // Synchronous read from content/blog
+    
     dynamicRoutes = posts
       .filter((post) => post.slug !== 'uvce-notes') // REMOVE the redirect source
-      .map((post) => ({
-        url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: new Date(post.published).toISOString().split('T')[0],
-        priority: 0.6,
-        changeFrequency: 'monthly',
-      }));
+      .map((post) => {
+        // Failsafe date parsing to prevent build crashes
+        const rawDate = post.date || (post as any).published || new Date().toISOString();
+        
+        return {
+          url: `${baseUrl}/blog/${post.slug}`,
+          lastModified: new Date(rawDate).toISOString().split('T')[0],
+          priority: 0.6,
+          changeFrequency: 'monthly',
+        };
+      });
   } catch (error) {
-    console.error("Sitemap dynamic fetch failed:", error);
+    console.error("Sitemap dynamic parsing failed:", error);
   }
 
   return [...staticRoutes, ...dynamicRoutes];

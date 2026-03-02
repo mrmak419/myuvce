@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -22,9 +22,21 @@ export const metadata: Metadata = {
     template: "%s | MyUVCE"
   },
   description: "An unofficial student-run resource hub for the University Visvesvaraya College of Engineering (UVCE). Access notes, PYQs, exam alerts, and campus updates.",
+  manifest: "/site.webmanifest", 
   icons: {
     icon: "/logo.jpg",
+    apple: "/apple-touch-icon.png", 
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' }, 
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },  
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1, // Prevents iOS Safari from zooming in when students tap inputs
 };
 
 export default function RootLayout({
