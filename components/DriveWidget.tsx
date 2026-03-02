@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Folder, FileText, ArrowLeft, Loader2, X, ExternalLink, Image as ImageIcon } from "lucide-react";
+import { Folder, FileText, File, ArrowLeft, X, Loader2, ExternalLink } from "lucide-react";
+
+const SCRIPT_URL = "https://uvce-drive-cache.mrmak419.workers.dev/";
 
 interface DriveItem {
   id: string;
@@ -11,202 +13,171 @@ interface DriveItem {
 }
 
 interface DriveResponse {
+  currentId: string;
+  parent: string | null;
   items: DriveItem[];
   error?: string;
 }
 
-const WORKER_URL = "https://uvce-drive-cache.mrmak419.workers.dev";
-
 export default function DriveWidget({ rootId }: { rootId: string }) {
-  const [history, setHistory] = useState<string[]>([rootId]);
-  const currentFolderId = history[history.length - 1];
-  const isRoot = history.length === 1;
-
+  const [currentFolder, setCurrentFolder] = useState<string>(rootId);
   const [data, setData] = useState<DriveResponse | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Modal & Iframe State
   const [previewFile, setPreviewFile] = useState<{ id: string; name: string } | null>(null);
   const [iframeLoading, setIframeLoading] = useState<boolean>(true);
 
   const fetchFolder = useCallback(async (folderId: string) => {
-    setIsLoading(true);
+    setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${WORKER_URL}?id=${folderId}`);
+      const res = await fetch(`${SCRIPT_URL}?id=${folderId}`);
       if (!res.ok) throw new Error("Network response was not ok");
+      const json: DriveResponse = await res.json();
       
-      const result: DriveResponse = await res.json();
-      if (result.error) throw new Error(result.error);
+      if (json.error) throw new Error(json.error);
       
-      setData(result);
+      setData(json);
+      setCurrentFolder(folderId);
     } catch (err: any) {
-      setError(err.message || "Failed to load directory.");
+      setError("Server Busy or Folder Unavailable. Please try again.");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }, []);
 
+  // 1. Initial Load
   useEffect(() => {
-    fetchFolder(currentFolderId);
-  }, [currentFolderId, fetchFolder]);
+    fetchFolder(rootId);
+  }, [rootId, fetchFolder]);
 
+  // 2. Body Scroll Lock for Modal
   useEffect(() => {
     if (previewFile) {
       document.body.style.overflow = "hidden";
-      setIframeLoading(true);
+      setIframeLoading(true); // Reset loader every time a new file is opened
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = "unset"; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [previewFile]);
 
-  const handleItemClick = (item: DriveItem) => {
-    if (item.type === "folder") {
-      setHistory(prev => [...prev, item.id]);
-    } else {
-      setPreviewFile({ id: item.id, name: item.name });
-    }
-  };
-
-  const handleBackClick = () => {
-    if (history.length > 1) {
-      setHistory(prev => prev.slice(0, -1));
-    }
-  };
-
-  const handlePrefetch = (item: DriveItem) => {
-    if (item.type === "file") {
-      fetch(`${WORKER_URL}?action=view&id=${item.id}`, { 
-        method: "GET",
-        priority: "low" 
-      } as RequestInit).catch(() => {});
-    }
-  };
-
-  const isImage = (filename: string) => /\.(jpg|jpeg|png|gif|webp)$/i.test(filename);
+  const isRoot = currentFolder === rootId;
 
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm flex flex-col h-[60vh] min-h-[400px] md:h-[500px]">
-      
-      <div className="bg-neutral-50 dark:bg-neutral-950 px-4 py-3 md:py-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between sticky top-0 z-10">
-        <div className="flex items-center gap-2 text-sm md:text-base font-bold text-neutral-600 dark:text-neutral-400">
-          <Folder className="w-5 h-5 text-orange-500" />
-          <span className="truncate max-w-[150px] sm:max-w-none">
-            {isRoot ? "Root Directory" : "Sub-Directory"}
-          </span>
+    <>
+      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm">
+        
+        {/* Header & Breadcrumbs */}
+        <div className="bg-neutral-50 dark:bg-neutral-950 p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+          <div className="font-bold text-neutral-600 dark:text-neutral-400 text-sm flex items-center gap-2">
+            📂 {isRoot ? "Main Directory" : "Sub-folder"}
+          </div>
+          {!isRoot && data?.parent && (
+            <button 
+              onClick={() => data.parent && fetchFolder(data.parent)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-semibold text-sm rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back
+            </button>
+          )}
         </div>
-        {!isRoot && (
-          <button
-            onClick={handleBackClick}
-            className="flex items-center gap-1.5 text-sm font-bold text-neutral-700 dark:text-neutral-200 bg-neutral-200/50 dark:bg-neutral-800 px-3 py-2 md:px-4 rounded-xl hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors active:scale-95 touch-manipulation"
-          >
-            <ArrowLeft className="w-4 h-4" /> Back
-          </button>
-        )}
-      </div>
 
-      <div className="flex-1 overflow-y-auto p-2 relative">
-        {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 dark:bg-neutral-900/60 backdrop-blur-sm z-10">
-            <Loader2 className="w-8 h-8 animate-spin text-orange-500 mb-2" />
-          </div>
-        )}
-
-        {error ? (
-          <div className="flex items-center justify-center h-full text-red-500 text-sm font-medium px-4 text-center italic">
-            {error}
-          </div>
-        ) : data?.items.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-neutral-500 text-sm">
-            Folder is empty
-          </div>
-        ) : (
-          <ul className="space-y-1">
-            {data?.items.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => handleItemClick(item)}
-                  onMouseEnter={() => handlePrefetch(item)}
-                  onTouchStart={() => handlePrefetch(item)}
-                  className="w-full flex items-center gap-4 px-3 py-3.5 md:px-4 md:py-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 text-left transition-colors group active:bg-neutral-200 dark:active:bg-neutral-700 touch-manipulation"
+        {/* Folder Contents */}
+        <div className="max-h-[400px] overflow-y-auto p-2">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-12 text-neutral-500 dark:text-neutral-400">
+              <Loader2 className="w-8 h-8 animate-spin mb-3 text-blue-500" />
+              <span className="font-medium">Fetching files...</span>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-500 font-medium">{error}</div>
+          ) : data?.items.length === 0 ? (
+            <div className="text-center py-8 text-neutral-500">This folder is empty.</div>
+          ) : (
+            <div className="space-y-1">
+              {data?.items.map((item) => (
+                <div 
+                  key={item.id}
+                  onClick={() => item.type === "folder" ? fetchFolder(item.id) : setPreviewFile({ id: item.id, name: item.name })}
+                  className="group flex items-center gap-3 p-3 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700"
                 >
-                  {item.type === "folder" ? (
-                    <Folder className="w-6 h-6 text-blue-500 flex-shrink-0 fill-blue-500/20" />
-                  ) : isImage(item.name) ? (
-                    <ImageIcon className="w-6 h-6 text-emerald-500 flex-shrink-0" />
-                  ) : (
-                    <FileText className="w-6 h-6 text-red-500 flex-shrink-0" />
-                  )}
-                  <span className="text-sm md:text-base font-medium text-neutral-700 dark:text-neutral-200 truncate group-hover:text-orange-600 dark:group-hover:text-orange-400">
+                  <div className="flex-shrink-0">
+                    {item.type === "folder" ? (
+                      <Folder className="w-6 h-6 text-yellow-500 fill-yellow-500/20" />
+                    ) : item.mime?.includes("pdf") ? (
+                      <FileText className="w-6 h-6 text-red-500" />
+                    ) : (
+                      <File className="w-6 h-6 text-blue-500" />
+                    )}
+                  </div>
+                  <span className="font-medium text-sm text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
                     {item.name}
                   </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* Fullscreen PDF Preview Modal */}
       {previewFile && (
-        <div className="fixed inset-0 z-[99999] bg-neutral-950 flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] animate-in fade-in slide-in-from-bottom-4 duration-300">
-          
-          <div className="flex items-center justify-between px-4 py-3 bg-neutral-900 border-b border-neutral-800">
-            <h3 className="text-white font-semibold text-sm md:text-base truncate max-w-[65%]">
+        <div className="fixed inset-0 z-[99999] flex flex-col bg-neutral-900/98">
+          <div className="flex items-center justify-between p-4 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800">
+            <h3 className="font-bold text-neutral-900 dark:text-white truncate pr-4 max-w-[70%]">
               {previewFile.name}
             </h3>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <a 
-                href={`https://drive.google.com/file/d/${previewFile.id}/view`} 
-                target="_blank" 
+                href={`https://drive.google.com/file/d/${previewFile.id}/view`}
+                target="_blank"
                 rel="noopener noreferrer"
-                className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-full hover:bg-neutral-800"
-                title="Open in Drive"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-lg transition-colors"
+                title="Open directly in Google Drive"
               >
-                <ExternalLink className="w-5 h-5" />
+                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
+              
               <button 
-                onClick={() => setPreviewFile(null)} 
-                className="text-neutral-400 hover:text-red-500 transition-colors p-1.5 rounded-full bg-neutral-800 hover:bg-neutral-700 touch-manipulation"
+                onClick={() => setPreviewFile(null)}
+                className="p-2 text-neutral-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-full transition-all"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </button>
             </div>
           </div>
-
-          <div className="relative w-full flex-1 h-[100dvh] bg-neutral-100 flex items-center justify-center overflow-hidden">
+          
+          {/* Iframe & Loading State Container */}
+          <div className="relative w-full flex-1 bg-neutral-100 dark:bg-neutral-900">
+            
+            {/* 🔴 THE FIX: Loading overlay stays until the iframe finishes painting */}
             {iframeLoading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-neutral-100 z-10">
-                <Loader2 className="w-10 h-10 animate-spin text-orange-500 mb-4" />
-                <span className="text-sm font-bold text-neutral-500">Loading Secure Viewer...</span>
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-900">
+                <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-4" />
+                <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400 animate-pulse">
+                  Preparing document...
+                </p>
               </div>
             )}
-            
-            {isImage(previewFile.name) ? (
-              <img 
-                src={`${WORKER_URL}?action=view&id=${previewFile.id}`} 
-                alt={previewFile.name}
-                className="max-w-full max-h-full object-contain p-4 shadow-lg"
-                onLoad={() => setIframeLoading(false)}
-              />
-            ) : previewFile.name.toLowerCase().match(/\.(doc|docx|ppt|pptx|xls|xlsx)$/) ? (
-              <iframe
-                src={`https://docs.google.com/viewer?url=${encodeURIComponent(`${WORKER_URL}?action=view&id=${previewFile.id}`)}&embedded=true`}
-                className="w-full h-full border-none"
-                title={previewFile.name}
-                onLoad={() => setIframeLoading(false)}
-              />
-            ) : (
-              <iframe
-                src={`${WORKER_URL}?action=view&id=${previewFile.id}`}
-                className="w-full h-full border-none"
-                title={previewFile.name}
-                onLoad={() => setIframeLoading(false)}
-              />
-            )}
+
+            {/* 🔴 THE VIEWER: Points to Google's Preview URL to ensure zero downloads */}
+            <iframe 
+              key={previewFile.id}
+              src={`https://drive.google.com/file/d/${previewFile.id}/preview`} 
+              className="absolute inset-0 w-full h-full border-none"
+              allow="autoplay"
+              onLoad={() => setIframeLoading(false)} // Hides the loader when ready
+              style={{ colorScheme: 'light' }} // Prevents dark mode clashes with Google's canvas
+            />
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
