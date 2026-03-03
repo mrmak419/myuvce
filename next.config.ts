@@ -24,10 +24,11 @@ const withPWA = withPWAInit({
       },
       {
         // 2. Cache Next.js Pages & UI Shell (Network First, fallback to cache if offline)
-        urlPattern: ({ request }) => 
-          request.destination === 'document' || 
-          request.destination === 'script' || 
-          request.destination === 'style',
+        urlPattern: ({ request, url }) => 
+          url.origin === self.location.origin && 
+          (request.destination === 'document' || 
+           request.destination === 'script' || 
+           request.destination === 'style'),
         handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'myuvce-app-shell',
@@ -40,6 +41,7 @@ const withPWA = withPWAInit({
     ],
   },
 });
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -49,7 +51,6 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      
       // 2. Internal Refactoring Catch-all
       {
         source: '/posts/:slug',
@@ -57,66 +58,23 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       // 3. Legacy Static Pages Migration
-      {
-        source: '/p/about-us.html',
-        destination: '/about',
-        permanent: true,
-      },
-      {
-        source: '/p/contact-us.html',
-        destination: '/contact',
-        permanent: true,
-      },
-      {
-        source: '/p/privacy-policy.html',
-        destination: '/privacy',
-        permanent: true,
-      },
-      {
-        source: '/p/term-page.html',
-        destination: '/terms',
-        permanent: true,
-      },
-      {
-        source: '/p/submit-profile.html',
-        destination: '/submit-profile',
-        permanent: true,
-      },
-      {
-        source: '/p/myuvce-wall-of-fame.html',
-        destination: '/wall',
-        permanent: true,
-      },
-      {
-        source: '/p/gallery.html',
-        destination: '/gallery',
-        permanent: true
-      },
-      {
-        source: '/p/disclaimer.html',
-        destination: '/disclaimer',
-        permanent: true
-      },
-      {
-        source: '/p/classroom-directory.html',
-        destination: '/map',
-        permanent: true
-      },
-      {
-        source: '/2025/12/uvce-notes.html',
-        destination: '/uvce-notes',
-        permanent: true,
-      },
-      {
-        source :'/resource',
-        destination: '/uvce-notes',
-        permanent: true,
-      },
-      {
-        source:'/blog/uvce-notes',
-        destination: '/uvce-notes',
-        permanent: true,
-      },
+      { source: '/p/about-us.html', destination: '/about', permanent: true },
+      { source: '/p/contact-us.html', destination: '/contact', permanent: true },
+      { source: '/p/privacy-policy.html', destination: '/privacy', permanent: true },
+      { source: '/p/term-page.html', destination: '/terms', permanent: true },
+      { source: '/p/submit-profile.html', destination: '/submit-profile', permanent: true },
+      { source: '/p/myuvce-wall-of-fame.html', destination: '/wall', permanent: true },
+      { source: '/p/gallery.html', destination: '/gallery', permanent: true },
+      { source: '/p/disclaimer.html', destination: '/disclaimer', permanent: true },
+      { source: '/p/classroom-directory.html', destination: '/map', permanent: true },
+      { source: '/p/student-tools.html', destination: '/student-tools', permanent: true },
+      
+      // Notes & Resources
+      { source: '/2025/12/uvce-notes.html', destination: '/uvce-notes', permanent: true },
+      { source: '/resource', destination: '/uvce-notes', permanent: true },
+      { source: '/blog/uvce-notes', destination: '/uvce-notes', permanent: true },
+      
+      // Blog Post Mapping
       { source: '/2026/01/the-roadmap-for-myuvcein-documenting.html', destination: '/blog/the-roadmap-for-myuvce-in-documenting-the-uvce-story-for-the-future', permanent: true },
       { source: '/2026/01/beyond-the-red-walls.html', destination: '/blog/not-nandi-hills-5-hidden-drives-for-the-real-explorers-of-uvce', permanent: true },
       { source: '/2025/12/uvce-notes.html', destination: '/blog/uvce-notes-pyqs-lab-manuals-model-question-papers-announcements-complete-resource-hub-iit-model', permanent: true },
@@ -168,28 +126,11 @@ const nextConfig: NextConfig = {
       { source: '/2025/11/how-to-reach-uvce-bus-metro-guide-for.html', destination: '/blog/how-to-reach-uvce-bus-metro-guide-for-kr-circle-and-jb-campus', permanent: true },
       { source: '/2025/11/uvce-freshers-guide-5-things-you-need.html', destination: '/blog/uvce-fresher-s-guide-5-things-you-need-to-know-before-day-1', permanent: true },
       { source: '/2025/11/lost-in-uvce-complete-guide-to-finding.html', destination: '/blog/lost-in-uvce-a-complete-guide-to-finding-labs-and-classrooms-at-kr-circle', permanent: true },
-      { 
-        source: '/2025/11/the-map-of-uvce.html', 
-        destination: '/blog/uvce-campus-map-find-classrooms-labs-departments',
-         permanent: true 
-        },
-        {
-          source: '/blog/the-map-of-uvce',
-          destination: '/map',
-          permanent: true
-        },
-        {
-          source: '/blog/guide-to-uvce-student-clubs',
-          destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d',
-          permanent: true
-        },
-        {
-          source: '/p/student-tools.html',
-          destination: '/student-tools',
-          permanent: true
-        }
-
-
+      { source: '/2025/11/the-map-of-uvce.html', destination: '/blog/uvce-campus-map-find-classrooms-labs-departments', permanent: true },
+      
+      // Cleanup Mappings
+      { source: '/blog/the-map-of-uvce', destination: '/map', permanent: true },
+      { source: '/blog/guide-to-uvce-student-clubs', destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d', permanent: true }
     ];
   },
 };

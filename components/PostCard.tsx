@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { Calendar } from 'lucide-react';
-import { BlogPostMeta } from '@/lib/mdx';
 
 interface PostCardProps {
-    post: any;
+    post: any; 
 }
 
 export default function PostCard({ post }: PostCardProps): React.ReactElement {
@@ -27,7 +26,7 @@ export default function PostCard({ post }: PostCardProps): React.ReactElement {
             <div>
                 <div className="mb-3">
                     <h2 className="text-xl font-extrabold leading-tight text-neutral-900 dark:text-white group-hover/card:text-orange-600 dark:group-hover/card:text-orange-400 transition-colors line-clamp-2">
-                        <Link href={`/blog/${post.slug}`}>
+                        <Link href={`/blog/${post.slug}`} prefetch={false}>
                             <span className="absolute inset-0" aria-hidden="true" />
                             {post.title}
                         </Link>
