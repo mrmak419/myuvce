@@ -145,6 +145,17 @@ const nextConfig: NextConfig = {
         destination: '/blog/uvce-campus-map-find-classrooms-labs-departments',
          permanent: true 
         },
+        {
+          source: '/blog/the-map-of-uvce',
+          destination: '/map',
+          permanent: true
+        },
+        {
+          source: 'blog/guide-to-uvce-student-clubs',
+          destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d',
+          permanent: true
+        },
+        
 
     ];
   },
