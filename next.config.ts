@@ -130,7 +130,36 @@ const nextConfig: NextConfig = {
       
       // Cleanup Mappings
       { source: '/blog/the-map-of-uvce', destination: '/map', permanent: true },
-      { source: '/blog/guide-to-uvce-student-clubs', destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d', permanent: true }
+      { source: '/blog/guide-to-uvce-student-clubs', destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d', permanent: true },
+
+      {
+        source: '/sitemap.xml',
+        destination: '/sitemap.xml?v=1',
+        permanent: true,
+      },
+      {
+        source: '/sitemap-pages.xml',
+        destination: '/sitemap.xml?v=1',
+        permanent: true,
+      },
+      // 2. Redirect old RSS/Atom feeds to the new Sitemap
+      {
+        source: '/atom.xml',
+        destination: '/sitemap.xml?v=1',
+        permanent: true,
+      },
+      {
+        source: '/feeds/posts/default',
+        destination: '/sitemap.xml?v=1',
+        permanent: true,
+      },
+      // 3. Handle specific Blogger feed parameters
+      {
+        source: '/feeds/posts/default',
+        has: [{ type: 'query', key: 'alt', value: 'rss' }],
+        destination: '/sitemap.xml?v=1',
+        permanent: true,
+      }
     ];
   },
 };
