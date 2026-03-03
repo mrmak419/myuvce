@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker";
 
-const GA_ID = "G-WM3K309SLK";
+const GA_ID = "G-PP42W81CTJ";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50 min-h-screen flex flex-col pb-16 md:pb-0`}>
-        <GoogleAnalyticsTracker gaId="G-WM3K309SLK" />
+        <GoogleAnalyticsTracker gaId={GA_ID} />
         
         <ThemeProvider
           attribute="class"
@@ -59,7 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Footer />
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-WM3K309SLK" />
+      <GoogleAnalytics gaId={GA_ID} />
     </html>
   );
 }
