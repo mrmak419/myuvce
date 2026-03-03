@@ -151,11 +151,11 @@ const nextConfig: NextConfig = {
           permanent: true
         },
         {
-          source: 'blog/guide-to-uvce-student-clubs',
+          source: '/blog/guide-to-uvce-student-clubs',
           destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d',
           permanent: true
         },
-        
+
 
     ];
   },
