@@ -1,13 +1,9 @@
 User-agent: *
 Allow: /
 
-User-agent: GPTBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: Google-Extended
-Allow: /
-User-agent: CCBot
-Allow: /
+Disallow: /_next/
+Disallow: /api/
 
-Sitemap: https://future.myuvce.in/sitemap.xml
+Disallow: /*forceRefresh=true*
+
+Sitemap: https://www.myuvce.in/sitemap.xml

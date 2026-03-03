@@ -9,9 +9,37 @@ const withPWA = withPWAInit({
   disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
+    runtimeCaching: [
+      {
+        // 1. Cache Map Assets (Images, SVGs, Icons) aggressively for 30 days
+        urlPattern: /\.(?:png|jpg|jpeg|svg|webp|gif|ico)$/i,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'myuvce-static-assets',
+          expiration: {
+            maxEntries: 150,
+            maxAgeSeconds: 30 * 24 * 60 * 60, 
+          },
+        },
+      },
+      {
+        // 2. Cache Next.js Pages & UI Shell (Network First, fallback to cache if offline)
+        urlPattern: ({ request }) => 
+          request.destination === 'document' || 
+          request.destination === 'script' || 
+          request.destination === 'style',
+        handler: 'StaleWhileRevalidate',
+        options: {
+          cacheName: 'myuvce-app-shell',
+          expiration: {
+            maxEntries: 100,
+            maxAgeSeconds: 2 * 60 * 60, // Keep cache for 2 hours
+          },
+        },
+      },
+    ],
   },
 });
-
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
