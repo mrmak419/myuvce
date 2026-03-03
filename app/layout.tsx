@@ -18,25 +18,51 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://myuvce.in"),
+  
   title: {
     default: "MyUVCE - The Ultimate Student Resource Hub",
     template: "%s | MyUVCE"
   },
-  //  Truncated slightly for optimal SEO scoring (160 characters)
   description: "The ultimate unofficial resource hub for UVCE students. Access a comprehensive library of Notes, PYQs, Lab Manuals, Placement Prep, and our exclusive Campus Map.",
+  
+  // the 'naked' domain is the original version to index.
+  alternates: {
+    canonical: "https://myuvce.in",
+  },
+
   manifest: "/site.webmanifest", 
   icons: {
     icon: "/logo.jpg",
     apple: "/apple-touch-icon.png", 
   },
-  //  Added OpenGraph to make WhatsApp/LinkedIn links look professional
   openGraph: {
     title: "MyUVCE - Student Resource Hub",
     description: "The ultimate unofficial resource hub for UVCE students from First to Final year. Access Notes, PYQs, Lab Manuals, Campus Map, and Placement guides.",
-    url: "https://www.myuvce.in",
+    url: "https://myuvce.in", // Updated to naked domain
     siteName: "MyUVCE",
     type: "website",
-  }
+    images: [
+      {
+        url: '/logo.jpg', // Ensure this is in your public folder
+        width: 1200,
+        height: 630,
+        alt: 'MyUVCE Logo',
+      },
+    ],
+  },
+  // Prevents search engines from indexing clones or unauthorized mirrors
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export const viewport: Viewport = {
@@ -46,7 +72,7 @@ export const viewport: Viewport = {
   ],
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1, // Prevents iOS Safari from zooming in when students tap inputs
+  maximumScale: 1, 
 };
 
 export default function RootLayout({
@@ -57,7 +83,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Analytics GA4 Script Injection */}
         <Script
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=G-WM3K309SLK`}

@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/mdx';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.myuvce.in';
+  const baseUrl = 'https://myuvce.in';
 
   // 1. Static Routes
   const staticRoutes: MetadataRoute.Sitemap = [

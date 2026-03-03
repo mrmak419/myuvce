@@ -6,4 +6,4 @@ Disallow: /api/
 
 Disallow: /*forceRefresh=true*
 
-Sitemap: https://www.myuvce.in/sitemap.xml
+Sitemap: https://myuvce.in/sitemap.xml
