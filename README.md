@@ -1,64 +1,57 @@
 # MyUVCE
 
-The next generation of [myuvce.in](https://www.myuvce.in), rebuilt from the ground up using **Next.js 15**, **Tailwind CSS**, and the **Blogger API v3**.
+The next generation of [myuvce.in](https://myuvce.in), rebuilt from the ground up to be the ultimate digital infrastructure for UVCE students. Engineered for speed and reliability, this platform utilizes a static MDX architecture and aggressive edge caching to deliver study materials, campus utilities, and updates—even on a spotty BMTC bus connection.
 
-##  Tech Stack
+##  Architecture & Tech Stack
 
 * **Framework:** Next.js 15 (App Router)
-* **Styling:** Tailwind CSS v3
-* **Icons:** Lucide React (Strict: No emojis in UI)
+* **Styling:** Tailwind CSS v3 & `next-themes` (Dark Mode)
+* **PWA & Offline:** `@ducanh2912/next-pwa` (Stale-While-Revalidate caching)
+* **Icons:** Lucide React
 * **Deployment:** Cloudflare Pages (Edge Runtime)
-* **Data Fetching:** Incremental Static Regeneration (ISR)
-* **Source Data:** Blogger API v3
+* **Content Delivery:** Pure `.mdx` local architecture
+* **Analytics:** Google Analytics 4 (Async Injected)
 
-##  Getting Started
+##  Core Features
+
+* **Offline-First Map:** The campus directory and UI shell are cached via Service Workers for zero-network availability.
+* **Zero-Download Document Viewer:** Custom React components routing Google Drive streams via native secure iframes.
+* **Markdown CMS:** Fast, statically generated blog and resource pages using modern `.mdx` parsing.
+* **Edge Routing:** Cloudflare `_redirects` and Next.js `next.config.ts` mapping to preserve legacy SEO.
+
+## Getting Started
 
 1. **Clone the repo:**
 ```bash
-git clone https://github.com/mrmak419/myuvce.git
+git clone [https://github.com/mrmak419/myuvce.git](https://github.com/mrmak419/myuvce.git)
 cd myuvce
 
 ```
 
-
 2. **Install dependencies:**
+
 ```bash
 npm install
 
 ```
 
+3. **Run Development Server:**
 
-3. **Environment Variables:**
-Create a `.env.local` file in the root directory. Ask @mrmak419 for the API keys.
-```env
-BLOGGER_BLOG_ID=your_id
-BLOGGER_API_KEY=your_key
-
-```
-
-
-4. **Run Development Server:**
 ```bash
 npm run dev
 
 ```
 
+## Project Structure
 
-
-##  Project Structure
-
-* `/app`: App router pages, layouts, and metadata logic.
-* `/components`: Reusable UI components and the `BloggerRenderer`.
-* `/lib`: Blogger API fetching logic and core utilities.
-* `/types`: TypeScript interfaces for global data safety.
-
-##  Contribution Guidelines
-
-* **UI Consistency:** Use **Lucide React** icons for all interactive elements. **Strictly no emojis** in the UI.
-* **Styling:** Follow existing Tailwind patterns. Use the `prose` class for all Blogger content rendering.
-* **Workflow:** Create a new branch for every feature. Open a Pull Request (PR) to `main` for review.
-* **Dark Mode:** Ensure all components are tested with `dark:` utility classes and `next-themes`.
+* `/app`: App router pages, layouts, SEO metadata, and PWA manifest injection.
+* `/components`: Reusable Tailwind UI components.
+* `/content`: Local `.mdx` files for campus updates, posts, and guides.
+* `/lib`: MDX parsing logic and core utilities.
+* `/public`: Static assets, PWA icons, offline fallback UI, and `robots.txt`.
 
 ---
 
 Built with ❤️ by the **UVCE '29 Batch**.
+
+
