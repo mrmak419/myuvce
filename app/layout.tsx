@@ -45,7 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50 min-h-screen flex flex-col pb-16 md:pb-0`}>
-        <GoogleAnalyticsTracker gaId={GA_ID} />
+        <GoogleAnalyticsTracker gaId="G-WM3K309SLK" />
         
         <ThemeProvider
           attribute="class"

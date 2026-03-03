@@ -1,11 +1,10 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function GoogleAnalyticsTracker({ gaId }: { gaId: string }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname && window.gtag) {
@@ -17,10 +16,10 @@ export default function GoogleAnalyticsTracker({ gaId }: { gaId: string }) {
         });
       };
 
-      const timeoutId = setTimeout(handleRouteChange, 100);
+      const timeoutId = setTimeout(handleRouteChange, 150);
       return () => clearTimeout(timeoutId);
     }
-  }, [pathname, searchParams, gaId]);
+  }, [pathname, gaId]);
 
   return null;
 }
