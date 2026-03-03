@@ -13,7 +13,7 @@ const CAMPUS_TOOLS = [
     icon: LayoutDashboard,
     href: "https://hub.myuvce.in",
     status: "Live",
-    isExternal: true, // 🔴 Explicitly opens in a new tab
+    isExternal: true,
   },
   {
     name: "Campus Map",
@@ -43,23 +43,16 @@ export default function Home() {
   const recentPosts = posts.slice(0, RECENT_POSTS_COUNT);
 
   return (
-    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16">
-
-      {/* Layer 1: The Command Center Hero */}
-      <div className="mb-16 text-center lg:text-left">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-loose">
-          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-rose-600 dark:from-orange-400 dark:to-rose-400 drop-shadow-sm">MyUVCE</span>
-        </h1>
-        <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto lg:mx-0">
-          The digital infrastructure for the campus. Access student-built utilities, explore the campus map, and read the latest placement updates.
-        </p>
-      </div>
+    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+      
+      {/* 🔴 SEO Guardrail: Hidden from users, visible to Googlebot */}
+      <h1 className="sr-only">MyUVCE - The Ultimate UVCE Resource Hub for Notes, PYQs, and Campus Maps</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
 
-        <div className="lg:col-span-3 w-full space-y-16">
+        <div className="lg:col-span-3 w-full space-y-12">
           
-          {/* Layer 2: The App Store Grid */}
+          {/* Layer 1: The App Store Grid (Now immediately visible) */}
           <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-white border-l-4 border-neutral-900 dark:border-white pl-4 py-1 leading-none drop-shadow-sm">
@@ -103,7 +96,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Layer 3: The Legacy Content Teaser */}
+          {/* Layer 2: The Legacy Content Teaser */}
           <section>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center justify-between w-full">

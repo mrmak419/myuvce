@@ -183,6 +183,11 @@ const nextConfig: NextConfig = {
           destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d',
           permanent: true
         },
+        {
+          source: '/p/student-tools.html',
+          destination: '/student-tools',
+          permanent: true
+        }
 
 
     ];

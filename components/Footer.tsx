@@ -48,26 +48,9 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* Column 2: Explore */}
-                    <div className="md:col-span-3 space-y-5">
-                        <h3 className="font-bold text-neutral-900 dark:text-white text-sm uppercase tracking-wider">Explore</h3>
-                        <ul className="space-y-3.5">
-                            <li>
-                                <Link href="/blog/the-map-of-uvce" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Campus Map</Link>
-                            </li>
-                            <li>
-                                <Link href="/map" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Classroom Directory</Link>
-                            </li>
-                            <li>
-                                <Link href="/blog/guide-to-uvce-student-clubs" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Student Clubs</Link>
-                            </li>
-                            <li>
-                                <Link href="/blog/uvce-freshers-guide-5-things-you-need" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Fresher's Guide</Link>
-                            </li>
-                        </ul>
-                    </div>
+                
 
-                    {/* Column 3: Legal & Help */}
+                    {/* Column 2: Legal & Help */}
                     <div className="md:col-span-2 space-y-5">
                         <h3 className="font-bold text-neutral-900 dark:text-white text-sm uppercase tracking-wider">Legal & Help</h3>
                         <ul className="space-y-3.5">
@@ -89,7 +72,7 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Column 4: Contact (Right aligned on large screens) */}
+                    {/* Column 3: Contact (Right aligned on large screens) */}
                     <div className="md:col-span-3 space-y-5 lg:ml-auto">
                         <h3 className="font-bold text-neutral-900 dark:text-white text-sm uppercase tracking-wider">Reach Out</h3>
                         <ul className="space-y-4">

@@ -9,9 +9,12 @@ import ThemeToggle from "./ThemeToggle";
 // --- Desktop Navigation Links ---
 const desktopLinks = [
     { name: "Home", href: "/" },
+
     { name: "Map", href: "/map" },
+    { name: "Notes", href: "/uvce-notes"},
     { name: "Gallery", href: "/gallery" },
     { name: "Wall of Fame", href: "/wall" },
+
 ];
 
 // --- Mobile Bottom Nav Links ---

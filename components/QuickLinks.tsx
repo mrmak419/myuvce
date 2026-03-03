@@ -4,7 +4,9 @@ import Link from "next/link";
 export default function QuickLinks() {
     const links = [
         { name: "UVCE Notes & PYQs", icon: BookOpen, href: "/uvce-notes", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-500/10" },
-        { name: "Digital Campus Map", icon: Map, href: "/map", color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-500/10" },
+        { name: "Classrooms", icon: Map, href: "/map", color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-500/10" },
+        { name: "Wall of Fame", icon: Star, href: "/wall", color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-500/10" },
+        { name: "Gallery", icon: Users, href: "/gallery", color: "text-sky-500", bg: "bg-sky-50 dark:bg-sky-500/10" },
     ];
 
     return (
