@@ -1,12 +1,25 @@
 import DriveWidget from "@/components/DriveWidget";
 import { Book, FileSpreadsheet, Laptop, Briefcase, Calendar, Bell } from "lucide-react";
 import { Metadata } from "next";
+
 export const metadata: Metadata = {
   title: "UVCE IIT-Model Notes & Resources",
   description: "The ultimate digital library for UVCE. Access curated notes, previous year question papers (PYQs), and lab manuals.",
   alternates: {
     canonical: "/uvce-notes",
   },
+  openGraph: {
+    title: "UVCE IIT-Model Notes & Resources",
+    description: "The ultimate digital library for UVCE. Access curated notes, previous year question papers (PYQs), and lab manuals.",
+    url: "/uvce-notes", // Next.js metadataBase will convert this to absolute URL
+    siteName: "MyUVCE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UVCE IIT-Model Notes & Resources",
+    description: "The ultimate digital library for UVCE. Access curated notes, previous year question papers (PYQs), and lab manuals.",
+  }
 };
 
 const RESOURCES = [
@@ -20,30 +33,20 @@ const RESOURCES = [
 
 export default function ResourcesPage() {
   return (
-    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
       
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 rounded-3xl p-8 md:p-16 text-center text-white shadow-xl overflow-hidden mb-16">
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 drop-shadow-md">
-            UVCE IIT-Model Notes & PYQs
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-medium">
-            The Ultimate Digital Library for the 2025 Autonomous Batch. Curated notes, PYQs, and manuals—all in one place.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {RESOURCES.map(res => (
-              <a key={res.id} href={`#${res.id}`} className="px-5 py-2.5 bg-white/10 hover:bg-white hover:text-blue-700 border border-white/20 rounded-full text-sm font-bold backdrop-blur-sm transition-all shadow-sm">
-                {res.title} ↓
-              </a>
-            ))}
-          </div>
-        </div>
+      {/* Clean, Minimal Header (Keeps the H1 for SEO, but gets out of the way) */}
+      <div className="mb-12 border-b border-neutral-200 dark:border-neutral-800 pb-8">
+        <h1 className="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight mb-4">
+          Notes & Resources
+        </h1>
+        <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl">
+          Direct access to the IIT-Model curriculum digital library. Select a folder below to view curated notes, PYQs, and lab manuals.
+        </p>
       </div>
 
-      {/* Grid of Drive Widgets */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+      {/* Grid of Drive Widgets (Now sits right at the top) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24">
         {RESOURCES.map((resource) => {
           const Icon = resource.icon;
           return (
@@ -59,6 +62,7 @@ export default function ResourcesPage() {
               <p className="text-neutral-500 dark:text-neutral-400 mb-6 font-medium text-sm ml-12">
                 {resource.desc}
               </p>
+              {/* Assuming your DriveWidget handles the Google Drive API fetching/rendering */}
               <DriveWidget rootId={resource.root} />
             </section>
           );
@@ -118,7 +122,7 @@ export default function ResourcesPage() {
               </span>
             </summary>
             <div className="p-5 pt-0 text-neutral-600 dark:text-neutral-400 leading-relaxed text-sm border-t border-neutral-100 dark:border-neutral-800">
-              The IIT Model uses a relative or absolute grading system depending on the subject distribution. You can use the <a href="https://hub.myuvce.in/sgpa" target="_blank" className="text-orange-600 hover:underline">SGPA Estimator tool</a> available on MyUVCE Hub.
+              The IIT Model uses a relative or absolute grading system depending on the subject distribution. You can use the <a href="https://hub.myuvce.in/sgpa" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">SGPA Estimator tool</a> available on MyUVCE Hub.
             </div>
           </details>
         </div>

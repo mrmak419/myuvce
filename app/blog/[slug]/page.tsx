@@ -4,6 +4,7 @@ import { AUTHORS } from "@/lib/authors";
 import Image from "next/image";
 import { Calendar, ExternalLink } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import ShareButtons from "@/components/ShareButton";
 
 type Params = Promise<{ slug: string }>;
 
@@ -70,7 +71,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <main className="max-w-4xl mx-auto py-8 md:py-12 px-4 sm:px-6 w-full overflow-hidden">
       <article className="animate-in fade-in duration-700 break-words">
-        <header className="mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-8">
+        <header className="mb-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white mb-4">
             {post.meta.title}
           </h1>
@@ -93,12 +94,20 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           </div>
         </header>
 
+        {/* Top Share Bar */}
+        <ShareButtons title={post.meta.title} url={`/blog/${slug}`} />
+
         <section className="prose-config prose dark:prose-invert max-w-none">
           <MDXRemote source={post.content} />
         </section>
 
+        {/* Bottom Share Bar (Post-read conversion) */}
+        <div className="mt-12">
+          <ShareButtons title={post.meta.title} url={`/blog/${slug}`} />
+        </div>
+
         {author && (
-          <div className="mt-16 p-8 bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+          <div className="mt-8 p-8 bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
             <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-6">About the Author</p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <div className="relative w-24 h-24 flex-shrink-0">
