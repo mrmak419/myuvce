@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker";
+import PwaInstallPrompt from "@/components/PWAInstallPrompt";
 
 const GA_ID = "G-PP42W81CTJ";
 
@@ -56,6 +57,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main className="flex-1 flex flex-col">{children}</main>
           <Footer />
         </ThemeProvider>
+
+        <PwaInstallPrompt />
       </body>
       
       <GoogleAnalytics gaId={GA_ID} />
