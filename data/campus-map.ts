@@ -55,6 +55,8 @@ export const ROOMS: Room[] = ([  // Ground Floor
   {name: "Indoor Sports room", loc: "Electrical Block", lat: "12.9743504", lng: "77.5853644", type: "Sports", floor: "Ground"},
   {name: "Physics Lab (Dept. Of Physics)", loc: "Electrical Block", lat: "12.974093", lng: "77.585458", type: "Lab", floor: "Ground"},
   {name: "Room No. 330", loc: "Electrical Block", lat: "12.9742654", lng: "77.5853962", type: "Class", floor: "Ground"},
+  {name: "Open Air Theater", loc: "Electrical Block", lat: "12.974122", lng: "77.586021", type: "Others", floor: "Ground"},
+
 
   // First Floor
   {name: "ECE Lab", loc: "Right wing", lat: "12.9751031", lng: "77.5860343", type: "Lab", floor: "First"},

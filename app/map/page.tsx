@@ -35,7 +35,7 @@ export default function MapPage() {
         
         {/* Link to the Visual Map Blog Post */}
         <Link 
-          href="/blog/the-map-of-uvce" 
+          href="/blog/uvce-campus-map-find-classrooms-labs-departments" 
           className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400 font-bold rounded-full transition-colors hover:bg-orange-200 dark:hover:bg-orange-900/50"
         >
           <MapIcon className="w-5 h-5" />
