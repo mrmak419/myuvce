@@ -45,14 +45,12 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-10">
       
-      {/* 🔴 SEO Guardrail: Hidden from users, visible to Googlebot */}
       <h1 className="sr-only">MyUVCE - The Ultimate UVCE Resource Hub for Notes, PYQs, and Campus Maps</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
 
         <div className="lg:col-span-3 w-full space-y-12">
           
-          {/* Layer 1: The App Store Grid (Now immediately visible) */}
           <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-white border-l-4 border-neutral-900 dark:border-white pl-4 py-1 leading-none drop-shadow-sm">
@@ -96,7 +94,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Layer 2: The Legacy Content Teaser */}
           <section>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center justify-between w-full">

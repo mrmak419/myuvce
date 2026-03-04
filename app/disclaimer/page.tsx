@@ -1,9 +1,14 @@
 import { AlertTriangle, Info, Map, ExternalLink, Copyright } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Disclaimer | MyUVCE",
+export const metadata: Metadata = {
+  title: "Disclaimer",
   description: "Important information regarding the unofficial status of MyUVCE.",
+  alternates: {
+    canonical: "/disclaimer",
+  },
 };
+
 
 export default function DisclaimerPage() {
   return (

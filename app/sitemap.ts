@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '', '/about', '/contact', '/privacy', '/terms', 
     '/disclaimer', '/map', '/wall', '/gallery', 
     '/submit-profile', '/blog', 
-    '/uvce-notes', 
+    '/uvce-notes', '/student-tools',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],

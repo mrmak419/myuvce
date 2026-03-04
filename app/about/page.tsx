@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { ExternalLink, AlertTriangle, Map, BookOpen, Terminal } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "About Us | MyUVCE",
+export const metadata :Metadata ={
+  title: "About Us",
   description: "The digital infrastructure and engineering team behind MyUVCE.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 const TEAM = [

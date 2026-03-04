@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, Navigation } from "lucide-react";
+import { Search, Navigation, MapPin, SearchX } from "lucide-react";
 import { Room } from "@/data/campus-map";
 
 const FILTERS = [
@@ -124,8 +124,9 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
                 </h3>
 
                 <div className="bg-neutral-50 dark:bg-neutral-950 p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 mb-6">
-                  <span className="text-sm text-neutral-600 dark:text-neutral-400 block mb-2">
-                    📍 {room.loc}
+                  <span className="text-sm text-neutral-600 dark:text-neutral-400 flex items-start gap-1.5 mb-2">
+                    <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5 text-neutral-400" />
+                    {room.loc}
                   </span>
                   <span className="inline-block px-2 py-1 text-xs font-bold text-orange-700 bg-orange-100 dark:bg-orange-900/30 dark:text-orange-400 rounded">
                     {room.floor} Floor
@@ -134,7 +135,7 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
               </div>
 
               <a
-                href={`https://maps.google.com/?q=${room.lat},${room.lng}`}
+                href={`https://maps.google.com/?q=$${room.lat},${room.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 font-bold rounded-xl transition-colors text-sm"
@@ -147,7 +148,9 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
           ))
         ) : (
           <div className="col-span-full py-16 text-center border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-3xl">
-            <span className="text-4xl block mb-4 opacity-50">😕</span>
+            <div className="flex justify-center mb-4 opacity-50">
+              <SearchX className="w-12 h-12 text-neutral-500" />
+            </div>
             <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">No locations found</h3>
             <p className="text-neutral-500">Try adjusting your search or clearing the filter.</p>
             <button

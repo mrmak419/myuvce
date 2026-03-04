@@ -14,10 +14,14 @@ import {
 } from "lucide-react";
 import CampusSearchDirectory from "@/components/CampusSearchDirectory";
 import { ROOMS } from "@/data/campus-map";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Campus Map & Directory | MyUVCE",
+export const metadata: Metadata = {
+  title: "Campus Map & Directory",
   description: "Navigate the UVCE KR Circle campus. Find classrooms, labs, and exam halls instantly.",
+  alternates: {
+    canonical: "/map", 
+  },
 };
 
 export default function MapPage() {

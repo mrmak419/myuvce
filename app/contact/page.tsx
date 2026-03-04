@@ -1,8 +1,12 @@
 import { Mail, Instagram, MapPin, Map, Send } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Contact Us | MyUVCE",
+export const metadata: Metadata = {
+  title: "Contact", 
   description: "Get in touch with the MyUVCE team for feedback, map corrections, and collaborations.",
+  alternates: {
+    canonical: "/contact", 
+  },
 };
 
 export default function ContactPage() {

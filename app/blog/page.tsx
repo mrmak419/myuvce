@@ -1,10 +1,15 @@
 import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
+import {Metadata} from "next";
 
 const POSTS_PER_PAGE = 15;
 
-export const metadata = {
-  title: "Campus Updates | MyUVCE",
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Read the latest updates and articles from MyUVCE.",
+  alternates: {
+    canonical: "/blog",
+  },
 };
 
 export default function BlogIndex() {

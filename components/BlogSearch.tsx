@@ -4,8 +4,6 @@ import { useState } from "react";
 import PostCard from "@/components/PostCard";
 import { Search } from "lucide-react";
 
-// Assuming your Post type has at least title, labels, and id.
-// You might need to adjust the any type to your actual Post interface.
 export default function BlogSearch({ initialPosts }: { initialPosts: any[] }) {
   const [searchQuery, setSearchQuery] = useState("");
 

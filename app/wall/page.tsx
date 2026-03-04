@@ -1,11 +1,14 @@
 import { ALUMNI_DATA } from "@/data/wall";
 import WallGridClient from "@/components/WallGridClient";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Wall of Fame | MyUVCE",
+export const metadata: Metadata = {
+  title: "Wall of Fame",
   description: "Celebrating UVCE Achievers who Dreamt Big and Cracked It.",
+  alternates: {
+    canonical: "/wall",
+  },
 };
-
 export default function WallOfFamePage() {
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 pb-20">

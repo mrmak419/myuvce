@@ -1,8 +1,11 @@
 import { Scale, Copyright, Map, AlertTriangle, Mail } from "lucide-react";
-
-export const metadata = {
-  title: "Terms of Use | MyUVCE",
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Terms of Use",
   description: "Copyright and usage guidelines for MyUVCE and the digital campus map.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {

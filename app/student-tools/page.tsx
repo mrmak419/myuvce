@@ -5,6 +5,9 @@ import { LayoutDashboard, BookOpen, Calculator, Gamepad2, MapPin, ArrowRight } f
 export const metadata: Metadata = {
   title: "Campus Utilities Hub",
   description: "The complete suite of MyUVCE student tools and utilities for the 2025 Scheme. Access SGPA calculators, campus maps, and smart notes.",
+  alternates: {
+    canonical: "/student-tools",
+  },
 };
 
 const TOOLS = [

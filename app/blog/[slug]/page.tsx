@@ -12,26 +12,45 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  if (!post) return { title: "Post Not Found" };
+  if (!post) {
+    return { 
+      title: "Post Not Found",
+      description: "The requested blog post could not be found."
+    };
+  }
 
+  // Clean markdown and trim for SEO description
   const description = post.content
     .replace(/[#*`>]/g, "")
     .substring(0, 160)
     .trim();
 
+  const postUrl = `/blog/${slug}`;
+
   return {
-    title: post.meta.title, // The Layout template will turn this into "Title | MyUVCE"
+    title: post.meta.title, 
     description: description,
+    
+    alternates: {
+      canonical: postUrl,
+    },
+    
     openGraph: {
       title: post.meta.title,
       description: description,
       type: "article",
       publishedTime: post.meta.date,
-      url: `https://myuvce.in/blog/${slug}`,
+      url: postUrl,
+    },
+    
+    twitter: {
+      card: "summary_large_image",
+      title: post.meta.title,
+      description: description,
     },
   };
 }

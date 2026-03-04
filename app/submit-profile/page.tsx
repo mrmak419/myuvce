@@ -1,8 +1,11 @@
 import SubmitProfileForm from "@/components/SubmitProfileForm";
-
-export const metadata = {
-  title: "Submit Profile | MyUVCE Wall of Fame",
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Submit Profile - Wall of Fame", 
   description: "Share your UVCE placement or achievement story to inspire the next generation.",
+  alternates: {
+    canonical: "/submit-profile",
+  },
 };
 
 export default function SubmitProfilePage() {

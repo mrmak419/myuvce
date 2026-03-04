@@ -1,8 +1,12 @@
 import { ShieldCheck } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Privacy Policy | MyUVCE",
+export const metadata: Metadata = {
+  title: "Privacy Policy",
   description: "How MyUVCE handles and protects your data.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPolicyPage() {

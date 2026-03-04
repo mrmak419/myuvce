@@ -1,9 +1,12 @@
 import DriveWidget from "@/components/DriveWidget";
 import { Book, FileSpreadsheet, Laptop, Briefcase, Calendar, Bell } from "lucide-react";
-
-export const metadata = {
-  title: "UVCE IIT-Model Notes & Resources | MyUVCE",
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "UVCE IIT-Model Notes & Resources",
   description: "The ultimate digital library for UVCE. Access curated notes, previous year question papers (PYQs), and lab manuals.",
+  alternates: {
+    canonical: "/uvce-notes",
+  },
 };
 
 const RESOURCES = [
