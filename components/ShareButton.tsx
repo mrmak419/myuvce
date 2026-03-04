@@ -45,7 +45,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
   const shareLinks = [
     {
       name: 'WhatsApp',
-      icon: WhatsAppIcon, // Now using the authentic brand icon
+      icon: WhatsAppIcon, 
       href: `https://api.whatsapp.com/send?text=${encodeURIComponent(title + " " + fullUrl)}`,
       color: 'hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20',
     },

@@ -6,14 +6,31 @@ import { Calendar, ExternalLink } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import ShareButtons from "@/components/ShareButton";
 
+// Import  custom MDX UI components
+import { Callout } from "@/components/ui/Callout";
+import { MetricCard, MetricCardGroup } from "@/components/ui/MetricCard";
+import { Tabs, Tab } from "@/components/ui/Tabs";
+import { Accordion, AccordionGroup } from "@/components/ui/Accordion";
+
 type Params = Promise<{ slug: string }>;
+
+const mdxComponents = {
+  Callout,
+  MetricCard,
+  MetricCardGroup,
+  Tabs,
+  Tab,
+  Accordion,
+  AccordionGroup,
+
+};
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
@@ -98,7 +115,8 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         <ShareButtons title={post.meta.title} url={`/blog/${slug}`} />
 
         <section className="prose-config prose dark:prose-invert max-w-none">
-          <MDXRemote source={post.content} />
+          {/* CRITICAL FIX: The components map is now passed to the renderer */}
+          <MDXRemote source={post.content} components={mdxComponents} />
         </section>
 
         {/* Bottom Share Bar (Post-read conversion) */}
