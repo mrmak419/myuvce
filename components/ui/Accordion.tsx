@@ -1,8 +1,7 @@
+// components/ui/Accordion.tsx
 "use client";
 
 import React, { useState } from 'react';
-
-
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface AccordionProps {
@@ -14,16 +13,20 @@ export const Accordion = ({ title, children }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-slate-200">
+    <div className="border-b border-neutral-200 dark:border-neutral-800">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-4 flex justify-between items-center text-left hover:text-blue-600 transition-colors"
+        className="w-full py-4 flex justify-between items-center text-left hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
       >
-        <span className="font-semibold text-slate-800">{title}</span>
-        {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        <span className="font-semibold text-neutral-800 dark:text-neutral-100">{title}</span>
+        {isOpen ? (
+          <ChevronUp className="w-4 h-4 text-neutral-500 dark:text-neutral-400" />
+        ) : (
+          <ChevronDown className="w-4 h-4 text-neutral-500 dark:text-neutral-400" />
+        )}
       </button>
       {isOpen && (
-        <div className="pb-4 text-sm text-slate-600 leading-relaxed animate-in fade-in slide-in-from-top-1">
+        <div className="pb-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed animate-in fade-in slide-in-from-top-1">
           {children}
         </div>
       )}
@@ -32,5 +35,5 @@ export const Accordion = ({ title, children }: AccordionProps) => {
 };
 
 export const AccordionGroup = ({ children }: { children: React.ReactNode }) => (
-  <div className="my-6 border-t border-slate-200">{children}</div>
+  <div className="my-6 border-t border-neutral-200 dark:border-neutral-800">{children}</div>
 );
