@@ -11,6 +11,9 @@ import { Callout } from "@/components/ui/Callout";
 import { MetricCard, MetricCardGroup } from "@/components/ui/MetricCard";
 import { Tabs, Tab } from "@/components/ui/Tabs";
 import { Accordion, AccordionGroup } from "@/components/ui/Accordion";
+import remarkGfm from "remark-gfm";
+
+
 
 type Params = Promise<{ slug: string }>;
 
@@ -116,8 +119,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
         <section className="prose-config prose dark:prose-invert max-w-none">
           {/* CRITICAL FIX: The components map is now passed to the renderer */}
-          <MDXRemote source={post.content} components={mdxComponents} />
-        </section>
+<MDXRemote 
+  source={post.content} 
+  components={mdxComponents} 
+  options={{
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+    }
+  }} 
+/>        </section>
 
         {/* Bottom Share Bar (Post-read conversion) */}
         <div className="mt-12">
