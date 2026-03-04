@@ -4,25 +4,26 @@ import { useState, useEffect } from "react";
 import { Download, X } from "lucide-react";
 
 export default function PwaInstallPrompt() {
-  // We use 'any' here because the BeforeInstallPromptEvent isn't standard in TS yet
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
-    // 1. Check if the user dismissed this recently so we don't annoy them
-    const dismissedAt = localStorage.getItem("pwa-prompt-dismissed");
-    if (dismissedAt) {
-      const dismissTime = parseInt(dismissedAt, 10);
-      const now = new Date().getTime();
-      const oneWeek = 7 * 24 * 60 * 60 * 1000;
-      if (now - dismissTime < oneWeek) {
-        return; // Skip showing if dismissed within the last week
-      }
-    }
-
-    // 2. Intercept the Android/Chrome install event
     const handleBeforeInstallPrompt = (e: Event) => {
+      // 1. Prevent the default mini-infobar from appearing on mobile
       e.preventDefault();
+
+      // 2. Read fresh data from localStorage EVERY time the event fires
+      const dismissedAt = localStorage.getItem("pwa-prompt-dismissed");
+      if (dismissedAt) {
+        const dismissTime = parseInt(dismissedAt, 10);
+        const now = Date.now();
+        const oneWeek = 7 * 24 * 60 * 60 * 1000;
+        if (now - dismissTime < oneWeek) {
+          return; // Silently abort if they dismissed it recently
+        }
+      }
+
+      // 3. Only show if the check passes
       setDeferredPrompt(e);
       setShowPrompt(true);
     };
@@ -32,7 +33,7 @@ export default function PwaInstallPrompt() {
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     };
-  }, []);
+  }, []); // Empty dependency array is correct here
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -43,11 +44,13 @@ export default function PwaInstallPrompt() {
     
     if (outcome === "accepted") {
       console.log("User accepted the install prompt");
-      setShowPrompt(false);
+      // Mark as dismissed so it doesn't try to re-prompt during the session
+      localStorage.setItem("pwa-prompt-dismissed", Date.now().toString()); 
     } else {
-      console.log("User dismissed the install prompt");
+      console.log("User dismissed the install prompt via system dialog");
     }
 
+    setShowPrompt(false);
     setDeferredPrompt(null);
   };
 
@@ -62,7 +65,6 @@ export default function PwaInstallPrompt() {
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:w-96 z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 shadow-2xl flex items-start gap-4">
         
-        {/* App Icon placeholder */}
         <div className="w-12 h-12 flex-shrink-0 bg-neutral-100 dark:bg-neutral-800 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-700">
           <img src="/logo.jpg" alt="MyUVCE" className="w-full h-full object-cover" />
         </div>
