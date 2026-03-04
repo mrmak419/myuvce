@@ -38,14 +38,12 @@ export const viewport: Viewport = {
   ],
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1, 
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50 min-h-screen flex flex-col pb-16 md:pb-0`}>
-        <GoogleAnalyticsTracker gaId={GA_ID} />
         
         <ThemeProvider
           attribute="class"
@@ -59,6 +57,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Footer />
         </ThemeProvider>
       </body>
+      
       <GoogleAnalytics gaId={GA_ID} />
     </html>
   );
