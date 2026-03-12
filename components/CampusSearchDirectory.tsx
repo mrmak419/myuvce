@@ -135,7 +135,7 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
               </div>
 
               <a
-                href={`https://maps.google.com/?q=$${room.lat},${room.lng}`}
+                href={`https://maps.google.com/?q=${room.lat},${room.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 font-bold rounded-xl transition-colors text-sm"
