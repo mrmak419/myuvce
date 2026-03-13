@@ -1,16 +1,16 @@
-// components/ui/Callout.tsx
 "use client";
 
 import React from 'react';
-import { Info, AlertTriangle, CheckCircle, Lightbulb } from 'lucide-react';
+import { Info, AlertTriangle, CheckCircle, Lightbulb, XCircle } from 'lucide-react';
 
 interface CalloutProps {
-  type: 'info' | 'warning' | 'success' | 'tip';
+  // Made type optional and added 'error'
+  type?: 'info' | 'warning' | 'success' | 'tip' | 'error';
   title?: string;
   children: React.ReactNode;
 }
 
-export const Callout = ({ type, title, children }: CalloutProps) => {
+export const Callout = ({ type = 'info', title, children }: CalloutProps) => {
   const themes = {
     info: {
       bg: 'bg-blue-50 dark:bg-blue-950/30',
@@ -36,9 +36,16 @@ export const Callout = ({ type, title, children }: CalloutProps) => {
       text: 'text-purple-800 dark:text-purple-300',
       icon: <Lightbulb className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
     },
+    error: {
+      bg: 'bg-red-50 dark:bg-red-950/30',
+      border: 'border-red-200 dark:border-red-800/50',
+      text: 'text-red-800 dark:text-red-300',
+      icon: <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />,
+    },
   };
 
-  const theme = themes[type];
+  // Safe fallback: if an invalid type is passed, it defaults to 'info' without crashing
+  const theme = themes[type as keyof typeof themes] || themes['info'];
 
   return (
     <div className={`p-4 my-6 rounded-lg border-l-4 ${theme.bg} ${theme.border}`}>
