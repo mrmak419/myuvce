@@ -5,28 +5,13 @@ import Image from "next/image";
 import { Calendar, ExternalLink } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import ShareButtons from "@/components/ShareButton";
-
-// Import  custom MDX UI components
-import { Callout } from "@/components/ui/Callout";
-import { MetricCard, MetricCardGroup } from "@/components/ui/MetricCard";
-import { Tabs, Tab } from "@/components/ui/Tabs";
-import { Accordion, AccordionGroup } from "@/components/ui/Accordion";
+import PostNavigation from "@/components/PostNavigation";
 import remarkGfm from "remark-gfm";
 
-
+// 1. IMPORT THE CENTRALIZED COMPONENTS MAP
+import { sharedMdxComponents } from "@/lib/mdx-components-map";
 
 type Params = Promise<{ slug: string }>;
-
-const mdxComponents = {
-  Callout,
-  MetricCard,
-  MetricCardGroup,
-  Tabs,
-  Tab,
-  Accordion,
-  AccordionGroup,
-
-};
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -78,10 +63,23 @@ export async function generateMetadata({ params }: { params: Params }) {
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
+  
+  // Fetch main post content
   const post = getPostBySlug(slug);
-
   if (!post) notFound();
 
+  // Navigation Logic: Get all posts to find prev/next by index
+  const allPosts = getAllPosts();
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+
+  // Assuming posts are sorted Newest (0) to Oldest (n)
+  const nextPostData = currentIndex > 0 ? allPosts[currentIndex - 1] : null; // Newer post
+  const prevPostData = currentIndex < allPosts.length - 1 && currentIndex !== -1 ? allPosts[currentIndex + 1] : null; // Older post
+
+  const nextPost = nextPostData ? { title: nextPostData.title, slug: nextPostData.slug } : null;
+  const prevPost = prevPostData ? { title: prevPostData.title, slug: prevPostData.slug } : null;
+
+  // Author match
   const authorKey = Object.keys(AUTHORS).find(
     key => AUTHORS[key].name === post.meta.author
   ) || post.meta.author.toLowerCase().split(" ")[0];
@@ -118,24 +116,29 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         <ShareButtons title={post.meta.title} url={`/blog/${slug}`} />
 
         <section className="prose-config prose dark:prose-invert max-w-none">
-          {/* CRITICAL FIX: The components map is now passed to the renderer */}
-<MDXRemote 
-  source={post.content} 
-  components={mdxComponents} 
-  options={{
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-    }
-  }} 
-/>        </section>
+          {/* 2. PASS THE CENTRALIZED COMPONENTS MAP HERE */}
+          <MDXRemote 
+            source={post.content} 
+            components={sharedMdxComponents} 
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+              }
+            }} 
+          />        
+        </section>
 
         {/* Bottom Share Bar (Post-read conversion) */}
-        <div className="mt-12">
+        <div className="mt-12 border-t border-neutral-200 dark:border-neutral-800 pt-8">
           <ShareButtons title={post.meta.title} url={`/blog/${slug}`} />
         </div>
 
+        {/* Internal Navigation Links */}
+        <PostNavigation prevPost={prevPost} nextPost={nextPost} />
+
+        {/* Author Box */}
         {author && (
-          <div className="mt-8 p-8 bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+          <div className="mt-12 p-8 bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
             <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-6">About the Author</p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <div className="relative w-24 h-24 flex-shrink-0">

@@ -1,17 +1,13 @@
 ---
-title: " Deep Sea Robotics: Path Planning for Autonomous Underwater Vehicles (AUVs)"
+title: "Deep Sea Robotics: Path Planning for Autonomous Underwater Vehicles (AUVs)"
 date: "2026-01-12T02:30:00.002Z"
 author: "Shreyas V"
-tags: []
+tags: ["robotics", "auv", "research", "sampada"]
 ---
 
-  Deep Sea Robotics: Path Planning for Autonomous Underwater Vehicles (AUVs)    
-
-Sampada · 30 Days Series
-
-# Deep Sea Robotics: Path Planning for Autonomous Underwater Vehicles (AUVs)
-
-By MyUVCE · University Visvesvaraya College of Engineering
+<Callout type="tip" title="Sampada 30 Days Series">
+  **Deep Sea Robotics:** Exploring how intelligent path planning defines the success of Autonomous Underwater Vehicles (AUVs) and why it has become a critical area of student innovation.
+</Callout>
 
 The deep sea remains one of the least explored frontiers on Earth. Extreme pressure, limited visibility, and unpredictable terrain make human exploration both risky and expensive. As a result, modern ocean exploration has increasingly turned to robotics—specifically **Autonomous Underwater Vehicles (AUVs)**—to map, monitor, and understand underwater environments.
 
@@ -23,7 +19,9 @@ Unlike terrestrial or aerial robots, AUVs operate in an environment where GPS si
 
 Path planning underwater must account for obstacles, energy consumption, ocean currents, and mission objectives simultaneously. A poor trajectory can lead to wasted power, missed data, or even vehicle loss.
 
-**Key challenge:** An AUV must plan its route with limited information, adapt in real time, and still complete its mission within strict energy and safety constraints.
+<Callout type="warning" title="Key Challenge">
+  An AUV must plan its route with limited information, adapt in real time, and still complete its mission within strict energy and safety constraints.
+</Callout>
 
 ## What Is Path Planning in AUVs?
 
@@ -35,34 +33,39 @@ In deep sea missions, planning is rarely static. AUVs often need to re-plan path
 
 Researchers and student teams working on AUV navigation typically explore a range of algorithmic approaches. Each method offers trade-offs between computational complexity, optimality, and robustness.
 
-*   Graph-based methods for structured and known environments
-*   Sampling-based planners for high-dimensional spaces
-*   Heuristic and optimization-based approaches for efficiency
-*   Reactive planning for real-time obstacle avoidance
+<FeatureGrid>
+  <FeatureCard 
+    title="Graph-Based Methods" 
+    description="Best for structured and known environments, utilizing grid-based search algorithms like A* or Dijkstra's to find optimal paths."
+    iconName="Network"
+  />
+  <FeatureCard 
+    title="Sampling-Based Planners" 
+    description="Ideal for high-dimensional spaces, using randomized algorithms like RRT (Rapidly-exploring Random Trees) to navigate complex terrains."
+    iconName="Dna"
+  />
+  <FeatureCard 
+    title="Heuristic & Optimization" 
+    description="Focuses on efficiency by using mathematical optimization to smooth trajectories and minimize energy consumption."
+    iconName="LineChart"
+  />
+  <FeatureCard 
+    title="Reactive Planning" 
+    description="Essential for real-time obstacle avoidance, allowing the AUV to adjust its path instantly based on live sensor feedback."
+    iconName="Zap"
+  />
+</FeatureGrid>
 
 ## System Architecture of an AUV
 
 Path planning does not operate in isolation. It is part of a broader autonomy stack that integrates sensing, localization, control, and decision-making. Understanding this interaction is key to designing reliable systems.
 
-Subsystem
-
-Role in Navigation
-
-Sensors
-
-Provide perception of obstacles and environment
-
-Localization
-
-Estimate vehicle position without GPS
-
-Path Planner
-
-Computes safe and efficient trajectories
-
-Control System
-
-Executes planned paths accurately
+| Subsystem | Role in Navigation |
+| :--- | :--- |
+| **Sensors** | Provide perception of obstacles and the surrounding environment (e.g., Sonar, DVL). |
+| **Localization** | Estimate vehicle position accurately without the use of GPS signals. |
+| **Path Planner** | Computes safe, energy-efficient, and collision-free trajectories. |
+| **Control System** | Executes the planned paths accurately by driving the thrusters and actuators. |
 
 ## Student Research and Innovation
 
@@ -75,6 +78,8 @@ These projects often involve iterative experimentation—evaluating how differen
 While deep sea exploration is a natural application, the same planning principles extend to underwater inspection, environmental monitoring, pipeline surveys, and search-and-rescue missions. Improvements in path planning directly translate to safer, longer, and more cost-effective operations.
 
 As offshore infrastructure and marine conservation efforts expand, demand for reliable autonomous underwater systems continues to grow. Path planning remains central to meeting this demand.
+
+---
 
 ### Engineering Autonomy Below the Surface
 

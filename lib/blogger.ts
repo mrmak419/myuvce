@@ -53,7 +53,7 @@ export async function getPosts(): Promise<Post[]> {
   }));
 }
 
-/**
+/*              *
  * Helper to extract slug from a Blogger URL safely.
  * Handles the case where the URL might have query parameters or be malformed.
  */
