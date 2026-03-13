@@ -77,7 +77,7 @@ export default function CampusSearchDirectory({ initialRooms }: { initialRooms: 
           <input
             type="text"
             className="block w-full pl-12 pr-4 py-3 bg-neutral-100 dark:bg-neutral-900 border border-transparent focus:border-orange-500 focus:bg-white dark:focus:bg-neutral-950 focus:ring-2 focus:ring-orange-500/20 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-500 transition-all text-base focus:outline-none"
-            placeholder="Search 120+ rooms, labs, or staff..."
+            placeholder="Search classrooms, labs, or staff..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

@@ -34,7 +34,7 @@ export default function MapPage() {
           Campus Directory
         </h1>
         <p className="text-sm md:text-lg text-neutral-600 dark:text-neutral-400">
-          Find 120+ rooms, labs, and cabins instantly.
+          Find classrooms, labs, and cabins instantly.
         </p>
       </div>
 
