@@ -58,6 +58,7 @@ export const ROOMS: Room[] = ([  // Ground Floor
   {name: "Open Air Theater", loc: "Electrical Block", lat: "12.974122", lng: "77.586021", type: "Others", floor: "Ground"},
 
 
+
   // First Floor
   {name: "ECE Lab", loc: "Right wing", lat: "12.9751031", lng: "77.5860343", type: "Lab", floor: "First"},
   {name: "Electrical staff rooms", loc: "Right wing", lat: "12.9750231", lng: "77.5858408", type: "Cabin", floor: "First"},
@@ -99,6 +100,10 @@ export const ROOMS: Room[] = ([  // Ground Floor
   {name: "Room no. 325", loc: "Electrical Block", lat: "12.974052", lng: "77.585462", type: "Class", floor: "First"},
   {name: "Room no. 323", loc: "Electrical Block", lat: "12.9740014", lng: "77.5854888", type: "Class", floor: "First"},
   {name: "Sir M.Visvesvaraya Senate Hall", loc: "Main Entrance", lat: "12.9753197", lng: "77.5866713", type: "Hall", floor: "First"},
+  {name: "Virtual Lab", loc: "Minchu", lat: "12.9748741", lng: "77.5862401", type: "Lab", floor: "First"},
+  {name: "Centenary Seminar Hall", loc: "Minchu", lat: "12.9748555", lng: "77.5862418", type: "Hall", floor: "First"},
+
+
 
   // Second Floor
   {name: "CSE Lab 1", loc: "Main entrance -Right Wing Second floor", lat: "12.9749718", lng: "77.5857211", type: "Lab", floor: "Second"},
