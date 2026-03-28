@@ -50,6 +50,7 @@ export default async function PaginatedBlogPage({ params }: { params: Params }) 
 
       <BlogFeed 
         initialPosts={initialPosts} 
+        allPostsIndex={formattedPosts}
         currentPage={currentPage} 
         totalPages={totalPages} 
       />

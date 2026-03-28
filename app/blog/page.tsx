@@ -36,6 +36,7 @@ export default function BlogIndex() {
 
       <BlogFeed 
         initialPosts={initialPosts} 
+        allPostsIndex={formattedPosts}
         currentPage={1} 
         totalPages={totalPages} 
       />
