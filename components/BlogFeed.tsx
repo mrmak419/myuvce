@@ -1,26 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PostCard from "@/components/PostCard";
 import Link from "next/link";
 import { Search, ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function BlogFeed({
   initialPosts,
-  allPostsIndex,
   currentPage,
   totalPages,
 }: {
   initialPosts: any[];
-  allPostsIndex: any[];
   currentPage: number;
   totalPages: number;
 }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [allPostsIndex, setAllPostsIndex] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/posts")
+      .then((res) => res.json())
+      .then((data) => setAllPostsIndex(data))
+      .catch((err) => console.error("Error loading blog posts:", err));
+  }, []);
 
   const isSearching = searchQuery.trim().length > 0;
 
-  // If searching, filter the ENTIRE database. If not, just show the current page's 9 posts.
+  // If searching, filter the ENTIRE database. If not, just show the current page's posts.
   const displayPosts = isSearching
     ? allPostsIndex.filter((post) => {
         const titleMatch = post.title.toLowerCase().includes(searchQuery.toLowerCase());

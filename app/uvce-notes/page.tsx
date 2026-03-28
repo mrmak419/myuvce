@@ -36,13 +36,30 @@ export default function ResourcesPage() {
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
       
       {/* Clean, Minimal Header (Keeps the H1 for SEO, but gets out of the way) */}
-      <div className="mb-12 border-b border-neutral-200 dark:border-neutral-800 pb-8">
+      <div className="mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-8">
         <h1 className="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight mb-4">
           Notes & Resources
         </h1>
         <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl">
           Direct access to the IIT-Model curriculum digital library. Select a folder below to view curated notes, PYQs, and lab manuals.
         </p>
+      </div>
+
+      <div className="mb-12 p-6 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/50 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-bold text-orange-900 dark:text-orange-100 mb-1">Looking for 2nd Sem & Beyond?</h3>
+          <p className="text-orange-800 dark:text-orange-200/80 text-sm">
+            This study material is only for the first semester. For better study material and access to more notes from 2nd sem onwards, use the study material section of MyUVCE HUB.
+          </p>
+        </div>
+        <a 
+          href="https://hub.myuvce.in/uvce/study-material" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex-shrink-0 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl transition-colors text-sm shadow-sm text-center"
+        >
+          Visit MyUVCE HUB
+        </a>
       </div>
 
       {/* Grid of Drive Widgets (Now sits right at the top) */}

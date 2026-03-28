@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
 import {Metadata} from "next";
 
-const POSTS_PER_PAGE = 15;
+const POSTS_PER_PAGE = 9;
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -36,7 +36,6 @@ export default function BlogIndex() {
 
       <BlogFeed 
         initialPosts={initialPosts} 
-        allPostsIndex={formattedPosts} 
         currentPage={1} 
         totalPages={totalPages} 
       />
