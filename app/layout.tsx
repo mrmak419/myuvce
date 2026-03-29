@@ -5,7 +5,6 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker";
 import PwaInstallPrompt from "@/components/PWAInstallPrompt";
 
 const GA_ID = "G-PP42W81CTJ";
@@ -23,19 +22,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://myuvce.in" },
   manifest: "/site.webmanifest", 
   icons: { icon: "/logo.jpg", apple: "/apple-touch-icon.png" },
-  openGraph: {
-    title: "MyUVCE - Student Resource Hub",
-    description: "The ultimate unofficial resource hub for UVCE students.",
-    url: "https://myuvce.in",
-    siteName: "MyUVCE",
-    type: "website",
-  },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f8fafc' }, 
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },  
+    { media: '(prefers-color-scheme: light)', color: '#fafafa' }, // zinc-50
+    { media: '(prefers-color-scheme: dark)', color: '#18181b' },  // FIXED: zinc-900 (Softer studio gray)
   ],
   width: 'device-width',
   initialScale: 1,
@@ -44,7 +36,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-50 min-h-screen flex flex-col pb-16 md:pb-0`}>
+      {/* FIXED: Changed dark:bg-zinc-950 to dark:bg-zinc-900 */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 min-h-screen flex flex-col pb-16 md:pb-0`}>
         
         <ThemeProvider
           attribute="class"

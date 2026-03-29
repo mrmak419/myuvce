@@ -15,8 +15,6 @@ export const Countdown = ({ targetDate }: CountdownProps) => {
     seconds: 0,
   });
   
-  // We use a mounted state to prevent Next.js hydration mismatch errors 
-  // (Server time vs Client time difference)
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -35,16 +33,15 @@ export const Countdown = ({ targetDate }: CountdownProps) => {
       }
     };
 
-    calculateTimeLeft(); // Run immediately on mount
-    const timer = setInterval(calculateTimeLeft, 1000); // Update every second
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
   }, [targetDate]);
 
-  // Loading skeleton before the client hydrates
   if (!mounted) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <MetricCard title="Days" value="--" description="Calculating..." />
         <MetricCard title="Hours" value="--" description="Calculating..." />
         <MetricCard title="Minutes" value="--" description="Calculating..." />
@@ -53,9 +50,8 @@ export const Countdown = ({ targetDate }: CountdownProps) => {
     );
   }
 
-  // The running countdown
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8 animate-in fade-in">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in">
       <MetricCard title="Days" value={timeLeft.days.toString()} description="Until Launch" />
       <MetricCard title="Hours" value={timeLeft.hours.toString()} description="Remaining" />
       <MetricCard title="Minutes" value={timeLeft.minutes.toString()} description="To go" />

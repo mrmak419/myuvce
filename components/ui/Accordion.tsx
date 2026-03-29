@@ -1,4 +1,3 @@
-// components/ui/Accordion.tsx
 "use client";
 
 import React, { useState } from 'react';
@@ -13,20 +12,22 @@ export const Accordion = ({ title, children }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-neutral-200 dark:border-neutral-800">
+    <div className="border-b border-zinc-200 dark:border-zinc-700/50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-4 flex justify-between items-center text-left hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+        className="group w-full py-4 flex justify-between items-center text-left transition-colors active:scale-[0.99] touch-manipulation"
       >
-        <span className="font-semibold text-neutral-800 dark:text-neutral-100">{title}</span>
+        <span className="font-semibold text-zinc-900 dark:text-zinc-50 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+          {title}
+        </span>
         {isOpen ? (
-          <ChevronUp className="w-4 h-4 text-neutral-500 dark:text-neutral-400" />
+          <ChevronUp className="w-4 h-4 text-indigo-600 dark:text-indigo-400 transition-colors" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-neutral-500 dark:text-neutral-400" />
+          <ChevronDown className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-indigo-400 transition-colors" />
         )}
       </button>
       {isOpen && (
-        <div className="pb-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed animate-in fade-in slide-in-from-top-1">
+        <div className="pb-4 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed animate-in fade-in slide-in-from-top-1">
           {children}
         </div>
       )}
@@ -35,5 +36,5 @@ export const Accordion = ({ title, children }: AccordionProps) => {
 };
 
 export const AccordionGroup = ({ children }: { children: React.ReactNode }) => (
-  <div className="my-6 border-t border-neutral-200 dark:border-neutral-800">{children}</div>
+  <div className="my-6 border-t border-zinc-200 dark:border-zinc-700/50">{children}</div>
 );

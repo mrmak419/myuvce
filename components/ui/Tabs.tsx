@@ -1,4 +1,3 @@
-// components/ui/Tabs.tsx
 "use client";
 
 import React, { useState } from 'react';
@@ -12,23 +11,23 @@ export const Tabs = ({ children }: { children: React.ReactElement<TabProps>[] })
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className="my-8 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden bg-white dark:bg-neutral-900">
-      <div className="flex border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 overflow-x-auto hide-scrollbar">
+    <div className="my-8 border border-zinc-200 dark:border-zinc-700/50 rounded-2xl overflow-hidden bg-white dark:bg-zinc-800/40 shadow-sm">
+      <div className="flex border-b border-zinc-200 dark:border-zinc-700/50 bg-zinc-50 dark:bg-zinc-900/50 overflow-x-auto hide-scrollbar">
         {children.map((child, index) => (
           <button
             key={index}
             onClick={() => setActiveTab(index)}
-            className={`whitespace-nowrap px-6 py-3 text-sm font-semibold transition-colors ${
+            className={`whitespace-nowrap px-6 py-3.5 text-sm font-semibold transition-all duration-200 active:scale-[0.98] ${
               activeTab === index 
-                ? 'bg-white dark:bg-neutral-900 text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'
+                ? 'bg-white dark:bg-zinc-800/80 text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400' 
+                : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 hover:text-zinc-900 dark:hover:text-zinc-100'
             }`}
           >
             {child.props.label}
           </button>
         ))}
       </div>
-      <div className="p-6 text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
+      <div className="p-6 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed animate-in fade-in slide-in-from-bottom-1">
         {children[activeTab]}
       </div>
     </div>

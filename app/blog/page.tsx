@@ -1,8 +1,8 @@
 import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
-import {Metadata} from "next";
+import { Metadata } from "next";
 
-const POSTS_PER_PAGE = 15;
+const POSTS_PER_PAGE = 10;
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -29,14 +29,14 @@ export default function BlogIndex() {
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16">
       <div className="mb-8">
-        <h1 className="text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+        {/* Updated typography to match the premium Zinc aesthetic */}
+        <h1 className="text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
           Campus Updates
         </h1>
       </div>
 
       <BlogFeed 
         initialPosts={initialPosts} 
-        allPostsIndex={formattedPosts} 
         currentPage={1} 
         totalPages={totalPages} 
       />

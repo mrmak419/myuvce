@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
 import { notFound } from "next/navigation";
 
-const POSTS_PER_PAGE = 15;
+const POSTS_PER_PAGE = 10;
 
 type Params = Promise<{ pageNumber: string }>;
 
@@ -50,7 +50,6 @@ export default async function PaginatedBlogPage({ params }: { params: Params }) 
 
       <BlogFeed 
         initialPosts={initialPosts} 
-        allPostsIndex={formattedPosts} 
         currentPage={currentPage} 
         totalPages={totalPages} 
       />
