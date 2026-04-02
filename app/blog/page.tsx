@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
 import { Metadata } from "next";
 
-const POSTS_PER_PAGE = 10;
+const POSTS_PER_PAGE = 12;
 
 export const metadata: Metadata = {
   title: "Blog",

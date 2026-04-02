@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/mdx";
 import BlogFeed from "@/components/BlogFeed";
 import { notFound } from "next/navigation";
 
-const POSTS_PER_PAGE = 10;
+const POSTS_PER_PAGE = 12;
 
 type Params = Promise<{ pageNumber: string }>;
 
