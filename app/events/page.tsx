@@ -6,6 +6,7 @@ import FilterBar from "./FilterBar";
 import { Suspense } from "react";
 
 export const dynamic = "force-dynamic"; // Ensures the page always reads fresh URL parameters
+export const runtime = 'edge';
 
 export default async function EventsFeed({
   searchParams,

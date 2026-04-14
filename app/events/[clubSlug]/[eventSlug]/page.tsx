@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 // SPEED UPGRADE: Incremental Static Regeneration (ISR)
 // Cache this page globally. Rebuild in the background every 60 seconds if data changes.
 export const revalidate = 60; 
+export const runtime = 'edge';
 
 // SEO UPGRADE: Dynamic OpenGraph Link Previews
 export async function generateMetadata({ params }: { params: Promise<{ clubSlug: string, eventSlug: string }> }): Promise<Metadata> {

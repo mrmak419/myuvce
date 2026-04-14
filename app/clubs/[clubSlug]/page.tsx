@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, MapPin, Mail, Instagram, Globe, ArrowRight, ExternalLink } from "lucide-react";
 
-// FIX: In Next.js 15, params is a Promise
+export const runtime = 'edge';
 export default async function ClubProfile({ params }: { params: Promise<{ clubSlug: string }> }) {
   // 1. Await the params
   const resolvedParams = await params;
