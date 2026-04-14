@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import RegistrationForm from "./RegistrationForm";
 import type { Metadata } from "next";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 // SPEED UPGRADE: Incremental Static Regeneration (ISR)
 // Cache this page globally. Rebuild in the background every 60 seconds if data changes.
@@ -118,7 +119,7 @@ export default async function EventPage({ params }: { params: Promise<{ clubSlug
             <h3 className="text-sm font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-6">About the Event</h3>
             <div className={`prose prose-zinc dark:prose-invert max-w-none ${event.is_markdown ? '' : 'whitespace-pre-wrap font-medium'}`}>
               {event.is_markdown ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{event.description}</ReactMarkdown>
+                <MarkdownRenderer content={event.description} />
               ) : (
                 event.description
               )}
