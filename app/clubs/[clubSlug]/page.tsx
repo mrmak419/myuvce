@@ -20,7 +20,7 @@ export default async function ClubProfile({ params }: { params: Promise<{ clubSl
 
   // DEBUGGING: If this fails, it will print the reason in your VS Code terminal
   if (clubError || !club) {
-    console.error("❌ FAILED TO FETCH CLUB:", slug);
+    console.error("FAILED TO FETCH CLUB:", slug);
     console.error("Error Details:", clubError?.message || "Club is either inactive or does not exist.");
     notFound(); // This triggers the 404 page
   }

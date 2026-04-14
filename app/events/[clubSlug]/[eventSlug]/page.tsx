@@ -8,11 +8,11 @@ import remarkGfm from "remark-gfm";
 import RegistrationForm from "./RegistrationForm";
 import type { Metadata } from "next";
 
-// ⚡ SPEED UPGRADE: Incremental Static Regeneration (ISR)
+// SPEED UPGRADE: Incremental Static Regeneration (ISR)
 // Cache this page globally. Rebuild in the background every 60 seconds if data changes.
 export const revalidate = 60; 
 
-// 🚀 SEO UPGRADE: Dynamic OpenGraph Link Previews
+// SEO UPGRADE: Dynamic OpenGraph Link Previews
 export async function generateMetadata({ params }: { params: Promise<{ clubSlug: string, eventSlug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   
