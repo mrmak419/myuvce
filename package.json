@@ -12,6 +12,7 @@
     "@ducanh2912/next-pwa": "^10.2.9",
     "@google/genai": "^1.43.0",
     "@next/third-parties": "^16.1.6",
+    "@supabase/supabase-js": "^2.103.0",
     "dotenv": "^17.3.1",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.575.0",
@@ -21,6 +22,7 @@
     "papaparse": "^5.5.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-markdown": "^10.1.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1"
   },

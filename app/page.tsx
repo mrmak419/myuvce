@@ -2,11 +2,14 @@ import { getAllPosts } from "@/lib/mdx";
 import PostCard from "@/components/PostCard";
 import QuickLinks from "@/components/QuickLinks";
 import Link from "next/link";
-import { ArrowRight, Calculator, Gamepad2, Map, LayoutDashboard } from "lucide-react";
+import Image from "next/image";
+import { supabase } from "@/lib/supabase";
+import { ArrowRight, Calculator, Gamepad2, Map, LayoutDashboard, Calendar, Clock } from "lucide-react";
+
+export const revalidate = 60; // Keep the landing page fast, refresh data every 60 seconds
 
 const RECENT_POSTS_COUNT = 4;
 
-// We add specific color mapping for each tool to give them identity
 const CAMPUS_TOOLS = [
   {
     name: "MyUVCE HUB",
@@ -15,7 +18,7 @@ const CAMPUS_TOOLS = [
     href: "https://hub.myuvce.in",
     status: "Live",
     isExternal: true,
-    color: "blue" // Hub gets trust/utility blue
+    color: "blue" 
   },
   {
     name: "Campus Map",
@@ -23,7 +26,7 @@ const CAMPUS_TOOLS = [
     icon: Map,
     href: "/map",
     status: "Live",
-    color: "emerald" // Map gets location/success green
+    color: "emerald" 
   },
   {
     name: "SGPA Calculator",
@@ -32,7 +35,7 @@ const CAMPUS_TOOLS = [
     href: "https://hub.myuvce.in/sgpa",
     status: "Under Rebuild",
     isExternal: true,
-    color: "violet" // Calculator gets deep, analytical purple
+    color: "violet" 
   },
   {
     name: "Viva Garage",
@@ -41,15 +44,23 @@ const CAMPUS_TOOLS = [
     href: "https://hub.myuvce.in/question-garage",
     status: "Live",
     isExternal: true,
-    color: "rose" // Game gets an energetic but muted red/rose
+    color: "rose" 
   },
 ];
 
-export default function Home() {
+export default async function Home() {
   const posts = getAllPosts(); 
   const recentPosts = posts.slice(0, RECENT_POSTS_COUNT);
 
-  // Helper function to map logical colors to Tailwind classes dynamically
+  // Fetch the top 3 upcoming published events
+  const { data: upcomingEvents } = await supabase
+    .from('myuvce_events_events')
+    .select('*, myuvce_events_clubs(name, logo_url)')
+    .eq('status', 'published')
+    .gte('event_date', new Date().toISOString())
+    .order('event_date', { ascending: true })
+    .limit(3);
+
   const getColorClasses = (color: string, isUnderRebuild: boolean) => {
     if (isUnderRebuild) {
       return {
@@ -120,6 +131,67 @@ export default function Home() {
               })}
             </div>
           </section>
+
+          {/* New Upcoming Events Section */}
+          {upcomingEvents && upcomingEvents.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between w-full">
+                  <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                    Upcoming Events
+                  </h2>
+                  <Link href="/events" className="hidden sm:flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+                    View all <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                {upcomingEvents.map((event) => {
+                  const club = Array.isArray(event.myuvce_events_clubs) ? event.myuvce_events_clubs[0] : event.myuvce_events_clubs;
+                  
+                  return (
+                    <Link 
+                      key={event.id}
+                      href={`/events/${event.club_slug}/${event.event_slug}`}
+                      className="group flex flex-col bg-white dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/50 rounded-2xl overflow-hidden hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300"
+                    >
+                      <div className="h-32 bg-zinc-100 dark:bg-zinc-800 relative overflow-hidden shrink-0">
+                        {event.poster_url ? (
+                          <Image src={event.poster_url} alt={event.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-90 group-hover:scale-105 transition-transform duration-500" />
+                        )}
+                        {club && (
+                          <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm px-2 py-1 rounded-md shadow-sm">
+                            {club.logo_url && <Image src={club.logo_url} alt={club.name} width={12} height={12} className="rounded-full" />}
+                            <span className="text-[9px] font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide truncate max-w-[80px]">{club.name}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4 flex-1 flex flex-col">
+                        <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 leading-tight mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">
+                          {event.title}
+                        </h3>
+                        <div className="mt-auto flex flex-col gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                          <div className="flex items-center">
+                            <Calendar className="w-3.5 h-3.5 mr-1.5 text-zinc-400" />
+                            {new Date(event.event_date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+              
+              <div className="mt-6 sm:hidden flex justify-center">
+                <Link href="/events" className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/50 hover:dark:bg-zinc-800/80 hover:dark:border-zinc-600 rounded-xl font-medium text-sm text-zinc-900 dark:text-zinc-100 active:scale-[0.98] transition-all shadow-sm">
+                  View all events <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </section>
+          )}
 
           <section>
             <div className="flex items-center justify-between mb-6">

@@ -11,31 +11,21 @@ const withPWA = withPWAInit({
     disableDevLogs: true,
     runtimeCaching: [
       {
-        // 1. Cache Map Assets (Images, SVGs, Icons) aggressively for 30 days
         urlPattern: /\.(?:png|jpg|jpeg|svg|webp|gif|ico)$/i,
         handler: 'CacheFirst',
         options: {
           cacheName: 'myuvce-static-assets',
-          expiration: {
-            maxEntries: 150,
-            maxAgeSeconds: 30 * 24 * 60 * 60, 
-          },
+          expiration: { maxEntries: 150, maxAgeSeconds: 30 * 24 * 60 * 60 },
         },
       },
       {
-        // 2. Cache Next.js Pages & UI Shell (Network First, fallback to cache if offline)
         urlPattern: ({ request, url }) => 
           url.origin === self.location.origin && 
-          (request.destination === 'document' || 
-           request.destination === 'script' || 
-           request.destination === 'style'),
+          (request.destination === 'document' || request.destination === 'script' || request.destination === 'style'),
         handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'myuvce-app-shell',
-          expiration: {
-            maxEntries: 100,
-            maxAgeSeconds: 2 * 60 * 60, // Keep cache for 2 hours
-          },
+          expiration: { maxEntries: 100, maxAgeSeconds: 2 * 60 * 60 },
         },
       },
     ],
@@ -47,17 +37,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'blogger.googleusercontent.com' },
       { protocol: 'https', hostname: '*.bp.blogspot.com' },
+      { protocol: 'https', hostname: 'events-cdn.myuvce.in' },
     ],
   },
   async redirects() {
     return [
-      // 2. Internal Refactoring Catch-all
-      {
-        source: '/posts/:slug',
-        destination: '/blog/:slug',
-        permanent: true,
-      },
-      // 3. Legacy Static Pages Migration
+      { source: '/posts/:slug', destination: '/blog/:slug', permanent: true },
       { source: '/p/about-us.html', destination: '/about', permanent: true },
       { source: '/p/contact-us.html', destination: '/contact', permanent: true },
       { source: '/p/privacy-policy.html', destination: '/privacy', permanent: true },
@@ -68,13 +53,9 @@ const nextConfig: NextConfig = {
       { source: '/p/disclaimer.html', destination: '/disclaimer', permanent: true },
       { source: '/p/classroom-directory.html', destination: '/map', permanent: true },
       { source: '/p/student-tools.html', destination: '/student-tools', permanent: true },
-      
-      // Notes & Resources
       { source: '/2025/12/uvce-notes.html', destination: '/uvce-notes', permanent: true },
       { source: '/resource', destination: '/uvce-notes', permanent: true },
       { source: '/blog/uvce-notes', destination: '/uvce-notes', permanent: true },
-      
-      // Blog Post Mapping
       { source: '/2026/01/the-roadmap-for-myuvcein-documenting.html', destination: '/blog/the-roadmap-for-myuvce-in-documenting-the-uvce-story-for-the-future', permanent: true },
       { source: '/2026/01/beyond-the-red-walls.html', destination: '/blog/not-nandi-hills-5-hidden-drives-for-the-real-explorers-of-uvce', permanent: true },
       { source: '/2025/12/uvce-notes.html', destination: '/blog/uvce-notes-pyqs-lab-manuals-model-question-papers-announcements-complete-resource-hub-iit-model', permanent: true },
@@ -127,35 +108,12 @@ const nextConfig: NextConfig = {
       { source: '/2025/11/uvce-freshers-guide-5-things-you-need.html', destination: '/blog/uvce-fresher-s-guide-5-things-you-need-to-know-before-day-1', permanent: true },
       { source: '/2025/11/lost-in-uvce-complete-guide-to-finding.html', destination: '/blog/lost-in-uvce-a-complete-guide-to-finding-labs-and-classrooms-at-kr-circle', permanent: true },
       { source: '/2025/11/the-map-of-uvce.html', destination: '/blog/uvce-campus-map-find-classrooms-labs-departments', permanent: true },
-      
-      // Cleanup Mappings
       { source: '/blog/the-map-of-uvce', destination: '/map', permanent: true },
       { source: '/blog/guide-to-uvce-student-clubs', destination: '/blog/the-ultimate-guide-to-student-clubs-at-uvce-tech-cultural-r-d', permanent: true },
-
-  
-      {
-        source: '/sitemap-pages.xml',
-        destination: '/sitemap.xml',
-        permanent: true,
-      },
-      // 2. Redirect old RSS/Atom feeds to the new Sitemap
-      {
-        source: '/atom.xml',
-        destination: '/sitemap.xml',
-        permanent: true,
-      },
-      {
-        source: '/feeds/posts/default',
-        destination: '/sitemap.xml',
-        permanent: true,
-      },
-      // 3. Handle specific Blogger feed parameters
-      {
-        source: '/feeds/posts/default',
-        has: [{ type: 'query', key: 'alt', value: 'rss' }],
-        destination: '/sitemap.xml',
-        permanent: true,
-      }
+      { source: '/sitemap-pages.xml', destination: '/sitemap.xml', permanent: true },
+      { source: '/atom.xml', destination: '/sitemap.xml', permanent: true },
+      { source: '/feeds/posts/default', destination: '/sitemap.xml', permanent: true },
+      { source: '/feeds/posts/default', has: [{ type: 'query', key: 'alt', value: 'rss' }], destination: '/sitemap.xml', permanent: true }
     ];
   },
 };
