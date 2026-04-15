@@ -4,9 +4,9 @@ import { useEffect, useState, use } from "react";
 import { supabase } from "@/lib/supabase";
 import { Loader2, AlertCircle, Edit2, CheckCircle2, XCircle, FileText } from "lucide-react";
 
-export default function PortalPage({ params }: { params: Promise<{ token: string }> | { token: string } }) {
-  // Handle both Next 14 standard params and Next 15 async params
-  const resolvedParams = params instanceof Promise ? use(params) : params;
+export default function PortalPage({ params }: { params: Promise<{ token: string }> }) {
+  // 1. Strictly unwrap the Promise using React's `use` hook
+  const resolvedParams = use(params);
   const token = resolvedParams.token;
 
   const [isLoading, setIsLoading] = useState(true);
