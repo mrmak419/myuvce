@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, MessageCircle, Calendar, CalendarDays, Copy } from "lucide-react";
 
 export default function RegistrationForm({ event }: { event: any }) {
   const schema = event.registration_schema || [];
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [successToken, setSuccessToken] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const handleChange = (id: string, value: any) => {
     setFormData(prev => ({ ...prev, [id]: value }));
@@ -28,7 +29,6 @@ export default function RegistrationForm({ event }: { event: any }) {
     setIsSubmitting(true);
     setErrorMsg("");
 
-    // Basic Validation for required fields
     for (const field of schema) {
       if (field.required) {
         const val = formData[field.id];
@@ -40,7 +40,6 @@ export default function RegistrationForm({ event }: { event: any }) {
       }
     }
 
-    // Isolate system fields guaranteed by EventEditor
     const studentEmail = formData['sys-email'];
     const studentName = formData['sys-name'];
     
@@ -51,47 +50,24 @@ export default function RegistrationForm({ event }: { event: any }) {
     }
 
     try {
-      // 1. Generate the UUID on the client to bypass RLS SELECT restrictions
       const editToken = crypto.randomUUID();
 
-      // 2. Insert data and token (NO .select() chained here)
       const { error } = await supabase.from('myuvce_events_registrations').insert({
         event_id: event.id,
         student_email: studentEmail,
         form_responses: formData,
-        edit_token: editToken // Passing the client-generated token
+        edit_token: editToken 
       });
 
       if (error) throw error;
       
-      const clubName = Array.isArray(event.myuvce_events_clubs) 
-        ? event.myuvce_events_clubs[0]?.name 
-        : event.myuvce_events_clubs?.name;
-
-      // 3. Build the secure portal link using our client token
-      const portalLink = `https://myuvce.in/events/portal/${editToken}`;
-
-      // 4. Fire Background Email Worker asynchronously
-      fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          studentEmail,
-          studentName,
-          eventTitle: event.title,
-          clubName: clubName || 'UVCE Club',
-          eventDate: event.event_date,
-          portalLink 
-        })
-      }).catch(err => console.error("Non-fatal email error:", err));
-      
-      setIsSuccess(true);
+      // Store the token in state to switch the UI to the Digital Ticket
+      setSuccessToken(editToken);
     } catch (err: any) {
       console.error("Registration Database Error:", err);
       
       let friendlyError = "Something went wrong with your registration. Please try again.";
 
-      // Catches the UUID unique violation or duplicate email violation
       if (err?.code === '23505') {
         friendlyError = "It looks like you have already registered for this event with this email address.";
       } else if (err?.code === '23503') {
@@ -106,16 +82,112 @@ export default function RegistrationForm({ event }: { event: any }) {
     }
   };
 
-  if (isSuccess) {
+  // --- Helpers for the Digital Ticket Dashboard ---
+
+  const getCalendarDates = () => {
+    if (!event.event_date) return { start: "", end: "" };
+    const startDate = new Date(event.event_date);
+    const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000); // Add 2 hours for standard block
+    const format = (d: Date) => d.toISOString().replace(/-|:|\.\d+/g, '').substring(0, 15) + 'Z';
+    return { start: format(startDate), end: format(endDate) };
+  };
+
+  const handleDownloadICS = () => {
+    const { start, end } = getCalendarDates();
+    const portalLink = `https://myuvce.in/events/portal/${successToken}`;
+    const icsData = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${start}\nDTEND:${end}\nSUMMARY:${event.title}\nDESCRIPTION:Portal Link: ${portalLink}\nEND:VEVENT\nEND:VCALENDAR`;
+    
+    const blob = new Blob([icsData], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${event.title.replace(/\s+/g, '_')}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(`https://myuvce.in/events/portal/${successToken}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // --- Render Digital Ticket Dashboard ---
+  if (successToken) {
+    const portalLink = `https://myuvce.in/events/portal/${successToken}`;
+    const displayDate = event.event_date ? new Date(event.event_date).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : 'Date TBA';
+    
+    const actionText = event.allow_edits ? "View/Edit responses" : "View responses";
+    const waText = `RSVP For ${event.title}\nDate: ${displayDate}\n${actionText} : ${portalLink}`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+    
+    const { start, end } = getCalendarDates();
+    const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${start}/${end}&details=${encodeURIComponent(portalLink)}`;
+
     return (
-      <div className="text-center py-12 animate-in zoom-in-95 duration-500">
-        <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-        <h3 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2">You're In!</h3>
-        <p className="text-zinc-600 dark:text-zinc-400">Your registration has been confirmed. We have sent a copy of your responses to your email.</p>
+      <div className="max-w-md mx-auto space-y-6 animate-in zoom-in-95 duration-500">
+        <div className="text-center">
+          <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+          <h3 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2">Registration Confirmed</h3>
+          <p className="text-zinc-600 dark:text-zinc-400 text-sm">Please save your digital ticket link below.</p>
+        </div>
+
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 space-y-4">
+          <div>
+            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1">Event</p>
+            <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-tight">{event.title}</p>
+          </div>
+          <div>
+            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1">Date</p>
+            <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">{displayDate}</p>
+          </div>
+
+          <div className="pt-4 space-y-3">
+            <a 
+              href={waUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#20bd5a] transition-colors"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Save to WhatsApp
+            </a>
+
+            <div className="grid grid-cols-2 gap-3">
+              <a 
+                href={googleCalUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 py-3 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold text-sm rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+              >
+                <Calendar className="w-4 h-4" />
+                Google Cal
+              </a>
+              <button 
+                onClick={handleDownloadICS}
+                className="flex items-center justify-center gap-2 py-3 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold text-sm rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+              >
+                <CalendarDays className="w-4 h-4" />
+                Apple Cal
+              </button>
+            </div>
+
+            <button 
+              onClick={copyToClipboard}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-transparent border border-dashed border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400 font-bold text-sm rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            >
+              <Copy className="w-4 h-4" />
+              {copied ? "Copied!" : "Copy Responce Link"}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
+  // --- Render Standard Form ---
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {errorMsg && (
@@ -208,5 +280,5 @@ export default function RegistrationForm({ event }: { event: any }) {
         {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Complete Registration"}
       </button>
     </form>
-  ); 
+  );
 }
