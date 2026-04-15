@@ -40,28 +40,62 @@ export default function RegistrationForm({ event }: { event: any }) {
       }
     }
 
-    // Isolate student_email and package the rest
+    // Isolate system fields guaranteed by EventEditor
     const studentEmail = formData['sys-email'];
-    if (!studentEmail) {
-      setErrorMsg("Email is required.");
+    const studentName = formData['sys-name'];
+    
+    if (!studentEmail || !studentName) {
+      setErrorMsg("Name and Email are required to register.");
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const { error } = await supabase.from('myuvce_events_registrations').insert({
+      // NEW: We added .select('edit_token').single() here to get the token back!
+      const { data: regData, error } = await supabase.from('myuvce_events_registrations').insert({
         event_id: event.id,
         student_email: studentEmail,
-        form_responses: formData // All answers, including name, go into the JSON
-      });
+        form_responses: formData
+      }).select('edit_token').single();
 
       if (error) throw error;
       
-      // TODO: Future Automated Email Hook here (e.g., fetch('/api/send-email', { method: 'POST' }))
+      const clubName = Array.isArray(event.myuvce_events_clubs) 
+        ? event.myuvce_events_clubs[0]?.name 
+        : event.myuvce_events_clubs?.name;
+
+      // Generate the secure portal link
+      const portalLink = `https://myuvce.in/events/portal/${regData.edit_token}`;
+
+      // Fire Background Email Worker asynchronously
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          studentEmail,
+          studentName,
+          eventTitle: event.title,
+          clubName: clubName || 'UVCE Club',
+          eventDate: event.event_date,
+          portalLink // PASS THE LINK
+        })
+      }).catch(err => console.error("Non-fatal email error:", err));
       
       setIsSuccess(true);
     } catch (err: any) {
-      setErrorMsg("Registration failed. Please try again. " + err.message);
+      console.error("Registration Database Error:", err);
+      
+      let friendlyError = "Something went wrong with your registration. Please try again.";
+
+      if (err?.code === '23505') {
+        friendlyError = "It looks like you have already registered for this event with this email address.";
+      } else if (err?.code === '23503') {
+        friendlyError = "This event is no longer available or accepting registrations.";
+      } else if (err?.message && err.message.toLowerCase().includes("fetch")) {
+        friendlyError = "Network error. Please check your internet connection and try again.";
+      }
+
+      setErrorMsg(friendlyError);
     } finally {
       setIsSubmitting(false);
     }
@@ -69,7 +103,7 @@ export default function RegistrationForm({ event }: { event: any }) {
 
   if (isSuccess) {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-12 animate-in zoom-in-95 duration-500">
         <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
         <h3 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2">You're In!</h3>
         <p className="text-zinc-600 dark:text-zinc-400">Your registration has been confirmed. We have sent a copy of your responses to your email.</p>
@@ -80,7 +114,7 @@ export default function RegistrationForm({ event }: { event: any }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {errorMsg && (
-        <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 text-sm font-bold rounded-xl">
+        <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 text-sm font-bold rounded-xl animate-in fade-in slide-in-from-top-2">
           {errorMsg}
         </div>
       )}
@@ -154,7 +188,7 @@ export default function RegistrationForm({ event }: { event: any }) {
                     className="w-4 h-4 rounded text-indigo-600 border-zinc-300 focus:ring-indigo-500"
                   />
                   <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{opt}</span>
-             </label>
+               </label>
               ))}
             </div>
           )}
