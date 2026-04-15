@@ -208,5 +208,5 @@ export default function RegistrationForm({ event }: { event: any }) {
         {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Complete Registration"}
       </button>
     </form>
-  );
+  ); 
 }
