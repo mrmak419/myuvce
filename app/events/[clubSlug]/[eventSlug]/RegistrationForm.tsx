@@ -51,12 +51,16 @@ export default function RegistrationForm({ event }: { event: any }) {
     }
 
     try {
-      // NEW: We added .select('edit_token').single() here to get the token back!
-      const { data: regData, error } = await supabase.from('myuvce_events_registrations').insert({
+      // 1. Generate the UUID on the client to bypass RLS SELECT restrictions
+      const editToken = crypto.randomUUID();
+
+      // 2. Insert data and token (NO .select() chained here)
+      const { error } = await supabase.from('myuvce_events_registrations').insert({
         event_id: event.id,
         student_email: studentEmail,
-        form_responses: formData
-      }).select('edit_token').single();
+        form_responses: formData,
+        edit_token: editToken // Passing the client-generated token
+      });
 
       if (error) throw error;
       
@@ -64,10 +68,10 @@ export default function RegistrationForm({ event }: { event: any }) {
         ? event.myuvce_events_clubs[0]?.name 
         : event.myuvce_events_clubs?.name;
 
-      // Generate the secure portal link
-      const portalLink = `https://myuvce.in/events/portal/${regData.edit_token}`;
+      // 3. Build the secure portal link using our client token
+      const portalLink = `https://myuvce.in/events/portal/${editToken}`;
 
-      // Fire Background Email Worker asynchronously
+      // 4. Fire Background Email Worker asynchronously
       fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -77,7 +81,7 @@ export default function RegistrationForm({ event }: { event: any }) {
           eventTitle: event.title,
           clubName: clubName || 'UVCE Club',
           eventDate: event.event_date,
-          portalLink // PASS THE LINK
+          portalLink 
         })
       }).catch(err => console.error("Non-fatal email error:", err));
       
@@ -87,6 +91,7 @@ export default function RegistrationForm({ event }: { event: any }) {
       
       let friendlyError = "Something went wrong with your registration. Please try again.";
 
+      // Catches the UUID unique violation or duplicate email violation
       if (err?.code === '23505') {
         friendlyError = "It looks like you have already registered for this event with this email address.";
       } else if (err?.code === '23503') {
