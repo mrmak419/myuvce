@@ -8,7 +8,7 @@ import { ArrowRight, Calculator, Gamepad2, Map, LayoutDashboard, Calendar, Clock
 
 export const revalidate = 60; // Keep the landing page fast, refresh data every 60 seconds
 
-const RECENT_POSTS_COUNT = 4;
+const RECENT_POSTS_COUNT = 6;
 
 const CAMPUS_TOOLS = [
   {
@@ -52,7 +52,8 @@ export default async function Home() {
   const posts = getAllPosts(); 
   const recentPosts = posts.slice(0, RECENT_POSTS_COUNT);
 
-  // Fetch the top 3 upcoming published events
+  // Fetch logic stays here so you don't have to rewrite it later, 
+  // but it won't be used in the UI for now.
   const { data: upcomingEvents } = await supabase
     .from('myuvce_events_events')
     .select('*, myuvce_events_clubs(name, logo_url)')
@@ -132,8 +133,8 @@ export default async function Home() {
             </div>
           </section>
 
-          {/* New Upcoming Events Section */}
-          {upcomingEvents && upcomingEvents.length > 0 && (
+          {/* Upcoming Events Section - Commented out for now */}
+          {/* {upcomingEvents && upcomingEvents.length > 0 && (
             <section>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center justify-between w-full">
@@ -191,7 +192,8 @@ export default async function Home() {
                 </Link>
               </div>
             </section>
-          )}
+          )} 
+          */}
 
           <section>
             <div className="flex items-center justify-between mb-6">
