@@ -1,39 +1,44 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, BookOpen, Map as MapIcon, Calendar, Users, ChevronDown } from "lucide-react";
+import { Home, FileText, BookOpen, Map as MapIcon, Calendar, Users, Menu, X, Image as ImageIcon } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
-// --- Desktop Navigation Links ---
+// --- Desktop Navigation Links (Flattened) ---
 const desktopLinks = [
   { name: "Home", href: "/" },
+  { name: "Events", href: "/events" },
+  { name: "Clubs", href: "/clubs" },
   { name: "Blog", href: "/blog" },
-  { name: "Map", href: "/map" },
   { name: "Notes", href: "/uvce-notes"},
+  { name: "Map", href: "/map" },
   { name: "Gallery", href: "/gallery" },
 ];
 
-// --- Mobile Bottom Nav Links (Upgraded to 5 tabs) ---
+// --- Mobile Bottom Nav Links (Primary 4) ---
 const mobileLinks = [
   { name: "Home", icon: Home, href: "/" },
   { name: "Events", icon: Calendar, href: "/events" },
   { name: "Blog", icon: FileText, href: "/blog" },
-  { name: "Notes", icon: BookOpen, href: "/uvce-notes" },
-  { name: "Map", icon: MapIcon, href: "/map" },
+  { name: "Notes", icon: BookOpen, href: "/uvce-notes" }, // Moved Notes to primary dock
 ];
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  // Scroll visibility logic
   useEffect(() => {
     const controlNavbar = () => {
       if (typeof window !== 'undefined') {
         if (window.scrollY > lastScrollY && window.scrollY > 100) {
           setIsVisible(false);
+          setIsMenuOpen(false); // Close mobile menu on scroll down
         } else {
           setIsVisible(true);
         }
@@ -45,10 +50,31 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', controlNavbar);
   }, [lastScrollY]);
 
-  // Route Checks
-  const isCampusLifeActive = pathname?.startsWith('/events') || pathname?.startsWith('/clubs');
+  // Click outside listener for mobile menu popup
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
+
+  // --- Visibility Logic ---
+  // Safely parse the path components (e.g., /events/marvel/design-sprint -> ['events', 'marvel', 'design-sprint'])
+  const pathParts = pathname?.split('/').filter(Boolean) || [];
   
-  // Logic to determine if the top header should be visible on mobile
+  // Hide completely on /events/[club]/[event] AND /events/portal/[token]
+  const isFormOrPortalPage = pathParts[0] === 'events' && pathParts.length >= 3;
+  
+  if (isFormOrPortalPage) {
+    return null; // Return nothing, completely hiding top and bottom navs
+  }
+
   const showMobileHeader = pathname === "/" || pathname?.startsWith("/blog");
 
   return (
@@ -65,7 +91,7 @@ export default function Navbar() {
             {/* Logo & Brand (LHS) */}
             <div className="flex-shrink-0 flex items-center">
               <Link href="/" className="flex items-center gap-3 group">
-                <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden bg-white border border-zinc-200 dark:border-zinc-700/50 shadow-sm group-hover:shadow-md group-hover:border-indigo-200 dark:group-hover:border-indigo-500/30 transition-all duration-300 flex-shrink-0">
+                <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden bg-white border border-zinc-200 dark:border-zinc-700/50 shadow-sm group-hover:shadow-md transition-all duration-300 flex-shrink-0">
                   <img
                     src="/logo.jpg"
                     alt="MyUVCE Logo"
@@ -96,46 +122,6 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-
-              {/* Campus Life Dropdown */}
-              <div className="relative group">
-                <button 
-                  className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                    isCampusLifeActive
-                      ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10"
-                      : "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-50"
-                  }`}
-                >
-                  Campus Life
-                  <ChevronDown className="w-3 h-3 opacity-70 group-hover:rotate-180 transition-transform duration-200" />
-                </button>
-                
-                {/* Dropdown Menu Panel */}
-                <div className="absolute top-full right-0 mt-1 w-48 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden p-1.5 flex flex-col gap-1">
-                    <Link 
-                      href="/events" 
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                    >
-                      <Calendar className="w-4 h-4 text-indigo-500" />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold">Events</span>
-                        <span className="text-[10px] text-zinc-500">Upcoming campus activities</span>
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/clubs" 
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                    >
-                      <Users className="w-4 h-4 text-emerald-500" />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold">Clubs</span>
-                        <span className="text-[10px] text-zinc-500">Explore technical societies</span>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              </div>
             </nav>
 
             {/* Theme Toggle */}
@@ -147,19 +133,55 @@ export default function Navbar() {
         </div>
       </header>
 
+      {/* --- MOBILE POPUP MENU (RHS) --- */}
+      {isMenuOpen && (
+        <div 
+          ref={menuRef}
+          className="md:hidden fixed bottom-20 right-4 w-48 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden z-50 animate-in slide-in-from-bottom-4 fade-in duration-200"
+        >
+          <div className="flex flex-col p-2 gap-1">
+            <Link 
+              href="/clubs" 
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              <Users className="w-5 h-5 text-indigo-500" />
+              <span className="text-sm font-bold">Clubs</span>
+            </Link>
+            
+            <Link 
+              href="/map" 
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              <MapIcon className="w-5 h-5 text-indigo-500" />
+              <span className="text-sm font-bold">Campus Map</span>
+            </Link>
+
+            <Link 
+              href="/gallery" 
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              <ImageIcon className="w-5 h-5 text-indigo-500" />
+              <span className="text-sm font-bold">Gallery</span>
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* --- MOBILE BOTTOM NAVIGATION DOCK --- */}
       <div className="md:hidden fixed bottom-0 left-0 w-full z-50 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-200 dark:border-zinc-800/50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-around items-center h-16 px-1 sm:px-2">
           {mobileLinks.map((link) => {
             const Icon = link.icon;
-            // Special check for events to catch both /events and /clubs under the Calendar icon
-            const isEventsTab = link.href === '/events';
-            const isActive = pathname === link.href || (pathname?.startsWith(`${link.href}/`) && link.href !== "/") || (isEventsTab && pathname?.startsWith('/clubs'));
+            const isActive = pathname === link.href || (pathname?.startsWith(`${link.href}/`) && link.href !== "/");
             
             return (
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={() => setIsMenuOpen(false)} // Close menu if another tab is clicked
                 className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors active:scale-95 touch-manipulation ${
                   isActive 
                   ? "text-indigo-600 dark:text-indigo-400" 
@@ -173,6 +195,25 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* Dedicated Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors active:scale-95 touch-manipulation ${
+              isMenuOpen 
+              ? "text-indigo-600 dark:text-indigo-400" 
+              : "text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+            }`}
+          >
+            {isMenuOpen ? (
+              <X className="w-5 h-5 transition-all" strokeWidth={2.5} />
+            ) : (
+              <Menu className="w-5 h-5 transition-all" strokeWidth={1.75} />
+            )}
+            <span className={`text-[9px] sm:text-[10px] transition-all ${isMenuOpen ? "font-bold" : "font-medium"}`}>
+              Menu
+            </span>
+          </button>
         </div>
       </div>
     </>
