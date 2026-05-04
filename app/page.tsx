@@ -33,7 +33,7 @@ const CAMPUS_TOOLS = [
     description: "Accurate semester grading and forecasting.",
     icon: Calculator,
     href: "https://hub.myuvce.in/sgpa",
-    status: "Under Rebuild",
+    status: "Live",
     isExternal: true,
     color: "violet" 
   },

@@ -9,8 +9,9 @@ import ThemeToggle from "./ThemeToggle";
 // --- Desktop Navigation Links (Flattened) ---
 const desktopLinks = [
   { name: "Home", href: "/" },
-  { name: "Events", href: "/events" },
-  { name: "Clubs", href: "/clubs" },
+  // Temporarily hidden for testing
+  // { name: "Events", href: "/events" },
+  // { name: "Clubs", href: "/clubs" },
   { name: "Blog", href: "/blog" },
   { name: "Notes", href: "/uvce-notes"},
   { name: "Map", href: "/map" },
@@ -20,9 +21,10 @@ const desktopLinks = [
 // --- Mobile Bottom Nav Links (Primary 4) ---
 const mobileLinks = [
   { name: "Home", icon: Home, href: "/" },
-  { name: "Events", icon: Calendar, href: "/events" },
+  // Temporarily hidden for testing
+  // { name: "Events", icon: Calendar, href: "/events" },
   { name: "Blog", icon: FileText, href: "/blog" },
-  { name: "Notes", icon: BookOpen, href: "/uvce-notes" }, // Moved Notes to primary dock
+  { name: "Notes", icon: BookOpen, href: "/uvce-notes" }, 
 ];
 
 export default function Navbar() {
@@ -140,6 +142,7 @@ export default function Navbar() {
           className="md:hidden fixed bottom-20 right-4 w-48 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden z-50 animate-in slide-in-from-bottom-4 fade-in duration-200"
         >
           <div className="flex flex-col p-2 gap-1">
+            {/* Temporarily hidden for testing
             <Link 
               href="/clubs" 
               onClick={() => setIsMenuOpen(false)}
@@ -148,6 +151,7 @@ export default function Navbar() {
               <Users className="w-5 h-5 text-indigo-500" />
               <span className="text-sm font-bold">Clubs</span>
             </Link>
+            */}
             
             <Link 
               href="/map" 
