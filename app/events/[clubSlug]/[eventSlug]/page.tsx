@@ -64,7 +64,11 @@ export default async function EventPage({ params }: { params: Promise<{ clubSlug
   if (!event) notFound();
 
   const isPast = new Date(event.event_date) < new Date();
-  const club = event.myuvce_events_clubs;
+  
+  // Safely extract the club relation
+  const club = Array.isArray(event.myuvce_events_clubs) 
+    ? event.myuvce_events_clubs[0] 
+    : event.myuvce_events_clubs;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full animate-in fade-in duration-500 pb-32">
@@ -75,13 +79,18 @@ export default async function EventPage({ params }: { params: Promise<{ clubSlug
 
       <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] overflow-hidden shadow-xl mb-12">
         
-        <div className="relative h-64 md:h-96 w-full bg-zinc-100 dark:bg-zinc-800">
-          {event.poster_url ? (
-            <Image src={event.poster_url} alt={event.title} fill className="object-cover" priority />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" />
-          )}
-        </div>
+        {/* UX UPGRADE: Completely collapse the image holder if no poster exists */}
+        {event.poster_url && (
+          <div className="relative h-64 md:h-96 w-full bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-100 dark:border-zinc-800">
+            <Image 
+              src={event.poster_url} 
+              alt={event.title} 
+              fill 
+              className="object-cover" 
+              priority 
+            />
+          </div>
+        )}
 
         <div className="p-6 md:p-10 border-b border-zinc-100 dark:border-zinc-800">
           <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -99,11 +108,11 @@ export default async function EventPage({ params }: { params: Promise<{ clubSlug
           <div className="flex flex-wrap items-center gap-6 text-sm font-bold text-zinc-600 dark:text-zinc-400 mb-8">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-indigo-500" />
-              {new Date(event.event_date).toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              {new Date(event.event_date).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-indigo-500" />
-              {new Date(event.event_date).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })}
+              {new Date(event.event_date).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' })}
             </div>
           </div>
 

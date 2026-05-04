@@ -1,17 +1,67 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Loader2, CheckCircle2, MessageCircle, Calendar, CalendarDays, Copy } from "lucide-react";
 
 export default function RegistrationForm({ event }: { event: any }) {
   const schema = event.registration_schema || [];
+  
   const [formData, setFormData] = useState<Record<string, any>>({});
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successToken, setSuccessToken] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [copied, setCopied] = useState(false);
 
+  const eventDraftKey = `myuvce_draft_${event.id}`;
+  const globalIdentityKey = `myuvce_global_identity`;
+
+  // --- 1. HYDRATION: Load memory safely on the client ---
+  useEffect(() => {
+    let initialData: Record<string, any> = {};
+
+    // Load global identity first (sys-name, sys-email, etc.)
+    const globalMemory = localStorage.getItem(globalIdentityKey);
+    if (globalMemory) {
+      try { initialData = { ...initialData, ...JSON.parse(globalMemory) }; } catch (err) {}
+    }
+
+    // Overwrite with event-specific draft (custom answers, ongoing edits)
+    const eventDraft = localStorage.getItem(eventDraftKey);
+    if (eventDraft) {
+      try { initialData = { ...initialData, ...JSON.parse(eventDraft) }; } catch (err) {}
+    }
+
+    setFormData(initialData);
+    setIsLoaded(true);
+  }, [event.id]);
+
+  // --- 2. AUTO-SAVE: Sync to local storage whenever formData changes ---
+  useEffect(() => {
+    if (!isLoaded) return; // Prevent overwriting memory with empty state during boot
+
+    // Save full draft
+    localStorage.setItem(eventDraftKey, JSON.stringify(formData));
+
+    // Extract and update global fields
+    const globals = {
+      'sys-name': formData['sys-name'],
+      'sys-email': formData['sys-email'],
+      'sys-phone': formData['sys-phone'],
+      'sys-usn': formData['sys-usn'],
+    };
+    
+    // Clean out undefined values before saving globally
+    const cleanGlobals = Object.fromEntries(Object.entries(globals).filter(([_, v]) => v != null && v !== ""));
+    
+    if (Object.keys(cleanGlobals).length > 0) {
+      const currentGlobal = JSON.parse(localStorage.getItem(globalIdentityKey) || "{}");
+      localStorage.setItem(globalIdentityKey, JSON.stringify({ ...currentGlobal, ...cleanGlobals }));
+    }
+  }, [formData, isLoaded, event.id]);
+
+  // --- Handlers ---
   const handleChange = (id: string, value: any) => {
     setFormData(prev => ({ ...prev, [id]: value }));
   };
@@ -61,6 +111,9 @@ export default function RegistrationForm({ event }: { event: any }) {
 
       if (error) throw error;
       
+      // Clear the event-specific draft on success, but keep global identity intact
+      localStorage.removeItem(eventDraftKey);
+      
       // Store the token in state to switch the UI to the Digital Ticket
       setSuccessToken(editToken);
     } catch (err: any) {
@@ -83,7 +136,6 @@ export default function RegistrationForm({ event }: { event: any }) {
   };
 
   // --- Helpers for the Digital Ticket Dashboard ---
-
   const getCalendarDates = () => {
     if (!event.event_date) return { start: "", end: "" };
     const startDate = new Date(event.event_date);
@@ -113,6 +165,17 @@ export default function RegistrationForm({ event }: { event: any }) {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // --- Prevent Hydration Mismatch ---
+  if (!isLoaded) {
+    return (
+      <div className="space-y-6 animate-pulse">
+        <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-xl" />
+        <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-xl" />
+        <div className="h-24 bg-zinc-100 dark:bg-zinc-800 rounded-xl" />
+      </div>
+    );
+  }
 
   // --- Render Digital Ticket Dashboard ---
   if (successToken) {
@@ -179,7 +242,7 @@ export default function RegistrationForm({ event }: { event: any }) {
               className="w-full flex items-center justify-center gap-2 py-3 bg-transparent border border-dashed border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400 font-bold text-sm rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
             >
               <Copy className="w-4 h-4" />
-              {copied ? "Copied!" : "Copy Responce Link"}
+              {copied ? "Copied!" : "Copy Response Link"}
             </button>
           </div>
         </div>
@@ -207,6 +270,7 @@ export default function RegistrationForm({ event }: { event: any }) {
               type={field.type}
               required={field.required}
               placeholder={field.placeholder || ""}
+              value={formData[field.id] || ""} // Controlled Input
               className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-zinc-900 dark:text-zinc-100"
               onChange={e => handleChange(field.id, e.target.value)}
             />
@@ -217,6 +281,7 @@ export default function RegistrationForm({ event }: { event: any }) {
               required={field.required}
               placeholder={field.placeholder || ""}
               rows={4}
+              value={formData[field.id] || ""} // Controlled Input
               className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-zinc-900 dark:text-zinc-100 resize-none"
               onChange={e => handleChange(field.id, e.target.value)}
             />
@@ -225,9 +290,9 @@ export default function RegistrationForm({ event }: { event: any }) {
           {field.type === 'select' && (
             <select
               required={field.required}
+              value={formData[field.id] || ""} // Controlled Input
               className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-zinc-900 dark:text-zinc-100"
               onChange={e => handleChange(field.id, e.target.value)}
-              defaultValue=""
             >
               <option value="" disabled>Select an option</option>
               {field.options.map((opt: string, i: number) => (
@@ -244,6 +309,7 @@ export default function RegistrationForm({ event }: { event: any }) {
                     type="radio"
                     name={field.id}
                     value={opt}
+                    checked={formData[field.id] === opt} // Controlled Input
                     required={field.required}
                     onChange={e => handleChange(field.id, e.target.value)}
                     className="w-4 h-4 text-indigo-600 border-zinc-300 focus:ring-indigo-500"
@@ -261,6 +327,7 @@ export default function RegistrationForm({ event }: { event: any }) {
                   <input
                     type="checkbox"
                     value={opt}
+                    checked={(formData[field.id] || []).includes(opt)} // Controlled Input
                     onChange={e => handleCheckbox(field.id, opt, e.target.checked)}
                     className="w-4 h-4 rounded text-indigo-600 border-zinc-300 focus:ring-indigo-500"
                   />

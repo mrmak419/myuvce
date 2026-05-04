@@ -16,7 +16,9 @@ export default function EventCard({ event }: { event: any }) {
       href={`/events/${event.club_slug}/${event.event_slug}`}
       className="group flex flex-col bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300"
     >
-      <div className="h-48 bg-zinc-100 dark:bg-zinc-800 relative overflow-hidden shrink-0">
+      <div className="h-48 bg-zinc-100 dark:bg-zinc-800 relative overflow-hidden shrink-0 flex flex-col items-center justify-center">
+        
+        {/* Cover Image Logic: Poster -> Dominant Logo Fallback -> Gradient Fallback */}
         {event.poster_url ? (
           <Image 
             src={event.poster_url} 
@@ -24,12 +26,25 @@ export default function EventCard({ event }: { event: any }) {
             fill 
             className="object-cover group-hover:scale-105 transition-transform duration-500" 
           />
+        ) : club?.logo_url ? (
+          // Dominant Logo Display for missing posters
+          <div className="absolute inset-0 flex items-center justify-center bg-zinc-50 dark:bg-zinc-800 group-hover:bg-zinc-100 dark:group-hover:bg-zinc-700/50 transition-colors duration-300">
+            <div className="relative w-28 h-28 group-hover:scale-110 transition-transform duration-500">
+              <Image 
+                src={club.logo_url} 
+                alt={club.name} 
+                fill
+                className="object-contain drop-shadow-sm" 
+              />
+            </div>
+          </div>
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900 opacity-90 group-hover:scale-105 transition-transform duration-500" />
         )}
         
+        {/* Top Left Club Badge (Public Facing) */}
         {club && (
-          <div className="absolute top-4 left-4 flex items-center gap-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm px-2.5 py-1.5 rounded-full shadow-sm">
+          <div className="absolute top-4 left-4 flex items-center gap-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm px-2.5 py-1.5 rounded-full shadow-sm z-10">
             {club.logo_url && (
               <Image src={club.logo_url} alt={club.name} width={16} height={16} className="rounded-full" />
             )}
@@ -40,7 +55,7 @@ export default function EventCard({ event }: { event: any }) {
         )}
       </div>
       
-      <div className="p-6 flex-1 flex flex-col">
+      <div className="p-6 flex-1 flex flex-col z-10 relative bg-white dark:bg-zinc-900">
         <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">
           {event.title}
         </h3>
