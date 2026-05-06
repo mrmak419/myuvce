@@ -5,21 +5,20 @@ import { XCircle } from "lucide-react";
 
 export const runtime = "edge";
 
-export const metadata = {
-  referrer: 'no-referrer', 
-};
-
 // SEO & OpenGraph UPGRADE: Dynamic WhatsApp Previews for Tickets
 export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
   const { token } = await params;
   
-  // 1. SECURE FETCH: Use your existing RPC function to bypass RLS and grab the event_id safely
+  // 1. SECURE FETCH: Use  existing RPC function to bypass RLS and grab the event_id safely
   const { data: registrations } = await supabase.rpc('get_registration_by_token', { token });
   
   const registration = registrations && registrations.length > 0 ? registrations[0] : null;
 
   if (!registration || !registration.event_id) {
-    return { title: "Invalid Ticket | MyUVCE" };
+    return { 
+      title: "Invalid Ticket | MyUVCE",
+      referrer: 'no-referrer' // Added here
+    };
   }
 
   // 2. FETCH VISUALS: Now that we have the event_id, grab the poster, description, and club logo
@@ -33,7 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ token: st
   if (!event) {
     return { 
       title: `Ticket: ${registration.event_title || 'Event'}`,
-      description: "Your digital ticket for this MyUVCE event."
+      description: "Your digital ticket for this event.",
+      referrer: 'no-referrer' // Added here
     };
   }
 
@@ -47,11 +47,12 @@ export async function generateMetadata({ params }: { params: Promise<{ token: st
     : `Digital ticket for ${event.title} by ${club?.name || 'UVCE'}.`;
 
   // 4. Prioritize Poster -> Club Logo -> Default MyUVCE OG Image
-  const previewImage = event.poster_url || club?.logo_url || 'https://myuvce.in/og-image.jpg'; // Replace with your actual default OG image URL
+  const previewImage = event.poster_url || club?.logo_url || 'https://myuvce.in/og-image.jpg';
 
   return {
     title: `Ticket: ${event.title}`,
     description: plainTextDescription,
+    referrer: 'no-referrer', // <--- Merged from the deleted static block
     openGraph: {
       title: `🎟️ RSVP Confirmed: ${event.title}`,
       description: plainTextDescription,
