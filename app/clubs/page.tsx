@@ -1,4 +1,3 @@
-// app/clubs/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,12 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, Users, ExternalLink } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import ReactMarkdown from "react-markdown"; // Import Markdown parser
 
 interface Club {
   slug: string;
   name: string;
   description: string | null;
   logo_url: string | null;
+  is_markdown: boolean; // Added new field
 }
 
 export default function ClubsDirectory() {
@@ -21,9 +22,10 @@ export default function ClubsDirectory() {
 
   useEffect(() => {
     async function fetchClubs() {
+      // Updated query to include is_markdown
       const { data, error } = await supabase
         .from('myuvce_events_clubs')
-        .select('slug, name, description, logo_url')
+        .select('slug, name, description, logo_url, is_markdown')
         .eq('is_active', true)
         .order('name');
       
@@ -88,7 +90,7 @@ export default function ClubsDirectory() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center border border-zinc-100 dark:border-zinc-700 overflow-hidden shrink-0">
                       {club.logo_url ? (
-                        <Image src={club.logo_url} alt={club.name} width={64} height={64} className="w-full h-full object-cover" />
+                        <Image src={club.logo_url} alt={club.name} width={64} height={64} className="w-full h-full object-contain p-2" />
                       ) : (
                         <Users className="w-8 h-8 text-zinc-300 dark:text-zinc-600" />
                       )}
@@ -102,9 +104,18 @@ export default function ClubsDirectory() {
                     {club.name}
                   </h3>
                   
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-3 mt-auto">
-                    {club.description || "No description provided."}
-                  </p>
+                  {/* Dynamic Description Area */}
+                  <div className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-3 mt-1 overflow-hidden">
+                    {club.is_markdown ? (
+                      <div className="prose prose-sm prose-zinc dark:prose-invert prose-p:leading-snug prose-p:my-0 max-w-none">
+                        <ReactMarkdown>{club.description || ""}</ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p className="whitespace-pre-wrap">
+                        {club.description || ""}
+                      </p>
+                    )}
+                  </div>
                 </Link>
               ))}
             </div>
