@@ -15,7 +15,7 @@ const TOOLS = [
     name: "MyUVCE Hub",
     description: "The all-in-one student platform. Track attendance, manage assignments, and access all utilities in one dashboard.",
     action: "Launch Dashboard",
-    href: "https://hub.pluranode.in",
+    href: "https://hub.myuvce.in",
     icon: LayoutDashboard,
     isExternal: true,
     featured: true, // Gets the heavy green styling
@@ -44,7 +44,7 @@ const TOOLS = [
     name: "SGPA Estimator",
     description: "Calculate your SGPA based on the 2025 regulations. Supports reverse calculation to find your target grades.",
     action: "Calculate Now",
-    href: "https://hub.pluranode.in/sgpa",
+    href: "https://hub.myuvce.in/sgpa",
     icon: Calculator,
     isExternal: true,
     color: {
@@ -58,7 +58,7 @@ const TOOLS = [
     name: "Viva Garage",
     description: "Gamified viva practice. Test your skills in Physics, Chemistry, and C-Programming with real questions.",
     action: "Play Now",
-    href: "https://hub.pluranode.in/viva",
+    href: "https://hub.myuvce.in/viva",
     icon: Gamepad2,
     isExternal: true,
     color: {
