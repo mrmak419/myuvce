@@ -5,27 +5,37 @@ import { XCircle } from "lucide-react";
 
 export const runtime = "edge";
 
+export const metadata = {
+  referrer: 'no-referrer', 
+};
+
 // SEO & OpenGraph UPGRADE: Dynamic WhatsApp Previews for Tickets
 export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
   const { token } = await params;
   
-  // 1. Fetch the registration to get the linked event ID
-  const { data: registration } = await supabase
-    .from('myuvce_events_registrations')
-    .select('event_id')
-    .eq('edit_token', token)
-    .single();
+  // 1. SECURE FETCH: Use your existing RPC function to bypass RLS and grab the event_id safely
+  const { data: registrations } = await supabase.rpc('get_registration_by_token', { token });
+  
+  const registration = registrations && registrations.length > 0 ? registrations[0] : null;
 
-  if (!registration) return { title: "Invalid Ticket | MyUVCE" };
+  if (!registration || !registration.event_id) {
+    return { title: "Invalid Ticket | MyUVCE" };
+  }
 
-  // 2. Fetch the event and club details for the rich preview
+  // 2. FETCH VISUALS: Now that we have the event_id, grab the poster, description, and club logo
   const { data: event } = await supabase
     .from('myuvce_events_events')
     .select('title, description, poster_url, myuvce_events_clubs (name, logo_url)')
     .eq('id', registration.event_id)
     .single();
 
-  if (!event) return { title: "Event Ticket | MyUVCE" };
+  // Fallback if the event visual data can't be fetched
+  if (!event) {
+    return { 
+      title: `Ticket: ${registration.event_title || 'Event'}`,
+      description: "Your digital ticket for this MyUVCE event."
+    };
+  }
 
   // 3. Extract data safely
   const club = Array.isArray(event.myuvce_events_clubs) 

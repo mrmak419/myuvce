@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   metadataBase: new URL("https://myuvce.in"),
   title: {
-    default: "MyUVCE - The Ultimate Student Resource Hub",
+    default: "MyUVCE - Built for UVCEians",
     template: "%s | MyUVCE"
   },
   description: "The ultimate unofficial resource hub for UVCE students. Access Notes, PYQs, Lab Manuals, and more.",
