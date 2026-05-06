@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     default: "MyUVCE - Built for UVCEians",
     template: "%s | MyUVCE"
   },
-  description: "The unofficial resource hub for UVCE students. Access Notes, PYQs, Lab Manuals, and more.",
+  description: "Created by students, for students. Explore UVCE campus updates and connect to the MyUVCE Hub for tools.",
   alternates: { canonical: "https://myuvce.in" },
   manifest: "/site.webmanifest", 
   icons: { icon: "/logo.jpg", apple: "/apple-touch-icon.png" },
