@@ -51,9 +51,6 @@ export default function BlogTagsPage() {
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight mb-4">
           Explore by Category
         </h1>
-        <p className="text-base sm:text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed">
-          Quickly discover technical guides, academic resources, club activities, and campus updates organized by interest area.
-        </p>
       </div>
 
       {/* Interactive Tag Search Grid */}
