@@ -82,6 +82,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     databaseRoutes.push(...eventRoutes);
   }
 
+  // 4. Dynamic Tag Routes
+  let tagRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const posts = getAllPosts();
+    const uniqueTags = new Set<string>();
+    
+    posts.forEach((post) => {
+      if (post.tags && Array.isArray(post.tags)) {
+        post.tags.forEach((t) => {
+          if (t) {
+            uniqueTags.add(t.trim().toLowerCase());
+          }
+        });
+      }
+    });
+
+    tagRoutes = Array.from(uniqueTags).map((tag) => ({
+      url: `${baseUrl}/blog/tags/${encodeURIComponent(tag)}`,
+      lastModified: new Date().toISOString().split('T')[0],
+      priority: 0.5,
+      changeFrequency: 'weekly' as const,
+    }));
+  } catch (error) {
+    console.error("[SITEMAP] Tag parsing failed:", error);
+  }
+
   // Orchestrate the final build
-  return [...staticRoutes, ...mdxRoutes, ...databaseRoutes];
+  return [...staticRoutes, ...mdxRoutes, ...databaseRoutes, ...tagRoutes];
 }

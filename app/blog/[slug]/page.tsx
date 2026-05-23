@@ -1,5 +1,6 @@
 import { getPostBySlug, getAllPosts } from "@/lib/mdx";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { AUTHORS } from "@/lib/authors";
 import Image from "next/image";
 import { Calendar, ExternalLink } from "lucide-react";
@@ -98,11 +99,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 </span>
               </div>
               {post.meta.tags.length > 0 && (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {post.meta.tags.map(tag => (
-                    <span key={tag} className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
-                      #{tag}
-                    </span>
+                    <Link 
+                      key={tag} 
+                      href={`/blog/tags/${encodeURIComponent(tag.trim().toLowerCase())}?from=${slug}`} 
+                      className="bg-neutral-100 dark:bg-neutral-800 hover:bg-indigo-50 dark:hover:bg-zinc-800 text-neutral-800 dark:text-neutral-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-colors duration-200"
+                    >
+                      {tag}
+                    </Link>
                   ))}
                 </div>
               )}
