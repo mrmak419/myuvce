@@ -13,11 +13,12 @@ export const metadata: Metadata = {
 const TOOLS = [
   {
     name: "MyUVCE Hub",
+    description: "The all-in-one student platform. Track attendance, manage assignments, and access all utilities in one dashboard.",
     action: "Launch Dashboard",
     href: "https://hub.myuvce.in",
     icon: LayoutDashboard,
     isExternal: true,
-    featured: true, 
+    featured: true, // Gets the heavy green styling
     color: {
       bg: "bg-green-50/50 dark:bg-green-900/10",
       iconBg: "bg-green-100 dark:bg-green-900/40",
@@ -27,6 +28,7 @@ const TOOLS = [
   },
   {
     name: "Smart Notes Library",
+    description: "Instant access to syllabus copies and notes. View PDFs directly in the app with zero downloads.",
     action: "Browse Notes",
     href: "/uvce-notes",
     icon: BookOpen,
@@ -40,6 +42,7 @@ const TOOLS = [
   },
   {
     name: "SGPA Estimator",
+    description: "Calculate your SGPA based on the 2025 regulations. Supports reverse calculation to find your target grades.",
     action: "Calculate Now",
     href: "https://hub.myuvce.in/sgpa",
     icon: Calculator,
@@ -53,6 +56,7 @@ const TOOLS = [
   },
   {
     name: "Viva Garage",
+    description: "Gamified viva practice. Test your skills in Physics, Chemistry, and C-Programming with real questions.",
     action: "Play Now",
     href: "https://hub.myuvce.in/viva",
     icon: Gamepad2,
@@ -66,6 +70,7 @@ const TOOLS = [
   },
   {
     name: "Classroom Directory",
+    description: "Locate specific exam halls, labs, and classrooms on campus with our detailed guide.",
     action: "Find Room",
     href: "/map",
     icon: MapPin,
@@ -110,11 +115,15 @@ export default function ToolsPage() {
                 <Icon className="w-6 h-6" strokeWidth={2} />
               </div>
               
-              <h2 className="text-xl font-bold text-neutral-900 dark:text-white mb-6">
+              <h2 className="text-xl font-bold text-neutral-900 dark:text-white mb-3">
                 {tool.name}
               </h2>
               
-              <div className={`text-sm font-bold uppercase tracking-wider flex items-center gap-2 mt-auto ${tool.color.text}`}>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6 flex-grow">
+                {tool.description}
+              </p>
+              
+              <div className={`text-sm font-bold uppercase tracking-wider flex items-center gap-2 ${tool.color.text}`}>
                 {tool.action} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>

@@ -121,8 +121,8 @@ export default async function Home() {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1.5 sm:mb-2">{tool.name}</h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">{tool.description}</p>
+                    {/* The buggy tool.description paragraph tag was removed from here */}
+                    <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100">{tool.name}</h3>
                   </Link>
                 );
               })}
