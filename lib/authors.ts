@@ -15,7 +15,7 @@ export const AUTHORS: Record<string, Author> = {
     name: "Mohammad Ayaan Khan",
     role: "CSE '29 • Maintainer",
     img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWqww6gBq6LDkcyWWVG2X5_kdocx4iJMv5xHaw19IVQYG_8D8KDPEn1iUzesdlLRkhlA6qJ25iSdI1lEQGbPtfYmmA9_EZgG1mURzP5CwlIe7abEz05Z_zoTFAeP9T318htde3bJnpb-I3tNb2dd2qYoCOCi8ZGQKc9ighQCBQuIhV7ah76Q7bnmKw2QOM/s320-rw/ayaan.png",
-    bio: "Leads the technical development of the platform. He combines code with design to turn campus data into interactive and engaging stories.",
+    bio: "Technical development of the platform.",
     link: "https://www.linkedin.com/in/mrmak/"
   },
   gourav: {
@@ -39,7 +39,7 @@ export const AUTHORS: Record<string, Author> = {
     name: "Shreyas V",
     role: "ISE '29 • Web Developer & Author",
     img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6pCAX4l73rNz33SY6XIfQAvf0zYolmlv2t7roGrNqT7kqVPVEBQcVC-UQncmKjljrWtkmEkqXDLvcT6Tpy1v0hxDxi1jNlssWm98_PNG3KT83LC1akmpEoslRTGgzyxKrfesJLsWXwkM-TxJHbCP600B_9AqHTTHwL0nUq9opiLbH77aM2M55avrAN4qw/s320-rw/shreyas.jpg",
-    bio: "Developed UVCE Learn & Co-developer of the upcoming 'Student Hub'. He is building digital utilities, including the class attendance tracker, to modernize campus operations.",
+    bio: "Developed UVCE Learn & Co-developer of 'Student Hub'. He is building digital utilities, including the class attendance tracker, to modernize campus operations.",
     link: "https://www.linkedin.com/in/ishreyasv/"
   },
   pavitra: {

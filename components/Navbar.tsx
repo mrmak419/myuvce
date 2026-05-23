@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, BookOpen, Map as MapIcon, Calendar, Users, Menu, X, Image as ImageIcon } from "lucide-react";
+import { Home, FileText, BookOpen, Map as MapIcon, Calendar, Users, Menu, X, Image as ImageIcon, Star } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 // --- Desktop Navigation Links (Flattened) ---
@@ -15,16 +15,18 @@ const desktopLinks = [
   { name: "Blog", href: "/blog" },
   { name: "Notes", href: "/uvce-notes"},
   { name: "Map", href: "/map" },
+  { name: "Wall of Fame", href: "/wall" },
   { name: "Gallery", href: "/gallery" },
 ];
 
 // --- Mobile Bottom Nav Links (Primary 4) ---
+// Notes moved to Menu, Map moved here
 const mobileLinks = [
   { name: "Home", icon: Home, href: "/" },
   // Temporarily hidden for testing
   // { name: "Events", icon: Calendar, href: "/events" },
   { name: "Blog", icon: FileText, href: "/blog" },
-  { name: "Notes", icon: BookOpen, href: "/uvce-notes" }, 
+  { name: "Map", icon: MapIcon, href: "/map" }, 
 ];
 
 export default function Navbar() {
@@ -152,14 +154,23 @@ export default function Navbar() {
               <span className="text-sm font-bold">Clubs</span>
             </Link>
             */}
-            
+
             <Link 
-              href="/map" 
+              href="/uvce-notes" 
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             >
-              <MapIcon className="w-5 h-5 text-indigo-500" />
-              <span className="text-sm font-bold">Campus Map</span>
+              <BookOpen className="w-5 h-5 text-indigo-500" />
+              <span className="text-sm font-bold">Notes & PYQs</span>
+            </Link>
+            
+            <Link 
+              href="/wall" 
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              <Star className="w-5 h-5 text-indigo-500" />
+              <span className="text-sm font-bold">Wall of Fame</span>
             </Link>
 
             <Link 

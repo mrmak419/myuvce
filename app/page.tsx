@@ -13,7 +13,6 @@ const RECENT_POSTS_COUNT = 6;
 const CAMPUS_TOOLS = [
   {
     name: "MyUVCE HUB",
-    description: "Attendance tracking, notes, pyq's and more.",
     icon: LayoutDashboard,
     href: "https://hub.myuvce.in",
     status: "Live",
@@ -22,7 +21,6 @@ const CAMPUS_TOOLS = [
   },
   {
     name: "Campus Map",
-    description: "Navigate UVCE classrooms and labs instantly.",
     icon: Map,
     href: "/map",
     status: "Live",
@@ -30,7 +28,6 @@ const CAMPUS_TOOLS = [
   },
   {
     name: "SGPA Calculator",
-    description: "Accurate semester grading and forecasting.",
     icon: Calculator,
     href: "https://hub.myuvce.in/sgpa",
     status: "Live",
@@ -39,7 +36,6 @@ const CAMPUS_TOOLS = [
   },
   {
     name: "Viva Garage",
-    description: "Gamified viva questions for your next lab exam.",
     icon: Gamepad2,
     href: "https://hub.myuvce.in/question-garage",
     status: "Live",

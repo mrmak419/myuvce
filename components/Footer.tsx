@@ -34,7 +34,7 @@ export default function Footer() {
             </Link>
             
             <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-sm">
-              The unofficial digital guide for UVCE Bangalore. We help students navigate the KR Circle campus with digital maps, classroom directories, and survival guides.
+              The unofficial digital guide for UVCE Bangalore. Navigate the KR Circle campus with digital maps, classroom directories, and survival guides.
             </p>
             
             <div className="flex items-center gap-3 pt-2">
