@@ -71,7 +71,7 @@ export default function BlogFeed({
           type="text"
           /* Elevated translucent background with Indigo focus rings */
           className="block w-full pl-11 pr-4 py-3 sm:py-3.5 text-sm sm:text-base bg-white dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/50 rounded-xl text-zinc-900 dark:text-zinc-50 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all shadow-sm"
-          placeholder="Search updates, notes, PYQs..."
+          placeholder="Search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={loadSearchIndex}

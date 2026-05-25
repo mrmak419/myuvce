@@ -33,7 +33,7 @@ export default function SearchableTagGrid({ tags }: SearchableTagGridProps) {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search categories (e.g. placements, guide)..."
+          placeholder="Search categories"
           className="block w-full pl-11 pr-4 py-3 bg-white dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700/50 rounded-2xl text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all shadow-sm"
         />
         {searchQuery && (

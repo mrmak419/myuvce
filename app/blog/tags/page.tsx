@@ -35,23 +35,9 @@ export default function BlogTagsPage() {
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16 animate-in fade-in duration-700">
       
-      {/* Back button */}
-      <div className="mb-6">
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Blog
-        </Link>
-      </div>
+      
 
-      {/* Header section */}
-      <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight mb-4">
-          Explore by Category
-        </h1>
-      </div>
+     
 
       {/* Interactive Tag Search Grid */}
       <SearchableTagGrid tags={sortedTags} />
