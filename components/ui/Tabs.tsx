@@ -7,13 +7,17 @@ interface TabProps {
   children: React.ReactNode;
 }
 
-export const Tabs = ({ children }: { children: React.ReactElement<TabProps>[] }) => {
+export const Tabs = ({ children }: { children: React.ReactNode }) => {
   const [activeTab, setActiveTab] = useState(0);
+
+  const validChildren = React.Children.toArray(children).filter(
+    (child): child is React.ReactElement<TabProps> => React.isValidElement(child)
+  );
 
   return (
     <div className="my-8 border border-zinc-200 dark:border-zinc-700/50 rounded-2xl overflow-hidden bg-white dark:bg-zinc-800/40 shadow-sm">
       <div className="flex border-b border-zinc-200 dark:border-zinc-700/50 bg-zinc-50 dark:bg-zinc-900/50 overflow-x-auto hide-scrollbar">
-        {children.map((child, index) => (
+        {validChildren.map((child, index) => (
           <button
             key={index}
             onClick={() => setActiveTab(index)}
@@ -28,7 +32,7 @@ export const Tabs = ({ children }: { children: React.ReactElement<TabProps>[] })
         ))}
       </div>
       <div className="p-6 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed animate-in fade-in slide-in-from-bottom-1">
-        {children[activeTab]}
+        {validChildren[activeTab]}
       </div>
     </div>
   );

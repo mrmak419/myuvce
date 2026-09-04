@@ -2,10 +2,9 @@ import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, ArrowLeft, ArrowDown } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, ArrowDown, ExternalLink } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import RegistrationForm from "./RegistrationForm";
 import type { Metadata } from "next";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 
@@ -139,10 +138,15 @@ export default async function EventPage({ params }: { params: Promise<{ clubSlug
 
       <div id="registration" className="scroll-mt-24">
         {!isPast ? (
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 md:p-10 shadow-lg">
-            <h2 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2">Register</h2>
-            <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-8">Please fill out the details below to complete your registration.</p>
-            <RegistrationForm event={event} />
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 md:p-10 shadow-lg text-center">
+            <h2 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2">Ready to Join?</h2>
+            <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-8">Registrations for this event are hosted on MyUVCE Hub.</p>
+            <a 
+              href={`https://hub.myuvce.in/events/${resolvedParams.clubSlug}/${resolvedParams.eventSlug}`}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-500/25 active:scale-95 w-full sm:w-auto"
+            >
+              Register on Hub <ExternalLink className="w-5 h-5" />
+            </a>
           </div>
         ) : (
           <div className="bg-zinc-50 dark:bg-zinc-900/50 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-10 text-center">
