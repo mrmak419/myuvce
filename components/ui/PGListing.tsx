@@ -125,3 +125,19 @@ export const PGListing = ({
 export const PGListingGroup = ({ children }: { children: React.ReactNode }) => (
   <div className="my-6 flex flex-col space-y-1">{children}</div>
 );
+
+import pgData from '../data/pg_directory.json';
+
+export const PGDirectoryRenderer = ({ category }: { category: string }) => {
+  const categoryData = pgData.find((d: any) => d.category === category);
+  
+  if (!categoryData) return null;
+
+  return (
+    <div className="my-6 flex flex-col space-y-1">
+      {categoryData.listings.map((listing: any, index: number) => (
+        <PGListing key={index} {...listing} />
+      ))}
+    </div>
+  );
+};

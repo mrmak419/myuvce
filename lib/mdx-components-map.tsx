@@ -6,7 +6,7 @@ import { FeatureCard, FeatureGrid } from '@/components/ui/FeatureCard'
 import { TeamGrid, TeamProfile } from '@/components/ui/TeamProfile'
 import { Testimonial } from '@/components/ui/Testimonial'
 import { Countdown } from '@/components/ui/Countdown'
-import { PGListing, PGListingGroup } from '@/components/ui/PGListing'
+import { PGListing, PGListingGroup, PGDirectoryRenderer } from '@/components/ui/PGListing'
 
 export const sharedMdxComponents = {
   // Custom React Components
@@ -19,6 +19,7 @@ export const sharedMdxComponents = {
   AccordionGroup,
   PGListing,
   PGListingGroup,
+  PGDirectoryRenderer,
   FeatureCard,
   FeatureGrid,
   TeamProfile,
