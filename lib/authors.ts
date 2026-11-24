@@ -54,5 +54,7 @@ export const AUTHORS: Record<string, Author> = {
     id: "keerthana",
     name: "Keerthana M",
     role: "CSE '30 • Author"
+    bio: "I write... Sometimes"
+    link: "https://in.linkedin.com/in/ikeerthana-m-58221b314"
   }
 };
