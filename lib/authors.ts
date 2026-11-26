@@ -14,7 +14,7 @@ export const AUTHORS: Record<string, Author> = {
     id: "ayaan",
     name: "Mohammad Ayaan Khan",
     role: "CSE '29 • Maintainer",
-    img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWqww6gBq6LDkcyWWVG2X5_kdocx4iJMv5xHaw19IVQYG_8D8KDPEn1iUzesdlLRkhlA6qJ25iSdI1lEQGbPtfYmmA9_EZgG1mURzP5CwlIe7abEz05Z_zoTFAeP9T318htde3bJnpb-I3tNb2dd2qYoCOCi8ZGQKc9ighQCBQuIhV7ah76Q7bnmKw2QOM/s320-rw/ayaan.png",
+    img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDIdzMw7lG6rg6yUfRYHJgP7EiioSJKw4XL3zHHgCbxPI8CKa-0un_6neDvbaWnPrY9uIOt1DY78Kr3zuvCeqoxYei9L7WnG3SRQJg7rCwvAhXXqg4sbp-3OSP9sslFK-ioPLwF7i83iJ9rNIxlUQzOXhmHtnY5_bSyGjLPFdWe0178slLtioBkNIKq3Th/s1600/myprofile.jpg",
     bio: "Technical development of the platform.",
     link: "https://www.linkedin.com/in/mrmak/"
   },
